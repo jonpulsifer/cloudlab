@@ -18,6 +18,14 @@ data "google_iam_policy" "project" {
   }
 
   binding {
+    role = "roles/containeranalysis.ServiceAgent"
+
+    members = [
+      "serviceAccount:service-821879192255@container-analysis.iam.gserviceaccount.com",
+    ]
+  }
+
+  binding {
     role = "roles/sourcerepo.serviceAgent"
 
     members = [

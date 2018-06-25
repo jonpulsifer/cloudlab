@@ -1,9 +1,8 @@
 provider "google" {
-  credentials = "${file("credentials.json")}"
-  project     = "${var.gcp_config["project"]}"
-  region      = "${var.gcp_config["region"]}"
-  zone        = "${var.gcp_config["zone"]}"
-  version     = "~> 1.14"
+  project = "${var.gcp_config["project"]}"
+  region  = "${var.gcp_config["region"]}"
+  zone    = "${var.gcp_config["zone"]}"
+  version = "~> 1.14"
 }
 
 resource "google_project" "trusted-builds" {
