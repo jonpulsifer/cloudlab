@@ -13,8 +13,6 @@ data "google_iam_policy" "project" {
 
     members = [
       # make this better
-      "serviceAccount:${google_service_account.packer.email}",
-
       "serviceAccount:service-821879192255@containerregistry.iam.gserviceaccount.com",
     ]
   }

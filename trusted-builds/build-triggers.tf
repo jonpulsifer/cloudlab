@@ -2,9 +2,9 @@ resource "google_cloudbuild_trigger" "linux-build-gce" {
   description = "GCE Linux Build"
 
   trigger_template {
-    project     = "trusted-builds"
-    repo_name   = "github-j0npulsifer-cloudlab-linux-build"
-    branch_name = ".*"
+    project   = "trusted-builds"
+    repo_name = "github-j0npulsifer-cloudlab-linux-build"
+    tag_name  = ".*"
   }
 
   filename = "cloudbuild-gce.yaml"
