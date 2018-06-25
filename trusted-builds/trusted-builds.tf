@@ -28,9 +28,9 @@ module "network" {
 # build triggers
 resource "google_cloudbuild_trigger" "linux-build" {
   trigger_template {
-    project   = "trusted-builds"
-    repo_name = "github-j0npulsifer-cloudlab-linux-build"
-    tag_name  = ".*"
+    project     = "trusted-builds"
+    repo_name   = "github-j0npulsifer-cloudlab-linux-build"
+    branch_name = ".*"
   }
 
   filename = "cloudbuild.yaml"

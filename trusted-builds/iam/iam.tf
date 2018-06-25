@@ -36,6 +36,14 @@ data "google_iam_policy" "project" {
   }
 
   binding {
+    role = "roles/compute.storageAdmin"
+
+    members = [
+      "serviceAccount:821879192255@cloudbuild.gserviceaccount.com",
+    ]
+  }
+
+  binding {
     role = "roles/cloudbuild.builds.builder"
 
     members = [
