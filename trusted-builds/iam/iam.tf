@@ -3,7 +3,7 @@ variable "gcp_config" {
 }
 
 resource "google_project_iam_policy" "project" {
-  project     = "${var.gcp_config["project"]}"
+  project     = "${var.gcp_config["project_id"]}"
   policy_data = "${data.google_iam_policy.project.policy_data}"
 }
 

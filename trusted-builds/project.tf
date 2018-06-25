@@ -1,5 +1,5 @@
 provider "google" {
-  project = "${var.gcp_config["project"]}"
+  project = "${var.gcp_config["project_id"]}"
   region  = "${var.gcp_config["region"]}"
   zone    = "${var.gcp_config["zone"]}"
   version = "~> 1.14"
@@ -9,7 +9,7 @@ resource "google_project" "trusted-builds" {
   name                = "builds"
   billing_account     = "${var.gcp_config["billing_account"]}"
   folder_id           = "${var.gcp_config["folder"]}"
-  project_id          = "${var.gcp_config["project"]}"
+  project_id          = "${var.gcp_config["project_id"]}"
   skip_delete         = true
   auto_create_network = "${var.gcp_config["auto_create_network"]}"
 }

@@ -1,5 +1,5 @@
 resource "google_project_services" "trusted-builds" {
-  project = "${var.gcp_config["project"]}"
+  project = "${var.gcp_config["project_id"]}"
 
   services = [
     "clouddebugger.googleapis.com",
