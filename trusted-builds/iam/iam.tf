@@ -42,6 +42,14 @@ data "google_iam_policy" "project" {
   }
 
   binding {
+    role = "roles/compute.imageUser"
+
+    members = [
+      "serviceAccount:594184039024@cloudservices.gserviceaccount.com",
+    ]
+  }
+
+  binding {
     role = "roles/compute.storageAdmin"
 
     members = [
