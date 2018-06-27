@@ -65,6 +65,22 @@ resource "google_compute_instance_template" "vm-with-ssd" {
     foo = "bar"
   }
 
+  metadata_startup_script = <<HEREDOC
+#!/usr/bin/env bash
+set -xeuo pipefail
+
+# probably a better way to do this
+DISK=$(lsblk -J |  jq -r '.blockdevices[]  | select(.size == "${var.instance_config["ssd_size"]}G") | "/dev/" + .name')
+UUID=$(blkid -s UUID -o value "$${DISK}")
+
+# https://cloud.google.com/compute/docs/disks/performance#formatting_parameters
+mkfs.ext4 -m 0 -F -E lazy_itable_init=0,lazy_journal_init=0,discard "$${DISK}"
+mount -o discard,defaults "$${DISK}" "${var.instance_config["mount_point"]}"
+
+# try to mount
+echo "$${UUID} ${var.instance_config["mount_point"]} ext4 discard,defaults,nofail 0 2" | tee -a /etc/fstab
+HEREDOC
+
   service_account {
     email  = "${google_service_account.vm.email}"
     scopes = ["cloud-platform"]

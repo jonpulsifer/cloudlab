@@ -1,6 +1,4 @@
-resource "google_project_services" "trusted-builds" {
-  project = "${var.gcp_config["project_id"]}"
-
+resource "google_project_services" "apis" {
   services = [
     "clouddebugger.googleapis.com",
     "cloudtrace.googleapis.com",

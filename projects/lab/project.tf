@@ -1,4 +1,7 @@
 locals {
+  # turn the VM on or off
+  online = false
+
   # gcp config
   billing_account = "009BE0-2F835F-F20651"
   folder          = "folders/55741234626"
@@ -11,7 +14,7 @@ locals {
   zone   = "us-east4-b"
 
   # gce network
-  vm_cidr = "10.13.37.0/28"
+  vm_cidr = "10.13.37.0/29"
 }
 
 provider "google" {
@@ -24,14 +27,14 @@ provider "google" {
 terraform {
   backend "gcs" {
     bucket         = ""
-    prefix         = "secure-the-cloud"
+    prefix         = ""
     project        = ""
     encryption_key = ""
   }
 }
 
 module "project" {
-  source          = "../terraform/modules/gcp-project"
+  source          = "../../terraform/modules/gcp-project"
   name            = "lab "
   billing_account = "${local.billing_account}"
   project_id      = "${local.project}"
@@ -42,13 +45,13 @@ module "project" {
 }
 
 module "network" {
-  source  = "../terraform/modules/gcp-vpc"
+  source  = "../../terraform/modules/gcp-vpc"
   name    = "lab"
   vm_cidr = "${local.vm_cidr}"
 }
 
 module "vm" {
-  source = "../terraform/modules/gce-vm"
+  source = "../../terraform/modules/gce-vm"
   name   = "bullseye"
 
   image_config = {
@@ -57,9 +60,10 @@ module "vm" {
   }
 
   instance_config = {
-    online       = false
+    online       = "${local.online}"
     machine_type = "n1-standard-1"
     subnet       = "${module.network.subnet}"
+    mount_point  = "/home/jawn"
     ssd_size     = 10
     preemptible  = false
   }
