@@ -67,18 +67,26 @@ resource "google_compute_instance_template" "vm-with-ssd" {
 
   metadata_startup_script = <<HEREDOC
 #!/usr/bin/env bash
+# this is a script to mount a secondary persietent disk
 set -xeuo pipefail
 
 # probably a better way to do this
 DISK=$(lsblk -J |  jq -r '.blockdevices[]  | select(.size == "${var.instance_config["ssd_size"]}G") | "/dev/" + .name')
 UUID=$(blkid -s UUID -o value "$${DISK}")
+LINUX_UID=$(id -u "${var.instance_config["linux_user"]}")
+LINUX_GID=$(id -g "${var.instance_config["linux_user"]}")
+
+# exit if disk mounted already
+grep -q "$${UUID}" /etc/fstab && { echo "[warn]: $${{DISK}} already mounted" && exit 0; };
+
 
 # https://cloud.google.com/compute/docs/disks/performance#formatting_parameters
 mkfs.ext4 -m 0 -F -E lazy_itable_init=0,lazy_journal_init=0,discard "$${DISK}"
 mount -o discard,defaults "$${DISK}" "${var.instance_config["mount_point"]}"
 
-# try to mount
-echo "$${UUID} ${var.instance_config["mount_point"]} ext4 discard,defaults,nofail 0 2" | tee -a /etc/fstab
+# try to persitently mount
+grep -q "$${UUID}" /etc/fstab || echo "$${UUID} ${var.instance_config["mount_point"]} ext4 discard,defaults,nofail 0 2" | tee -a /etc/fstab
+chown "$${LINUX_UID}":"$${LINUX_GID}" "${var.instance_config["mount_point"]}"
 HEREDOC
 
   service_account {
@@ -88,9 +96,10 @@ HEREDOC
 }
 
 resource "google_compute_instance_group_manager" "vm" {
+  count              = "${var.instance_config["online"] ? 1 : 0 }"
   name               = "${var.name}-igm"
   instance_template  = "${google_compute_instance_template.vm-with-ssd.self_link}"
   base_instance_name = "${var.name}"
-  target_size        = "${var.instance_config["online"] ? 1 : 0}"
+  target_size        = "1"
   update_strategy    = "RESTART"
 }

@@ -1,6 +1,7 @@
 locals {
   # turn the VM on or off
-  online = false
+  online     = true
+  linux_user = "jawn"
 
   # gcp config
   billing_account = "009BE0-2F835F-F20651"
@@ -63,7 +64,8 @@ module "vm" {
     online       = "${local.online}"
     machine_type = "n1-standard-1"
     subnet       = "${module.network.subnet}"
-    mount_point  = "/home/jawn"
+    linux_user   = "${local.linux_user}"
+    mount_point  = "/home/${local.linux_user}"
     ssd_size     = 10
     preemptible  = false
   }
