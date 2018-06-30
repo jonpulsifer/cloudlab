@@ -31,5 +31,5 @@ resource "google_project_iam_member" "source-repo" {
 # cloudservices for the igms in secure-the-cloud
 resource "google_project_iam_member" "image-user" {
   role   = "roles/compute.imageUser"
-  member = "serviceAccount:594184039024@cloudservices.gserviceaccount.com"
+  member = "serviceAccount:667960578724@cloudservices.gserviceaccount.com"
 }

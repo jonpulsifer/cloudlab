@@ -7,21 +7,21 @@ resource "google_compute_disk" "pd-ssd" {
   name = "${var.name}-ssd"
   type = "pd-ssd"
   size = "${var.instance_config["ssd_size"]}"
-
-  labels {
-    environment = "dev"
-  }
 }
 
 resource "google_compute_instance_template" "vm-with-ssd" {
   name_prefix = "${var.name}"
   description = "This is the primary lab VM template with a PD-SSD"
 
-  tags = ["${var.image_config["family"]}", "vm", "terraform", "packer"]
-
-  labels = {
-    environment = "dev"
+  lifecycle {
+    create_before_destroy = true
   }
+
+  depends_on = [
+    "google_compute_disk.pd-ssd",
+  ]
+
+  tags = ["${var.image_config["family"]}", "vm", "terraform", "packer"]
 
   instance_description = "[lab] packer built and terraform deployed"
   machine_type         = "${var.instance_config["machine_type"]}"
@@ -61,32 +61,27 @@ resource "google_compute_instance_template" "vm-with-ssd" {
     }
   }
 
-  metadata {
-    foo = "bar"
-  }
-
   metadata_startup_script = <<HEREDOC
 #!/usr/bin/env bash
-# this is a script to mount a secondary persietent disk
 set -xeuo pipefail
 
-# probably a better way to do this
-DISK=$(lsblk -J |  jq -r '.blockdevices[]  | select(.size == "${var.instance_config["ssd_size"]}G") | "/dev/" + .name')
-UUID=$(blkid -s UUID -o value "$${DISK}")
+# get linux ids from instance config
 LINUX_UID=$(id -u "${var.instance_config["linux_user"]}")
 LINUX_GID=$(id -g "${var.instance_config["linux_user"]}")
 
-# exit if disk mounted already
-grep -q "$${UUID}" /etc/fstab && { echo "[warn]: $${{DISK}} already mounted" && exit 0; };
-
-
 # https://cloud.google.com/compute/docs/disks/performance#formatting_parameters
+# probably a better way to do this
+DISK=$(lsblk -J |  jq -r '.blockdevices[]  | select(.size == "${var.instance_config["ssd_size"]}G") | "/dev/" + .name')
 mkfs.ext4 -m 0 -F -E lazy_itable_init=0,lazy_journal_init=0,discard "$${DISK}"
 mount -o discard,defaults "$${DISK}" "${var.instance_config["mount_point"]}"
 
 # try to persitently mount
-grep -q "$${UUID}" /etc/fstab || echo "$${UUID} ${var.instance_config["mount_point"]} ext4 discard,defaults,nofail 0 2" | tee -a /etc/fstab
+# exit if disk mounted already
+UUID=$(blkid -s UUID -o value "$${DISK}")
+grep -q "$${UUID}" /etc/fstab && { echo "[warn]: $${DISK} already mounted" && exit 0; };
+echo "$${UUID} ${var.instance_config["mount_point"]} ext4 discard,defaults,nofail 0 2" | tee -a /etc/fstab
 chown "$${LINUX_UID}":"$${LINUX_GID}" "${var.instance_config["mount_point"]}"
+exit 0
 HEREDOC
 
   service_account {
@@ -96,8 +91,13 @@ HEREDOC
 }
 
 resource "google_compute_instance_group_manager" "vm" {
-  count              = "${var.instance_config["online"] ? 1 : 0 }"
-  name               = "${var.name}-igm"
+  count = "${var.instance_config["online"] ? 1 : 0 }"
+  name  = "${var.name}-igm"
+
+  depends_on = [
+    "google_compute_instance_template.vm-with-ssd",
+  ]
+
   instance_template  = "${google_compute_instance_template.vm-with-ssd.self_link}"
   base_instance_name = "${var.name}"
   target_size        = "1"
