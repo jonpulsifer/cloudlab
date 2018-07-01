@@ -9,6 +9,11 @@ resource "google_compute_disk" "pd-ssd" {
   size = "${var.instance_config["ssd_size"]}"
 }
 
+resource "google_compute_address" "vm-with-ssd" {
+  name         = "${var.name}"
+  address_type = "EXTERNAL"
+}
+
 resource "google_compute_instance_template" "vm-with-ssd" {
   name_prefix = "${var.name}"
   description = "This is the primary lab VM template with a PD-SSD"
@@ -56,7 +61,7 @@ resource "google_compute_instance_template" "vm-with-ssd" {
     subnetwork = "${var.instance_config["subnet"]}"
 
     access_config = {
-      # nat_ip = ""
+      nat_ip       = "${google_compute_address.vm-with-ssd.address}"
       network_tier = "PREMIUM"
     }
   }
