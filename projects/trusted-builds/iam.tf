@@ -33,11 +33,13 @@ resource "google_project_iam_member" "image-user" {
   role   = "roles/compute.imageUser"
   member = "serviceAccount:667960578724@cloudservices.gserviceaccount.com"
 }
+
 # In this lab your GKE nodes will need to access GCR for their storage
 # so we give them roles/storage.objectViewer on the entire project because
 # reasons
-resource "google_project_iam_member" "gcr-for-gke-nodes" {
-  project = "trusted-builds"
-  role    = "roles/storage.objectViewer"
-  member  = "serviceAccount:${google_service_account.nodes.email}"
-}
+#resource "google_project_iam_member" "gcr-for-gke-nodes" {
+#  project = "trusted-builds"
+#  role    = "roles/storage.objectViewer"
+#  member  = "serviceAccount:${google_service_account.nodes.email}"
+#}
+

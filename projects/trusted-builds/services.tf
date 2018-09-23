@@ -1,7 +1,5 @@
 resource "google_project_services" "apis" {
   services = [
-    "clouddebugger.googleapis.com",
-    "cloudtrace.googleapis.com",
     "cloudbuild.googleapis.com",
     "compute.googleapis.com",
     "containerregistry.googleapis.com",

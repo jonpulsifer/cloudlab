@@ -18,7 +18,7 @@ provider "google" {
   project = "trusted-builds"
   region  = "northamerica-northeast1"
   zone    = "northamerica-northeast1-a"
-  version = "~> 1.15"
+  version = "~> 1.18"
 }
 
 terraform {
