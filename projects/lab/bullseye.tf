@@ -3,9 +3,8 @@ locals {
   # turn the VM on or off
   online = true
 
-  linux_user = "jawn"
-  ssd_size   = 10
-  vm_cidr    = "10.13.37.0/29"
+  ssd_size = 10
+  vm_cidr  = "10.13.37.0/29"
 }
 
 module "network" {
@@ -15,28 +14,8 @@ module "network" {
   vm_cidr = "${local.vm_cidr}"
 }
 
-module "vm" {
-  source = "../../terraform/modules/gce-vm"
-  name   = "bullseye"
-
-  image_config = {
-    family  = "ubuntu-1804-lts"
-    project = "trusted-builds"
-  }
-
-  instance_config = {
-    online       = "${local.online}"
-    machine_type = "n1-standard-1"
-    subnet       = "${module.network.subnet}"
-    linux_user   = "${local.linux_user}"
-    mount_point  = "/home/${local.linux_user}"
-    ssd_size     = "${local.ssd_size}"
-    preemptible  = false
-  }
-}
-
 module "cos-vm" {
-  source = "../../terraform/modules/gce-vm"
+  source = "../../terraform/modules/gce-cos-vm"
   name   = "bullseye-cos"
 
   image_config = {
@@ -48,40 +27,53 @@ module "cos-vm" {
     online       = "${local.online}"
     machine_type = "n1-standard-1"
     subnet       = "${module.network.subnet}"
-    linux_user   = "${local.linux_user}"
-    mount_point  = "/home/${local.linux_user}"
     ssd_size     = "${local.ssd_size}"
     preemptible  = false
 
-    metadata_startup_script = <<HEREDOC
+    cloud_init = <<HEREDOC
 #cloud-config
 
-users:
-- name: cloudservice
-  uid: 2000
-
 write_files:
-- path: /etc/systemd/system/cloudservice.service
+- path: /etc/systemd/system/bullseye.service
   permissions: 0644
   owner: root
   content: |
     [Unit]
-    Description=Start a simple docker container
+    Description=Start the bullseye container
+    Wants=gcr-online.target
+    After=gcr-online.target
 
     [Service]
-    ExecStart=/usr/bin/docker run --rm -u 2000 --name=mycloudservice busybox:latest /bin/sleep 3600
-    ExecStop=/usr/bin/docker stop mycloudservice
-    ExecStopPost=/usr/bin/docker rm mycloudservice
+    Environment="HOME=/home/cloudservice"
+    ExecStartPre=/usr/bin/docker-credential-gcr configure-docker
+    ExecStartPre=/sbin/iptables -w -A INPUT -p tcp --dport 30022 -j ACCEPT
+    ExecStart=/usr/bin/docker run --rm --name=bullseye --network=host -v /home/bullseye:/home/jawn gcr.io/trusted-builds/cloudlab-linux-build:latest
+    ExecStop=/usr/bin/docker stop bullseye
+    ExecStopPost=/usr/bin/docker rm bullseye
+
+- path: /etc/systemd/system/datadog.service
+  permissions: 0644
+  owner: root
+  content: |
+    [Unit]
+    Description=Datadog Agent container
+
+    [Service]
+    Environment="HOME=/home/cloudservice"
+    ExecStart=/usr/bin/docker run --rm --name=datadog -v /var/run/docker.sock:/var/run/docker.sock:ro -v /proc/:/host/proc/:ro -v /sys/fs/cgroup/:/host/sys/fs/cgroup:ro -v /etc/passwd:/etc/passwd:ro -e DD_PROCESS_AGENT_ENABLED=true -e DD_API_KEY=lolol datadog/agent:latest
+    ExecStop=/usr/bin/docker stop datadog
+    ExecStopPost=/usr/bin/docker rm datadog
 
 runcmd:
 - systemctl daemon-reload
-- systemctl start cloudservice.service
+- systemctl start bullseye.service
+- systemctl start datadog.service
 
 # Optional once-per-boot setup. Ex: mounting a PD.
 bootcmd:
-- fsck.ext4 -tvy /dev/[DEVICE_ID]
-- mkdir -p /mnt/disks/[MNT_DIR]
-- mount -t ext4 -O ... /dev/[DEVICE_ID] /mnt/disks/[MNT_DIR]
+- mkfs.ext4 -m 0 -F -E lazy_itable_init=0,lazy_journal_init=0,discard /dev/sdb
+- mkdir -p /home/bullseye
+- mount -o discard,defaults /dev/sdb /home/bullseye
 HEREDOC
   }
 }

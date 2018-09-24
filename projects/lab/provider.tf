@@ -5,11 +5,10 @@ locals {
 }
 
 provider "google" {
-  credentials = "${file("credentials.json")}"
-  project     = "kubesec"
-  region      = "us-east4"
-  zone        = "us-east4-b"
-  version     = "~> 1.15"
+  project = "kubesec"
+  region  = "us-east4"
+  zone    = "us-east4-b"
+  version = "~> 1.18"
 }
 
 terraform {
@@ -20,14 +19,18 @@ terraform {
   }
 }
 
-module "project" {
-  source     = "../../terraform/modules/gcp-project"
+resource "google_project" "kubesec" {
   name       = "cloudlab"
   project_id = "${local.project}"
 
   /* optional settings you may need */
   # org_id          = "${local.organization}"
 
-  folder_id       = "${local.folder}"
-  billing_account = "${local.billing_account}"
+  folder_id           = "${local.folder}"
+  billing_account     = "${local.billing_account}"
+  auto_create_network = false
+  skip_delete         = true
+  app_engine = {
+    location_id = "us-east4"
+  }
 }

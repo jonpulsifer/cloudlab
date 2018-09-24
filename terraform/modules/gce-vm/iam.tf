@@ -1,5 +1,5 @@
 resource "google_service_account" "vm" {
-  account_id   = "bullseye"
+  account_id   = "${var.name}"
   display_name = "VM service account for bullseye"
 }
 

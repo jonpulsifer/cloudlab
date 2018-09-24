@@ -66,7 +66,9 @@ resource "google_compute_instance_template" "vm-with-ssd" {
     }
   }
 
-  metadata_startup_script = "${var.instance_config["metadata_startup_script"]}"
+  metadata {
+    "user-data" = "${var.instance_config["cloud_init"]}"
+  }
 
   service_account {
     email  = "${google_service_account.vm.email}"

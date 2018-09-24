@@ -14,18 +14,7 @@ resource "google_project_services" "apis" {
     "serviceusage.googleapis.com",
     "sourcerepo.googleapis.com",
     "stackdriver.googleapis.com",
-    "stackdriverprovisioning.googleapis.com",
     "storage-api.googleapis.com",
     "storage-component.googleapis.com",
-
-    /* already taken care of */
-    "bigquery-json.googleapis.com",
-
-    "container.googleapis.com",
-    "containerregistry.googleapis.com",
-    "deploymentmanager.googleapis.com",
-    "replicapool.googleapis.com",
-    "replicapoolupdater.googleapis.com",
-    "resourceviews.googleapis.com",
   ]
 }
