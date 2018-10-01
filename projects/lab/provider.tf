@@ -16,6 +16,7 @@ terraform {
     bucket         = "kubesec"
     prefix         = "state/lab"
     project        = "kubesec"
+    encryption_key = ""
   }
 }
 

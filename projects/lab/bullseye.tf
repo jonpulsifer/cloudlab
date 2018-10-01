@@ -1,17 +1,16 @@
 locals {
   /* GCE settings */
-  # turn the VM on or off
+  # turn the VMs on or off
   online = true
 
-  ssd_size = 10
-  vm_cidr  = "10.13.37.0/29"
+  lab_cidr = "10.13.37.0/29"
 }
 
 module "network" {
   source = "../../terraform/modules/gcp-vpc"
   name   = "lab"
 
-  vm_cidr = "${local.vm_cidr}"
+  vm_cidr = "${local.lab_cidr}"
 }
 
 module "cos-vm" {
