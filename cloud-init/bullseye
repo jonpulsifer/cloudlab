@@ -25,8 +25,12 @@ runcmd:
 
 # enable services
 - systemctl daemon-reload
-- systemctl enable bullseye.service
 - systemctl enable datadog.service
+- systemctl enable bullseye.service
+- systemctl enable asterisk.service
+- systemctl start datadog.service
+- systemctl start bullseye.service
+- systemctl start asterisk.service
 
 # reboot when complete
 #power_state:
