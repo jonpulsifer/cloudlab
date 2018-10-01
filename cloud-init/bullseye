@@ -1,0 +1,35 @@
+#cloud-config
+
+# persistent ssd for /home/bullseye
+bootcmd:
+- mkfs.ext4 -m 0 -F -E lazy_itable_init=0,lazy_journal_init=0,discard /dev/sdb
+- mkdir -p /home/bullseye
+- mount -o discard,defaults /dev/sdb /home/bullseye
+
+# bootstrap
+runcmd:
+# create runtime directories
+- mkdir -m 700 -p /var/bullseye
+
+# copy services and scripts
+- docker run --rm -v /var/bullseye:/tmp -w /tmp gcr.io/cloud-builders/gsutil cp -r gs://cloud-lab/bullseye/services .
+- cp /var/bullseye/services/*.service /etc/systemd/system/
+
+# copy ejson keys
+- docker run --rm -v /var/bullseye:/tmp -w /tmp gcr.io/cloud-builders/gsutil cp -r gs://cloud-lab/bullseye/ejson .
+
+# decrypt ejson secrets for containers
+# TODO dont do this here
+- HOME=/var/bullseye docker-credential-gcr configure-docker
+- HOME=/var/bullseye docker run --rm -v /var/bullseye/ejson/keys:/opt/ejson/keys:ro -v /var/bullseye/services:/tmp:ro -w /tmp gcr.io/trusted-builds/ejson2env -q datadog.ejson > /var/bullseye/services/datadog.env
+
+# enable services
+- systemctl daemon-reload
+- systemctl enable bullseye.service
+- systemctl enable datadog.service
+
+# reboot when complete
+#power_state:
+# delay: now
+# mode: reboot
+# message: Bootstrap complete!
