@@ -17,5 +17,6 @@ resource "google_project_services" "apis" {
     "stackdriver.googleapis.com",
     "storage-api.googleapis.com",
     "storage-component.googleapis.com",
+    "websecurityscanner.googleapis.com",
   ]
 }
