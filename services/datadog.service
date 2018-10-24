@@ -8,3 +8,6 @@ EnvironmentFile=/var/bullseye/services/datadog.env
 ExecStart=/usr/bin/docker run --name=datadog -v /var/run/docker.sock:/var/run/docker.sock:ro -v /proc/:/host/proc/:ro -v /sys/fs/cgroup/:/host/sys/fs/cgroup:ro -v /etc/passwd:/etc/passwd:ro -e DD_PROCESS_AGENT_ENABLED=true -e DD_API_KEY=${DATADOG_API_KEY} datadog/agent:latest
 ExecStop=/usr/bin/docker stop datadog 2> /dev/null
 ExecStopPost=/usr/bin/docker rm datadog
+
+[Install]
+WantedBy=multi-user.target

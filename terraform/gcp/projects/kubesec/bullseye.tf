@@ -7,14 +7,14 @@ locals {
 }
 
 module "network" {
-  source = "../../terraform/modules/gcp-vpc"
+  source = "../../..//modules/gcp-vpc"
   name   = "lab"
 
   vm_cidr = "${local.lab_cidr}"
 }
 
 module "cos-vm" {
-  source = "../../terraform/modules/gce-cos-vm"
+  source = "../../../modules/gce-cos-vm"
   name   = "bullseye-cos"
 
   image_config = {
@@ -24,7 +24,7 @@ module "cos-vm" {
 
   instance_config = {
     online       = "${local.online}"
-    cloud_init   = "${file("../../cloud-init/bullseye")}"
+    cloud_init   = "${file("../../../../cloud-init/bullseye")}"
     machine_type = "n1-standard-1"
     ssd_size     = "10"
     subnet       = "${module.network.subnet}"

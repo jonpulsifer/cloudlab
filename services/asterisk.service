@@ -16,3 +16,6 @@ ExecStartPre=/sbin/iptables -w -A INPUT -p udp -m udp --dport 4569 -j ACCEPT -m 
 ExecStart=/usr/bin/docker run --name=asterisk --network=host gcr.io/trusted-builds/asterisk:alpine
 ExecStop=/usr/bin/docker stop asterisk 2> /dev/null
 ExecStopPost=/usr/bin/docker rm asterisk
+
+[Install]
+WantedBy=multi-user.target

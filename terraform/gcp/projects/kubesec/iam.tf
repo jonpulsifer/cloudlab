@@ -16,3 +16,12 @@ resource "google_project_iam_member" "compute-system" {
   role   = "roles/compute.serviceAgent"
   member = "serviceAccount:service-${google_project.kubesec.number}@compute-system.iam.gserviceaccount.com"
 }
+
+resource "google_storage_bucket_iam_binding" "cloudbuild" {
+  bucket = "cloud-lab"
+  role   = "roles/storage.admin"
+
+  members = [
+    "serviceAccount:821879192255@cloudbuild.gserviceaccount.com",
+  ]
+}

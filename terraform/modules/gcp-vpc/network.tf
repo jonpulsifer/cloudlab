@@ -12,6 +12,10 @@ resource "google_compute_subnetwork" "vms" {
   private_ip_google_access = "${var.private_api_access}"
 }
 
+output "name" {
+  value = "${google_compute_network.network.name}"
+}
+
 output "subnet" {
   value = "${google_compute_subnetwork.vms.self_link}"
 }
