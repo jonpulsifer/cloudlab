@@ -1,0 +1,28 @@
+{
+        "live-restore": true,
+        "log-driver": "gcplogs",
+         "log-opts": {
+               "gcp-log-cmd": "true"
+         },
+        "storage-driver": "overlay2",
+        "runtimes": {
+                "runsc": {
+                        "path": "/var/lib/docker/runsc"
+                },
+                "runsc-debug": {
+                        "path": "/var/lib/docker/runsc",
+                        "runtimeArgs": [
+                            "--debug-log=/tmp/runsc/",
+                            "--debug",
+                            "--strace"
+                        ]
+                },
+                "runsc-hostnetwork": {
+
+                        "path": "/var/lib/docker/runsc",
+                        "runtimeArgs": [
+                            "--network=host"
+                        ]
+                }
+        }
+}

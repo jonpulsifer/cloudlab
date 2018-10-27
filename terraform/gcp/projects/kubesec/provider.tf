@@ -31,7 +31,4 @@ resource "google_project" "kubesec" {
   billing_account     = "${local.billing_account}"
   auto_create_network = false
   skip_delete         = true
-  app_engine = {
-    location_id = "us-east4"
-  }
 }

@@ -1,3 +1,15 @@
+resource "google_compute_firewall" "nginx" {
+  name    = "nginx"
+  network = "${module.network.name}"
+
+  allow {
+    protocol = "tcp"
+    ports    = ["80", "443"]
+  }
+
+  source_ranges = ["0.0.0.0/0"]
+}
+
 resource "google_compute_firewall" "asterisk" {
   name    = "asterisk"
   network = "${module.network.name}"
