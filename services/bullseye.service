@@ -8,9 +8,8 @@ Type=simple
 Environment="HOME=/var/bullseye"
 ExecStartPre=/usr/bin/docker-credential-gcr configure-docker
 ExecStartPre=/sbin/iptables -w -A INPUT -p tcp --dport 30022 -j ACCEPT
-ExecStart=/usr/bin/docker run --name=bullseye --network=bullseye --network-alias=bullseye -p 30022:30022 -v /home/bullseye:/home/jawn -v /var/run/docker.sock:/var/run/docker.sock -v /usr/bin/docker:/usr/bin/docker gcr.io/trusted-builds/cloudlab-linux-build:latest
+ExecStart=/usr/bin/docker run --rm --name=bullseye --network=bullseye --network-alias=bullseye --ip=10.0.0.5 -p 30022:30022 -v /home/bullseye:/home/jawn -v /var/run/docker.sock:/var/run/docker.sock -v /usr/bin/docker:/usr/bin/docker gcr.io/trusted-builds/cloudlab-linux-build:latest
 ExecStop=/usr/bin/docker stop bullseye
-ExecStopPost=/usr/bin/docker rm bullseye
 
 [Install]
 WantedBy=multi-user.target

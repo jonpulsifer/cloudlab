@@ -1,0 +1,15 @@
+[Unit]
+Description=Start the wishlist container
+After=nginx.service mysql.service
+
+[Service]
+Type=simple
+Environment="HOME=/var/bullseye"
+EnvironmentFile=/var/bullseye/services/wishlist.env
+ExecStartPre=/usr/bin/docker-credential-gcr configure-docker
+ExecStartPre=/usr/bin/docker run --rm --name=wishlist-db-migrate --network=bullseye --network-alias=wishlist-db-migrate gcr.io/trusted-builds/wishlist:latest bundle exec rake db:migrate
+ExecStart=/usr/bin/docker run --rm --name=wishlist --network=bullseye --network-alias=wishlist --ip=10.0.0.9 -e SECRET_KEY_BASE=${SECRET_KEY_BASE} gcr.io/trusted-builds/wishlist:latest bundle exec rails s
+ExecStop=/usr/bin/docker stop wishlist
+
+[Install]
+WantedBy=multi-user.target

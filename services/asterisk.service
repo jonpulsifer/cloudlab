@@ -4,6 +4,7 @@ Wants=gcr-online.target
 After=gcr-online.target
 
 [Service]
+Type=simple
 Environment="HOME=/var/bullseye"
 ExecStartPre=/usr/bin/docker-credential-gcr configure-docker
 ExecStartPre=/sbin/iptables -w -A INPUT -p udp -m udp --dport 5060 -j ACCEPT -m comment --comment "asterisk SIP UDP"
@@ -13,9 +14,8 @@ ExecStartPre=/sbin/iptables -w -A INPUT -p tcp -m tcp --dport 5061 -j ACCEPT -m 
 ExecStartPre=/sbin/iptables -w -A INPUT -p udp -m udp --dport 16384:16394 -j ACCEPT -m comment --comment "asterisk RTP"
 ExecStartPre=/sbin/iptables -w -A INPUT -p udp -m udp --dport 4569 -j ACCEPT -m comment --comment "asterisk IAX2"
 # ExecStartPre=/sbin/iptables -w -A INPUT -p tcp -m tcp --dport 5038 -j ACCEPT -m comment --comment "asterisk AMI"
-ExecStart=/usr/bin/docker run --runtime=runsc-hostnetwork --name=asterisk --network=host gcr.io/trusted-builds/asterisk:alpine
-ExecStop=/usr/bin/docker stop asterisk 2> /dev/null
-ExecStopPost=/usr/bin/docker rm asterisk
+ExecStart=/usr/bin/docker run --rm --runtime=runsc-hostnetwork --name=asterisk --network=host gcr.io/trusted-builds/asterisk:alpine
+ExecStop=/usr/bin/docker stop asterisk
 
 [Install]
 WantedBy=multi-user.target

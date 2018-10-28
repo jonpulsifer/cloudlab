@@ -8,10 +8,8 @@ Type=simple
 Environment="HOME=/var/bullseye"
 ExecStartPre=/usr/bin/docker-credential-gcr configure-docker
 ExecStartPre=/sbin/iptables -w -A INPUT -p tcp --dport 80 -j ACCEPT
-ExecStartPre=/sbin/iptables -w -A INPUT -p tcp --dport 443 -j ACCEPT
-ExecStart=/usr/bin/docker run --runtime=runsc --name=nginx --network=bullseye --network-alias=nginx -p 80:8080 -p 443:8443 -v /var/bullseye/services/nginx/nginx.conf:/etc/nginx/nginx.conf:ro nginx:alpine
+ExecStart=/usr/bin/docker run --rm --runtime=runsc --name=nginx --network=bullseye --network-alias=nginx --ip=10.0.0.2 -p 80:8080 -v /var/bullseye/services/nginx/nginx.conf:/etc/nginx/nginx.conf:ro nginx:alpine
 ExecStop=/usr/bin/docker stop nginx
-ExecStopPost=/usr/bin/docker rm nginx
 
 [Install]
 WantedBy=multi-user.target

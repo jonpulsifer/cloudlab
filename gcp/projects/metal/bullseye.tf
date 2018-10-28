@@ -4,15 +4,15 @@ data "vsphere_virtual_machine" "template" {
 }
 
 resource "vsphere_virtual_disk" "home" {
-  size         = 10
-  vmdk_path    = "homedir.vmdk"
-  datacenter   = "${data.vsphere_datacenter.lab.name}"
-  datastore    = "${data.vsphere_datastore.ssd.name}"
-  type         = "thin"
+  size       = 10
+  vmdk_path  = "homedir.vmdk"
+  datacenter = "${data.vsphere_datacenter.lab.name}"
+  datastore  = "${data.vsphere_datastore.ssd.name}"
+  type       = "thin"
 }
 
 resource "vsphere_virtual_machine" "bullseye" {
-  count = 0
+  count            = 0
   name             = "bullseye"
   annotation       = "Bullseye - Ubuntu 1804"
   resource_pool_id = "${data.vsphere_resource_pool.host.id}"
@@ -22,11 +22,10 @@ resource "vsphere_virtual_machine" "bullseye" {
   memory   = 1024
   guest_id = "${data.vsphere_virtual_machine.template.guest_id}"
 
-  
   cpu_hot_add_enabled    = true
   cpu_hot_remove_enabled = true
   memory_hot_add_enabled = true
-  
+
   enable_logging      = true
   sync_time_with_host = true
 
@@ -34,18 +33,19 @@ resource "vsphere_virtual_machine" "bullseye" {
     network_id   = "${data.vsphere_network.vms.id}"
     adapter_type = "${data.vsphere_virtual_machine.template.network_interface_types[0]}"
   }
-  
+
   scsi_controller_count = 1
-  scsi_type = "${data.vsphere_virtual_machine.template.scsi_type}"
+  scsi_type             = "${data.vsphere_virtual_machine.template.scsi_type}"
 
   disk {
-      label            = "disk0"
-      size             = "${data.vsphere_virtual_machine.template.disks.0.size}"
-      eagerly_scrub    = "${data.vsphere_virtual_machine.template.disks.0.eagerly_scrub}"
-      thin_provisioned = "${data.vsphere_virtual_machine.template.disks.0.thin_provisioned}"
+    label            = "disk0"
+    size             = "${data.vsphere_virtual_machine.template.disks.0.size}"
+    eagerly_scrub    = "${data.vsphere_virtual_machine.template.disks.0.eagerly_scrub}"
+    thin_provisioned = "${data.vsphere_virtual_machine.template.disks.0.thin_provisioned}"
   }
 
   enable_disk_uuid = true
+
   disk {
     label        = "disk1"
     unit_number  = 1

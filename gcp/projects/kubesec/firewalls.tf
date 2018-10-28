@@ -4,10 +4,10 @@ resource "google_compute_firewall" "nginx" {
 
   allow {
     protocol = "tcp"
-    ports    = ["80", "443"]
+    ports    = ["80"]
   }
 
-  source_ranges = ["0.0.0.0/0"]
+  source_ranges = ["76.71.50.92/32"]
 }
 
 resource "google_compute_firewall" "asterisk" {

@@ -8,7 +8,7 @@ provider "google" {
   project = "kubesec"
   region  = "us-east4"
   zone    = "us-east4-b"
-  version = "~> 1.18"
+  version = "~> 1.19.1"
 }
 
 terraform {

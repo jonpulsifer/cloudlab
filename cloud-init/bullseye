@@ -30,9 +30,11 @@ runcmd:
 # TODO dont do this here
 - HOME=/var/bullseye docker-credential-gcr configure-docker
 - HOME=/var/bullseye docker run --rm -v /var/bullseye/ejson/keys:/opt/ejson/keys:ro -v /var/bullseye/services:/tmp:ro -w /tmp gcr.io/trusted-builds/ejson2env -q datadog.ejson > /var/bullseye/services/datadog.env
+- HOME=/var/bullseye docker run --rm -v /var/bullseye/ejson/keys:/opt/ejson/keys:ro -v /var/bullseye/services:/tmp:ro -w /tmp gcr.io/trusted-builds/ejson2env -q mysql.ejson > /var/bullseye/services/mysql.env
+- HOME=/var/bullseye docker run --rm -v /var/bullseye/ejson/keys:/opt/ejson/keys:ro -v /var/bullseye/services:/tmp:ro -w /tmp gcr.io/trusted-builds/ejson2env -q wishlist.ejson > /var/bullseye/services/wishlist.env
 
 # create docker networks
-- docker network create -d bridge bullseye
+- docker network create -d bridge --subnet=10.0.0.0/24 --ip-range=10.0.0.0/28 bullseye
 
 # enable services
 - systemctl daemon-reload
@@ -40,10 +42,14 @@ runcmd:
 - systemctl enable bullseye.service
 - systemctl enable asterisk.service
 - systemctl enable nginx.service
+- systemctl enable mysql.service
+- systemctl enable wishlist.service
 - systemctl start datadog.service
 - systemctl start bullseye.service
 - systemctl start asterisk.service
 - systemctl start nginx.service
+- systemctl start mysql.service
+- systemctl start wishlist.service
 
 # reboot when complete
 #power_state:
