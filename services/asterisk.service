@@ -1,12 +1,11 @@
 [Unit]
 Description=Start the asterisk container
-Wants=gcr-online.target
-After=gcr-online.target
+PartOf=cloudlab.service
+After=cloudlab.service
 
 [Service]
 Type=simple
 Environment="HOME=/var/bullseye"
-ExecStartPre=/usr/bin/docker-credential-gcr configure-docker
 ExecStartPre=/sbin/iptables -w -A INPUT -p udp -m udp --dport 5060 -j ACCEPT -m comment --comment "asterisk SIP UDP"
 ExecStartPre=/sbin/iptables -w -A INPUT -p udp -m udp --dport 5061 -j ACCEPT -m comment --comment "asterisk SIP UDP"
 ExecStartPre=/sbin/iptables -w -A INPUT -p tcp -m tcp --dport 5060 -j ACCEPT -m comment --comment "asterisk SIP TCP"
@@ -18,4 +17,4 @@ ExecStart=/usr/bin/docker run --rm --runtime=runsc-hostnetwork --name=asterisk -
 ExecStop=/usr/bin/docker stop asterisk
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=cloudlab.service

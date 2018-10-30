@@ -1,6 +1,6 @@
 resource "google_service_account" "vm" {
   account_id   = "${var.name}"
-  display_name = "VM service account for bullseye"
+  display_name = "service account for ${var.name} GCE VM"
 }
 
 resource "google_project_iam_member" "vm-logging" {

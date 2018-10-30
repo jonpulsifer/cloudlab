@@ -16,7 +16,7 @@ resource "google_compute_address" "vm-with-ssd" {
 
 resource "google_compute_instance_template" "vm-with-ssd" {
   name_prefix = "${var.name}"
-  description = "This is the primary lab VM template with a PD-SSD"
+  description = "GCE COS template with PD-SSD"
 
   lifecycle {
     create_before_destroy = true
@@ -45,7 +45,7 @@ resource "google_compute_instance_template" "vm-with-ssd" {
     auto_delete  = true
     boot         = true
     disk_type    = "pd-standard"
-    disk_size_gb = 30
+    disk_size_gb = 24
     type         = "PERSISTENT"
   }
 

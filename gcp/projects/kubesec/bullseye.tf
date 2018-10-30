@@ -15,7 +15,7 @@ module "network" {
 
 module "cos-vm" {
   source = "../../../terraform/modules/gce-cos-vm"
-  name   = "bullseye-cos"
+  name   = "cloudlab-cos"
 
   image_config = {
     family  = "cos-beta"
@@ -24,7 +24,7 @@ module "cos-vm" {
 
   instance_config = {
     online       = "${local.online}"
-    cloud_init   = "${file("../../../cloud-init/bullseye")}"
+    cloud_init   = "${file("../../../cloud-init/cloudlab")}"
     machine_type = "n1-standard-1"
     ssd_size     = "10"
     subnet       = "${module.network.subnet}"

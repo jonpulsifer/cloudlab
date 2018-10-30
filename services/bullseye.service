@@ -1,15 +1,15 @@
 [Unit]
 Description=Start the bullseye container
-Wants=gcr-online.target
-After=gcr-online.target
+PartOf=cloudlab.service
+After=cloudlab.service
 
 [Service]
 Type=simple
-Environment="HOME=/var/bullseye"
-ExecStartPre=/usr/bin/docker-credential-gcr configure-docker
+Environment="HOME=/var/cloudlab"
 ExecStartPre=/sbin/iptables -w -A INPUT -p tcp --dport 30022 -j ACCEPT
-ExecStart=/usr/bin/docker run --rm --name=bullseye --network=bullseye --network-alias=bullseye --ip=10.0.0.5 -p 30022:30022 -v /home/bullseye:/home/jawn -v /var/run/docker.sock:/var/run/docker.sock -v /usr/bin/docker:/usr/bin/docker gcr.io/trusted-builds/cloudlab-linux-build:latest
+ExecStartPre=mkdir -p /var/cloudlab/bullseye
+ExecStart=/usr/bin/docker run --rm --name=bullseye --network=cloudlab --network-alias=bullseye --ip=10.0.0.5 -p 30022:30022 -v /var/cloudlab/bullseye:/home/jawn -v /var/run/docker.sock:/var/run/docker.sock -v /usr/bin/docker:/usr/bin/docker gcr.io/trusted-builds/cloudlab-linux-build:latest
 ExecStop=/usr/bin/docker stop bullseye
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=cloudlab.service

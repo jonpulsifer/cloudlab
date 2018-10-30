@@ -1,0 +1,15 @@
+[Unit]
+Description=cloudlab service
+Wants=gcr-online.target
+After=gcr-online.target
+
+[Service]
+Type=oneshot
+Environment="HOME=/var/cloudlab"
+ExecStartPre=/usr/bin/docker-credential-gcr configure-docker
+ExecStart=/bin/true
+ExecStop=/bin/true
+RemainAfterExit=True
+
+[Install]
+WantedBy=multi-user.target

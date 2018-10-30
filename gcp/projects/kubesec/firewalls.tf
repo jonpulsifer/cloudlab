@@ -7,7 +7,7 @@ resource "google_compute_firewall" "nginx" {
     ports    = ["80"]
   }
 
-  source_ranges = ["76.71.50.92/32"]
+  source_ranges = ["76.69.152.145/32"]
 }
 
 resource "google_compute_firewall" "asterisk" {

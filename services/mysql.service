@@ -1,12 +1,12 @@
 [Unit]
 Description=mysql Agent container
-Wants=gcr-online.target
-After=gcr-online.target
+PartOf=cloudlab.service
+After=cloudlab.service
 
 [Service]
-EnvironmentFile=/var/bullseye/services/mysql.env
-ExecStart=/usr/bin/docker run --rm --runtime=runsc --name=mysql --network=bullseye --network-alias=mysql --ip=10.0.0.6 -e MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} mysql:5.7 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+EnvironmentFile=/var/cloudlab/services/mysql.env
+ExecStart=/usr/bin/docker run --rm --runtime=runsc --name=mysql --network=cloudlab --network-alias=mysql --ip=10.0.0.6 -e MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} mysql:5.7 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
 ExecStop=/usr/bin/docker stop mysql
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=cloudlab.service

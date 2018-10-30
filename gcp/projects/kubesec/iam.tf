@@ -21,3 +21,10 @@ resource "google_storage_bucket_iam_binding" "cloudbuild" {
     "serviceAccount:821879192255@cloudbuild.gserviceaccount.com",
   ]
 }
+
+resource "google_storage_bucket_iam_binding" "cloudlab-vm" {
+  bucket = "cloud-lab"
+  role   = "roles/storage.objectViewer"
+
+  members = ["serviceAccount:${module.cos-vm.service_account}"]
+}
