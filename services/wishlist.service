@@ -10,7 +10,7 @@ Environment="HOME=/var/cloudlab"
 EnvironmentFile=/var/cloudlab/services/wishlist.env
 ExecStartPre=/usr/bin/docker-credential-gcr configure-docker
 ExecStartPre=/usr/bin/docker run --rm --name=wishlist-db-migrate --network=cloudlab --network-alias=wishlist-db-migrate gcr.io/trusted-builds/wishlist:latest bundle exec rake db:migrate
-ExecStart=/usr/bin/docker run --rm --name=wishlist --network=cloudlab --network-alias=wishlist --ip=10.0.0.9 -e SECRET_KEY_BASE=${SECRET_KEY_BASE} gcr.io/trusted-builds/wishlist:latest bundle exec rails s
+ExecStart=/usr/bin/docker run --rm --name=wishlist --network=cloudlab --network-alias=wishlist --ip=10.0.0.9 -e SECRET_KEY_BASE=${SECRET_KEY_BASE} -e MYSQL_HOSTNAME=${MYSQL_HOSTNAME} -e MYSQL_USERNAME=${MYSQL_USERNAME} -e MYSQL_PASSWORD=${MYSQL_PASSWORD} -e MYSQL_DATABASE=${MYSQL_DATABASE} gcr.io/trusted-builds/wishlist:latest bundle exec rails s
 ExecStop=/usr/bin/docker stop wishlist
 
 [Install]
