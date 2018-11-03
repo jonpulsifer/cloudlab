@@ -53,15 +53,17 @@ spec:
           valueFrom:
             secretKeyRef:
               name: database
-              key: password     
+              key: password
         - name: GOOGLE_PROJECT
           value: kubesec
         - name: GOOGLE_APPLICATION_CREDENTIALS
-          value: /var/run/secrets/gcp/credentials.json   
+          value: /var/run/secrets/gcp/credentials.json
         - name: MYSQL_DATABASE
-          value: wishlist  
+          value: wishlist
         - name: RAILS_ENV
           value: production
+        - name: RAILS_SERVE_STATIC_FILES
+          value: "true"
         - name: ENVIRONMENT
           value: production
         ports:

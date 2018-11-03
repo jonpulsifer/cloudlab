@@ -1,0 +1,17 @@
+kind: Service
+apiVersion: v1
+metadata:
+  labels:
+    name: prometheus
+    app.kubernetes.io/name: prometheus
+    app.kubernetes.io/part-of: prometheus
+  name: prometheus
+  namespace: stackdriver
+spec:
+  selector:
+    app.kubernetes.io/name: prometheus
+  type: ClusterIP
+  ports:
+  - name: prometheus
+    protocol: TCP
+    port: 9090

@@ -1,4 +1,8 @@
 resource "google_container_node_pool" "standard" {
+  /* https://github.com/hashicorp/terraform/issues/18682
+      provider = "${var.cluster_config["beta"] ? "google-beta" : "google" }" */
+  provider = "google-beta"
+
   count      = "${var.cluster_config["online"] ? 1 : 0 }"
   name       = "standard"
   cluster    = "${google_container_cluster.lab.name}"

@@ -1,0 +1,42 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: prometheus
+  namespace: stackdriver
+  labels:
+    app.kubernetes.io/name: prometheus
+    app.kubernetes.io/part-of: prometheus
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: prometheus
+  template:
+    metadata:
+      name: prometheus
+      namespace: stackdriver
+      labels:
+        app.kubernetes.io/name: prometheus
+        app.kubernetes.io/part-of: prometheus
+      annotations:
+        prometheus.io/scrape: 'true'
+    spec:
+      # Needed when using unmodified rbac-setup.yml
+      serviceAccountName: prometheus
+      containers:
+      - name: prometheus
+        image: gcr.io/stackdriver-prometheus/stackdriver-prometheus:release-0.4.4
+        # Uncomment this to enable debug logs. Can be very verbose.
+        #args: ["--config.file=/etc/prometheus/prometheus.yml", "--log.level=debug"]
+        # Helps during development, when reusing the tag.
+        imagePullPolicy: Always
+        ports:
+        - name: web
+          containerPort: 9090
+        volumeMounts:
+        - name: config-volume
+          mountPath: /etc/prometheus
+      volumes:
+      - name: config-volume
+        configMap:
+          name: prometheus

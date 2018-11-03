@@ -6,9 +6,9 @@ data "google_container_engine_versions" "lab" {
 /* create and configure a GKE cluster */
 resource "google_container_cluster" "lab" {
   /* https://github.com/hashicorp/terraform/issues/18682
-  provider = "${var.cluster_config["beta"] ? "google-beta" : "google" }" */
+    provider = "${var.cluster_config["beta"] ? "google-beta" : "google" }" */
   provider = "google-beta"
-  
+
   /* GKE requires the API, a  network, subnet, and service account */
   depends_on = [
     "google_project_service.container",
@@ -33,6 +33,9 @@ resource "google_container_cluster" "lab" {
 
   /* and we require to :nuke: it */
   remove_default_node_pool = true
+
+  logging_service    = "logging.googleapis.com/kubernetes"
+  monitoring_service = "monitoring.googleapis.com/kubernetes"
 
   /* inherit the network from terraform */
   network    = "${google_compute_network.gke.self_link}"
@@ -82,7 +85,7 @@ resource "google_container_cluster" "lab" {
     }
 
     horizontal_pod_autoscaling {
-      disabled = false
+      disabled = true
     }
 
     network_policy_config {

@@ -18,6 +18,9 @@ spec:
     - name: https
       port: 443
       targetPort: https
+    - name: prometheus
+      port: 10254
+      targetPort: prometheus
 ---
 kind: Deployment
 apiVersion: apps/v1
@@ -89,6 +92,8 @@ spec:
             - name: https
               containerPort: 8443
               hostPort: 443
+            - name: prometheus
+              containerPort: 10254
           livenessProbe:
             failureThreshold: 3
             httpGet:
