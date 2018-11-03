@@ -33,7 +33,7 @@ spec:
   - NET_ADMIN
   # - NET_BIND_SERVICE
   - NET_BROADCAST
-  # - NET_RAW
+  - NET_RAW
   - SETGID
   - SETFCAP
   - SETPCAP
@@ -52,11 +52,6 @@ spec:
   - SYSLOG
   - WAKE_ALARM
   hostNetwork: false
-  hostPorts:
-  - min: 80
-    max: 80
-  - min: 443
-    max: 443
   hostIPC: false
   hostPID: false
   seLinux:

@@ -33,7 +33,7 @@ spec:
   - NET_ADMIN
   # - NET_BIND_SERVICE
   - NET_BROADCAST
-  # - NET_RAW
+  - NET_RAW
   - SETGID
   - SETFCAP
   - SETPCAP
