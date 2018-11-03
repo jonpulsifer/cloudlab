@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: homedir
+  namespace: bullseye
+  labels:
+    app.kubernetes.io/name: bullseye
+    app.kubernetes.io/part-of: bullseye
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: ssd
+  resources:
+    requests:
+      storage: 10Gi

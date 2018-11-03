@@ -1,0 +1,68 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: ssh
+  labels:
+    app.kubernetes.io/name: ssh
+    app.kubernetes.io/part-of: bullseye
+  namespace: bullseye
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ssh
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: ssh
+      annotations:
+        prometheus.io/port: '2222'
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: cloud.google.com/gke-preemptible
+                operator: DoesNotExist
+      terminationGracePeriodSeconds: 60
+      serviceAccountName: bullseye
+      containers:
+      - image: gcr.io/trusted-builds/cloudlab-linux-build:latest
+        name: ssh
+        readinessProbe:
+          tcpSocket:
+            port: 30022
+          initialDelaySeconds: 5
+          periodSeconds: 30
+        livenessProbe:
+          tcpSocket:
+            port: 30022
+          initialDelaySeconds: 5
+          periodSeconds: 30
+        ports:
+        - containerPort: 30022
+          protocol: TCP
+        - containerPort: 8080
+          protocol: TCP
+        volumeMounts:
+        - name: homedir
+          mountPath: /home/jawn
+        - name: docker-socket
+          mountPath: /var/run/docker.sock
+        - name: docker-bin
+          mountPath: /usr/bin/docker
+      volumes:
+      - name: homedir
+        persistentVolumeClaim:
+          claimName: homedir
+      - name: docker-socket
+        hostPath:
+          path: /var/run/docker.sock
+          type: File
+      - name: docker-bin
+        hostPath:
+          path: /usr/bin/docker
+          type: File

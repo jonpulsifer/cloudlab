@@ -18,7 +18,7 @@ provider "google" {
   project = "trusted-builds"
   region  = "northamerica-northeast1"
   zone    = "northamerica-northeast1-a"
-  version = "~> 1.18"
+  version = "~> 1.19"
 }
 
 terraform {
@@ -26,12 +26,12 @@ terraform {
     bucket         = "kubesec"
     prefix         = "trusted-builds"
     project        = "kubesec"
-    encryption_key = ""
+    encryption_key = "IMyUA0Wp8KAlUI4s5f4cTeeEGdUAU3Amu4voo/Z8/g8="
   }
 }
 
 module "project" {
-  source          = "../../terraform/modules/gcp-project"
+  source          = "../../../terraform/modules/gcp-project"
   name            = "trusted builder"
   billing_account = "${local.billing_account}"
   project_id      = "${local.project}"
@@ -42,7 +42,7 @@ module "project" {
 }
 
 module "network" {
-  source  = "../../terraform/modules/gcp-vpc"
+  source  = "../../../terraform/modules/gcp-vpc"
   name    = "builds"
   vm_cidr = "${local.vm_cidr}"
 }

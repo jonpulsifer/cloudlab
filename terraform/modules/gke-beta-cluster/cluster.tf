@@ -5,6 +5,10 @@ data "google_container_engine_versions" "lab" {
 
 /* create and configure a GKE cluster */
 resource "google_container_cluster" "lab" {
+  /* https://github.com/hashicorp/terraform/issues/18682
+  provider = "${var.cluster_config["beta"] ? "google-beta" : "google" }" */
+  provider = "google-beta"
+  
   /* GKE requires the API, a  network, subnet, and service account */
   depends_on = [
     "google_project_service.container",
@@ -41,8 +45,8 @@ resource "google_container_cluster" "lab" {
 
   /* enable NetworkPolicy */
   network_policy {
-    enabled  = "true"
-    provider = "CALICO"
+    enabled  = "${var.cluster_config["network_policy"]}"
+    provider = "${var.cluster_config["network_policy"] ? "CALICO" : "PROVIDER_UNSPECIFIED" }"
   }
 
   /* disable basic authentication */
@@ -64,6 +68,9 @@ resource "google_container_cluster" "lab" {
     enabled = "true"
   }
 
+  /* enable Binary Authorization */
+  enable_binary_authorization = "${var.cluster_config["binary_authorization"]}"
+
   /* disable the Kubernetes dashboard */
   addons_config {
     http_load_balancing {
@@ -77,5 +84,13 @@ resource "google_container_cluster" "lab" {
     horizontal_pod_autoscaling {
       disabled = false
     }
+
+    network_policy_config {
+      disabled = "${var.cluster_config["network_policy"] ? false : true }"
+    }
   }
+}
+
+output "name" {
+  value = "${var.name}"
 }

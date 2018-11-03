@@ -8,7 +8,14 @@ provider "google" {
   project = "kubesec"
   region  = "us-east4"
   zone    = "us-east4-b"
-  version = "~> 1.19.1"
+  version = "~> 1.19"
+}
+
+provider "google-beta" {
+  project = "kubesec"
+  region  = "us-east4"
+  zone    = "us-east4-b"
+  version = "~> 1.19"
 }
 
 terraform {

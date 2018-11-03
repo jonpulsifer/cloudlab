@@ -1,0 +1,32 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: ssh
+  namespace: bullseye
+  labels:
+    app.kubernetes.io/name: ssh
+    app.kubernetes.io/part-of: bullseye
+spec:
+  type: NodePort
+  ports:
+  - nodePort: 30022
+    port: 22
+  selector:
+    app.kubernetes.io/name: ssh
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web
+  namespace: bullseye
+  labels:
+    app.kubernetes.io/name: web
+    app.kubernetes.io/part-of: bullseye
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8080
+    targetPort: 8080
+    protocol: TCP
+  selector:
+    app.kubernetes.io/name: ssh

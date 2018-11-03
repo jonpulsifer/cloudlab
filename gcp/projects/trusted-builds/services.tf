@@ -3,6 +3,7 @@ resource "google_project_services" "apis" {
     "cloudbuild.googleapis.com",
     "compute.googleapis.com",
     "containerregistry.googleapis.com",
+    "containeranalysis.googleapis.com",
     "logging.googleapis.com",
     "monitoring.googleapis.com",
     "oslogin.googleapis.com",

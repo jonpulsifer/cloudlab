@@ -23,7 +23,7 @@ resource "google_container_node_pool" "standard" {
     */
 
     workload_metadata_config {
-      node_metadata = "SECURE"
+      node_metadata = "${var.cluster_config["metadata_proxy"] ? "SECURE" : "EXPOSE" }"
     }
     /* node identity */
     service_account = "${google_service_account.nodes.email}"

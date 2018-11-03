@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/name: wishlist
+    app.kubernetes.io/part-of: wishlist
+  name: wishlist
+  namespace: wishlist
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: wishlist
+      app.kubernetes.io/part-of: wishlist
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: wishlist
+        app.kubernetes.io/part-of: wishlist
+    spec:
+      automountServiceAccountToken: false
+      containers:
+      - name: wishlist
+        image: gcr.io/trusted-builds/wishlist:latest
+        imagePullPolicy: Always
+        command:
+        - bundle
+        - exec
+        - rails
+        - server
+        env:
+        - name: SECRET_KEY_BASE
+          valueFrom:
+            secretKeyRef:
+              name: secret-key-base
+              key: SECRET_KEY_BASE
+        - name: MYSQL_HOSTNAME
+          valueFrom:
+            secretKeyRef:
+              name: database
+              key: host
+        - name: MYSQL_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: database
+              key: user
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: database
+              key: password     
+        - name: GOOGLE_PROJECT
+          value: kubesec
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: /var/run/secrets/gcp/credentials.json   
+        - name: MYSQL_DATABASE
+          value: wishlist  
+        - name: RAILS_ENV
+          value: production
+        - name: ENVIRONMENT
+          value: production
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: gcp-credentials
+          mountPath: /var/run/secrets/gcp
+          readOnly: true
+      volumes:
+      - name: gcp-credentials
+        secret:
+          secretName: gcp-sa
