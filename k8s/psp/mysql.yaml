@@ -13,6 +13,7 @@ spec:
   allowedCapabilities:
   # mysql
   - CHOWN
+  - DAC_OVERRIDE
   - SETGID
   - SETUID
   requiredDropCapabilities:
@@ -20,7 +21,7 @@ spec:
   - AUDIT_WRITE
   - BLOCK_SUSPEND
   # - CHOWN
-  - DAC_OVERRIDE
+  # - DAC_OVERRIDE
   - DAC_READ_SEARCH
   - FOWNER
   - FSETID

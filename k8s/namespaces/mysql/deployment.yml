@@ -24,11 +24,16 @@ spec:
         app.kubernetes.io/part-of: mysql
     spec:
       automountServiceAccountToken: false
+      securityContext:
+        runAsUser: 0
+        fsGroup: 0
       containers:
       - name: mysql
         image: mysql:5.7
         imagePullPolicy: IfNotPresent
         args:
+        - --basedir=/var/lib/mysql
+        - --datadir=/var/lib/mysql/data
         - --character-set-server=utf8mb4
         - --collation-server=utf8mb4_unicode_ci
         env:
@@ -39,3 +44,10 @@ spec:
               key: MYSQL_ROOT_PASSWORD
         ports:
         - containerPort: 8080
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/mysql/
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: mysql-data

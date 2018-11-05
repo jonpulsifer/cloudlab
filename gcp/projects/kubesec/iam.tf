@@ -22,6 +22,11 @@ resource "google_storage_bucket_iam_binding" "cloudbuild" {
   ]
 }
 
+resource "google_project_iam_member" "cloudbuild" {
+  role   = "roles/container.admin"
+  member = "serviceAccount:821879192255@cloudbuild.gserviceaccount.com"
+}
+
 # resource "google_storage_bucket_iam_binding" "cloudlab-vm" {
 #   bucket = "cloud-lab"
 #   role   = "roles/storage.objectViewer"
