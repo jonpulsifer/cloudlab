@@ -1,0 +1,108 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: vault
+  namespace: vault
+  labels:
+    app.kubernetes.io/name: vault
+    app.kubernetes.io/part-of: vault
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vault
+  labels:
+    app.kubernetes.io/name: vault
+    app.kubernetes.io/part-of: vault
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: vault
+      app.kubernetes.io/part-of: vault
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: vault
+        app.kubernetes.io/part-of: vault
+    spec:
+      serviceAccountName: vault
+      containers:
+      - name: vault-init
+        image: sethvargo/vault-init:0.1.1
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: CHECK_INTERVAL
+          value: "10"
+        - name: GCS_BUCKET_NAME
+          value: cloud-lab
+        - name: KMS_KEY_ID
+          value: projects/kubesec/locations/us-east4/keyRings/vault/cryptoKeys/vault
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: /var/run/secrets/gcp/credentials.json
+        volumeMounts:
+        - name: gcp-service-account
+          mountPath: /var/run/secrets/gcp
+          readOnly: true
+      - name: vault
+        image: vault:0.11.4
+        imagePullPolicy: IfNotPresent
+        args: ['server']
+        securityContext:
+          capabilities:
+            add: ['IPC_LOCK']
+        ports:
+        - containerPort: 8200
+          name: api
+          protocol: TCP
+        - containerPort: 8201
+          name: cluster
+          protocol: TCP
+        env:
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: /var/run/secrets/gcp/credentials.json
+        - name: POD_IP_ADDR
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        - name: NODE_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
+        - name: VAULT_LOCAL_CONFIG
+          value: |
+            api_addr     = "https://0.0.0.0:8200"
+            cluster_addr = "https://0.0.0.0:8201"
+            ui = true
+
+            storage "gcs" {
+              bucket     = "cloud-lab"
+              ha_enabled = "false"
+            }
+
+            listener "tcp" {
+              address       = "0.0.0.0:8200"
+              tls_cert_file = "/etc/vault/tls/tls.crt"
+              tls_key_file  = "/etc/vault/tls/tls.key"
+              tls_disable_client_certs = true
+            }
+        readinessProbe:
+          httpGet:
+            path: /v1/sys/health?standbyok=true
+            port: 8200
+            scheme: HTTPS
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        volumeMounts:
+        - name: vault-tls
+          mountPath: /etc/vault/tls
+        - name: gcp-service-account
+          mountPath: /var/run/secrets/gcp
+          readOnly: true
+      volumes:
+      - name: vault-tls
+        secret:
+          secretName: vault-tls
+      - name: gcp-service-account
+        secret:
+          secretName: gcp-service-account

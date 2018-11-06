@@ -13,13 +13,11 @@ resource "google_project_iam_member" "compute-system" {
   member = "serviceAccount:service-${google_project.kubesec.number}@compute-system.iam.gserviceaccount.com"
 }
 
-resource "google_storage_bucket_iam_binding" "cloudbuild" {
+resource "google_storage_bucket_iam_member" "cloudbuild" {
   bucket = "cloud-lab"
   role   = "roles/storage.admin"
 
-  members = [
-    "serviceAccount:821879192255@cloudbuild.gserviceaccount.com",
-  ]
+  member = "serviceAccount:821879192255@cloudbuild.gserviceaccount.com"
 }
 
 resource "google_project_iam_member" "cloudbuild" {
@@ -34,37 +32,12 @@ resource "google_project_iam_member" "cloudbuild" {
 #   members = ["serviceAccount:${module.cos-vm.service_account}"]
 # }
 
-resource "google_service_account" "wishlist" {
-  account_id   = "wishlist"
-  display_name = "service account for wishlist rails app"
-}
 
-resource "google_project_iam_member" "vm-logging" {
-  role   = "roles/logging.logWriter"
-  member = "serviceAccount:${google_service_account.wishlist.email}"
+resource "google_service_account" "cert-manager" {
+  account_id   = "cert-manager"
+  display_name = "service account for cert-manager DNS management"
 }
-
-resource "google_project_iam_member" "vm-tracing" {
-  role   = "roles/cloudtrace.agent"
-  member = "serviceAccount:${google_service_account.wishlist.email}"
-}
-
-resource "google_project_iam_member" "vm-debugging" {
-  role   = "roles/clouddebugger.agent"
-  member = "serviceAccount:${google_service_account.wishlist.email}"
-}
-
-resource "google_project_iam_member" "vm-profiling" {
-  role   = "roles/cloudprofiler.agent"
-  member = "serviceAccount:${google_service_account.wishlist.email}"
-}
-
-resource "google_project_iam_member" "vm-errorreporting" {
-  role   = "roles/errorreporting.writer"
-  member = "serviceAccount:${google_service_account.wishlist.email}"
-}
-
-resource "google_project_iam_member" "vm-monitoring" {
-  role   = "roles/monitoring.metricWriter"
-  member = "serviceAccount:${google_service_account.wishlist.email}"
+resource "google_project_iam_member" "cert-manager" {
+  role   = "roles/dns.admin"
+  member = "serviceAccount:${google_service_account.cert-manager.email}"
 }

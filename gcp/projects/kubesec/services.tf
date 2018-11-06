@@ -1,14 +1,17 @@
 resource "google_project_services" "apis" {
   services = [
     "bigquery-json.googleapis.com",
+    "binaryauthorization.googleapis.com",
     "clouddebugger.googleapis.com",
+    "cloudkms.googleapis.com",
     "cloudresourcemanager.googleapis.com",
     "cloudprofiler.googleapis.com",
     "cloudshell.googleapis.com",
     "cloudtrace.googleapis.com",
     "compute.googleapis.com",
-    "containerregistry.googleapis.com",
     "container.googleapis.com",
+    "containeranalysis.googleapis.com",
+    "containerregistry.googleapis.com",
     "deploymentmanager.googleapis.com",
     "dns.googleapis.com",
     "iam.googleapis.com",

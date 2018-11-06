@@ -1,0 +1,21 @@
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Certificate
+metadata:
+  name: vault
+  namespace: vault
+  labels:
+    app.kubernetes.io/name: vault
+    app.kubernetes.io/part-of: vault
+spec:
+  secretName: vault-tls
+  dnsNames:
+  - vault.k8s.lolwtf.ca
+  acme:
+    config:
+    - dns01:
+        provider: cloudlab
+      domains:
+      - vault.k8s.lolwtf.ca
+  issuerRef:
+    name: cloudlab
+    kind: ClusterIssuer
