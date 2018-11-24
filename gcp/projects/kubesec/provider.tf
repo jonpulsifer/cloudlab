@@ -18,6 +18,10 @@ provider "google-beta" {
   version = "~> 1.19"
 }
 
+provider "kubernetes" {
+  version = "~> 1.3"
+}
+
 terraform {
   backend "gcs" {
     bucket         = "kubesec"
@@ -25,6 +29,8 @@ terraform {
     project        = "kubesec"
     encryption_key = ""
   }
+
+  version = "~> 0.11.10"
 }
 
 resource "google_project" "kubesec" {

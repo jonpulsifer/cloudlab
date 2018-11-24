@@ -25,18 +25,11 @@ resource "google_project_iam_member" "cloudbuild" {
   member = "serviceAccount:821879192255@cloudbuild.gserviceaccount.com"
 }
 
-# resource "google_storage_bucket_iam_binding" "cloudlab-vm" {
-#   bucket = "cloud-lab"
-#   role   = "roles/storage.objectViewer"
-
-#   members = ["serviceAccount:${module.cos-vm.service_account}"]
-# }
-
-
 resource "google_service_account" "cert-manager" {
   account_id   = "cert-manager"
   display_name = "service account for cert-manager DNS management"
 }
+
 resource "google_project_iam_member" "cert-manager" {
   role   = "roles/dns.admin"
   member = "serviceAccount:${google_service_account.cert-manager.email}"
