@@ -44,7 +44,7 @@ module "gke" {
     disk_size_gb         = 20
     preemptible          = false
     metadata_proxy       = false
-    network_policy       = false
+    network_policy       = true
     istio                = true
     binary_authorization = true
     node_cidr            = "10.13.37.0/24"
