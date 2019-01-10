@@ -8,18 +8,23 @@ provider "google" {
   project = "kubesec"
   region  = "us-east4"
   zone    = "us-east4-b"
-  version = "~> 1.19"
+  version = "~> 1.20"
 }
 
 provider "google-beta" {
   project = "kubesec"
   region  = "us-east4"
   zone    = "us-east4-b"
-  version = "~> 1.19"
+  version = "~> 1.20"
 }
 
 provider "kubernetes" {
-  version = "~> 1.3"
+  version = "~> 1.4"
+}
+
+provider "vault" {
+  version = "~> 1.4.1"
+  address = "https://vault.k8s.lolwtf.ca"
 }
 
 terraform {
@@ -30,7 +35,7 @@ terraform {
     encryption_key = ""
   }
 
-  version = "~> 0.11.10"
+  version = "~> 0.11.11"
 }
 
 resource "google_project" "kubesec" {

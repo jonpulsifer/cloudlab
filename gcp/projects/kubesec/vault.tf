@@ -33,11 +33,6 @@ resource "google_kms_key_ring_iam_member" "vault" {
   member      = "serviceAccount:${google_service_account.vault.email}"
 }
 
-provider "vault" {
-  version = "~> 1.3"
-  address = "https://vault.k8s.lolwtf.ca"
-}
-
 resource "vault_auth_backend" "userpass" {
   type = "userpass"
   path = "userpass"
