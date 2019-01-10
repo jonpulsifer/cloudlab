@@ -16,7 +16,7 @@ resource "google_compute_address" "vm-with-ssd" {
 
 resource "google_compute_instance_template" "vm-with-ssd" {
   name_prefix = "${var.name}"
-  description = "This is the primary lab VM template with a PD-SSD"
+  description = "GCE instance template with PD-SSD"
 
   lifecycle {
     create_before_destroy = true
@@ -26,7 +26,7 @@ resource "google_compute_instance_template" "vm-with-ssd" {
     "google_compute_disk.pd-ssd",
   ]
 
-  tags = ["${var.image_config["family"]}", "vm", "terraform", "packer"]
+  tags = ["${var.image_config["family"]}", "vm", "terraform"]
 
   instance_description = "[lab] packer built and terraform deployed"
   machine_type         = "${var.instance_config["machine_type"]}"
@@ -45,7 +45,7 @@ resource "google_compute_instance_template" "vm-with-ssd" {
     auto_delete  = true
     boot         = true
     disk_type    = "pd-standard"
-    disk_size_gb = 30
+    disk_size_gb = 24
     type         = "PERSISTENT"
   }
 
@@ -66,28 +66,9 @@ resource "google_compute_instance_template" "vm-with-ssd" {
     }
   }
 
-  metadata_startup_script = <<HEREDOC
-#!/usr/bin/env bash
-set -xeuo pipefail
-
-# get linux ids from instance config
-LINUX_UID=$(id -u "${var.instance_config["linux_user"]}")
-LINUX_GID=$(id -g "${var.instance_config["linux_user"]}")
-
-# https://cloud.google.com/compute/docs/disks/performance#formatting_parameters
-# probably a better way to do this
-DISK=$(lsblk -J |  jq -r '.blockdevices[]  | select(.size == "${var.instance_config["ssd_size"]}G") | "/dev/" + .name')
-mkfs.ext4 -m 0 -F -E lazy_itable_init=0,lazy_journal_init=0,discard "$${DISK}"
-mount -o discard,defaults "$${DISK}" "${var.instance_config["mount_point"]}"
-
-# try to persitently mount
-# exit if disk mounted already
-UUID=$(blkid -s UUID -o value "$${DISK}")
-grep -q "$${UUID}" /etc/fstab && { echo "[warn]: $${DISK} already mounted" && exit 0; };
-echo "$${UUID} ${var.instance_config["mount_point"]} ext4 discard,defaults,nofail 0 2" | tee -a /etc/fstab
-chown "$${LINUX_UID}":"$${LINUX_GID}" "${var.instance_config["mount_point"]}"
-exit 0
-HEREDOC
+  metadata {
+    "user-data" = "${var.instance_config["cloud_init"]}"
+  }
 
   service_account {
     email  = "${google_service_account.vm.email}"
