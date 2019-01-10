@@ -23,6 +23,13 @@ spec:
         app.kubernetes.io/name: mysql
         app.kubernetes.io/part-of: mysql
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: cloud.google.com/gke-preemptible
+                operator: DoesNotExist
       automountServiceAccountToken: false
       securityContext:
         runAsUser: 0
