@@ -5,8 +5,8 @@ data "google_container_engine_versions" "lab" {
 
 /* create and configure a GKE cluster */
 resource "google_container_cluster" "lab" {
-  /* https://github.com/hashicorp/terraform/issues/18682
-          provider = "${var.cluster_config["beta"] ? "google-beta" : "google" }" */
+  # https://github.com/hashicorp/terraform/issues/18682
+  # provider = "${var.cluster_config["beta"] ? "google-beta" : "google" }"
   provider = "google-beta"
 
   /* GKE requires the API, a  network, subnet, and service account */
@@ -18,42 +18,34 @@ resource "google_container_cluster" "lab" {
   ]
 
   /* GKE Cluster name */
-  name  = "${var.name}"
+  name = "${var.name}"
+
   # count = "${var.cluster_config["online"] ? 1 : 0 }"
 
   /* Human readable description of this cluster */
   description = "${var.name} GKE cluster"
-
   /* Use the latest GKE release for the master and worker nodes */
   min_master_version = "${data.google_container_engine_versions.lab.latest_node_version}"
   node_version       = "${data.google_container_engine_versions.lab.latest_node_version}"
-
   /* GKE requires a node pool to be created on creation */
   initial_node_count = 1
-
   /* and we require to :nuke: it */
   remove_default_node_pool = true
-
-  logging_service = "logging.googleapis.com"
-
+  logging_service          = "logging.googleapis.com"
   # this is super expensive
   monitoring_service = "none"
-
   /* inherit the network from terraform */
   network    = "${google_compute_network.gke.self_link}"
   subnetwork = "${google_compute_subnetwork.nodes.name}"
-
   ip_allocation_policy {
     cluster_secondary_range_name  = "pods"
     services_secondary_range_name = "services"
   }
-
   /* enable NetworkPolicy */
   network_policy {
     enabled  = "${var.cluster_config["network_policy"]}"
     provider = "${var.cluster_config["network_policy"] ? "CALICO" : "PROVIDER_UNSPECIFIED" }"
   }
-
   /* disable basic authentication */
   master_auth {
     username = ""
@@ -64,18 +56,14 @@ resource "google_container_cluster" "lab" {
       issue_client_certificate = false
     }
   }
-
   /* disable the ABAC authorizer */
   enable_legacy_abac = "false"
-
   /* enable PodSecurityPolicy */
   pod_security_policy_config {
     enabled = "true"
   }
-
   /* enable Binary Authorization */
   enable_binary_authorization = "${var.cluster_config["binary_authorization"]}"
-
   /* disable the Kubernetes dashboard */
   addons_config {
     http_load_balancing {

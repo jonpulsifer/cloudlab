@@ -1,6 +1,6 @@
 resource "google_container_node_pool" "lab" {
-  /* https://github.com/hashicorp/terraform/issues/18682
-          provider = "${var.nodepool_config["beta"] ? "google-beta" : "google" }" */
+  # https://github.com/hashicorp/terraform/issues/18682
+  # provider = "${var.nodepool_config["beta"] ? "google-beta" : "google" }"
   provider = "google-beta"
 
   count      = "${var.nodepool_config["online"] ? 1 : 0 }"
