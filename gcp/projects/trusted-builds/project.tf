@@ -26,7 +26,7 @@ terraform {
     bucket         = "kubesec"
     prefix         = "trusted-builds"
     project        = "kubesec"
-    encryption_key = "IMyUA0Wp8KAlUI4s5f4cTeeEGdUAU3Amu4voo/Z8/g8="
+    encryption_key = ""
   }
 }
 

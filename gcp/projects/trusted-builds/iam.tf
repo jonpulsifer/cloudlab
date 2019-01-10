@@ -43,7 +43,6 @@ resource "google_project_iam_member" "gcr-for-cloudlab" {
   member  = "serviceAccount:cloudlab-cos@kubesec.iam.gserviceaccount.com"
 }
 
-
 resource "google_project_iam_member" "gcr-for-cloudlab-gke-nodes" {
   project = "trusted-builds"
   role    = "roles/storage.objectViewer"
