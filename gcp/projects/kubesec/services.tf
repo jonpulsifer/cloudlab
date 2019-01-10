@@ -1,5 +1,6 @@
 resource "google_project_services" "apis" {
   services = [
+    "binaryauthorization.googleapis.com",
     "bigquery-json.googleapis.com",
     "binaryauthorization.googleapis.com",
     "clouddebugger.googleapis.com",
@@ -15,6 +16,7 @@ resource "google_project_services" "apis" {
     "deploymentmanager.googleapis.com",
     "dns.googleapis.com",
     "iam.googleapis.com",
+    "iamcredentials.googleapis.com",
     "logging.googleapis.com",
     "monitoring.googleapis.com",
     "oslogin.googleapis.com",
