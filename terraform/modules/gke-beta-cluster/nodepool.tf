@@ -1,6 +1,6 @@
 resource "google_container_node_pool" "standard" {
   /* https://github.com/hashicorp/terraform/issues/18682
-      provider = "${var.cluster_config["beta"] ? "google-beta" : "google" }" */
+        provider = "${var.cluster_config["beta"] ? "google-beta" : "google" }" */
   provider = "google-beta"
 
   count      = "${var.cluster_config["online"] ? 1 : 0 }"
@@ -12,7 +12,7 @@ resource "google_container_node_pool" "standard" {
 
   node_config {
     /* "UBUNTU" or "COS" */
-    image_type   = "COS"
+    image_type   = "${var.cluster_config["image_type"]}"
     machine_type = "${var.cluster_config["machine_type"]}"
     disk_size_gb = "${var.cluster_config["disk_size_gb"]}"
     preemptible  = "${var.cluster_config["preemptible"]}"

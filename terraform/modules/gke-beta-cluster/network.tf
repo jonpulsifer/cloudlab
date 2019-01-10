@@ -70,3 +70,7 @@ resource "google_compute_firewall" "nginx-ingress" {
   source_ranges           = ["0.0.0.0/0"]
   target_service_accounts = ["${google_service_account.nodes.email}"]
 }
+
+output "network" {
+  value = "${google_compute_network.gke.name}"
+}
