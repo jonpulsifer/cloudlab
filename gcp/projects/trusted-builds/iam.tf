@@ -37,12 +37,6 @@ resource "google_project_iam_member" "image-user" {
 # In this lab your GKE nodes will need to access GCR for their storage
 # so we give them roles/storage.objectViewer on the entire project because
 # reasons
-resource "google_project_iam_member" "gcr-for-cloudlab" {
-  project = "trusted-builds"
-  role    = "roles/storage.objectViewer"
-  member  = "serviceAccount:cloudlab-cos@kubesec.iam.gserviceaccount.com"
-}
-
 resource "google_project_iam_member" "gcr-for-cloudlab-gke-nodes" {
   project = "trusted-builds"
   role    = "roles/storage.objectViewer"
