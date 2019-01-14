@@ -1,7 +1,9 @@
 resource "google_project_services" "apis" {
   services = [
+    "bigquery-json.googleapis.com",
     "cloudbuild.googleapis.com",
     "compute.googleapis.com",
+    "container.googleapis.com",
     "containerregistry.googleapis.com",
     "containeranalysis.googleapis.com",
     "logging.googleapis.com",

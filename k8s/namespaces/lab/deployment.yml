@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alpine
+  namespace: lab
+  labels:
+    app.kubernetes.io/name: lab
+    app.kubernetes.io/part-of: lab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: lab
+      app.kubernetes.io/part-of: lab
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: lab
+        app.kubernetes.io/part-of: lab
+      annotations:
+        runtime-handler.cri.kubernetes.io: lol
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsUser: 0
+        fsGroup: 0
+      containers:
+      - name: alpine
+        image: alpine
+        imagePullPolicy: IfNotPresent
+        command: ["tail", "-f", "/dev/null"]
+        env:
+        - name: foo
+          value: bar
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: data
+          mountPath: /var/lab
+      volumes:
+      - name: data
+        emptyDir: {}

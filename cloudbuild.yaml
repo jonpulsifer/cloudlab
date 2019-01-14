@@ -1,3 +1,37 @@
 steps:
+# fetch cluster credentials
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['container', 'clusters', 'get-credentials', '${_CLUSTER_NAME}']
+  env:
+  - 'KUBECONFIG=kubeconfig.yml'
+  - 'CLOUDSDK_COMPUTE_ZONE=${_CLUSTER_ZONE}'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=${_CLUSTER_NAME}'
+  - 'CLOUDSDK_CORE_PROJECT=${_CLUSTER_PROJECT}'
+
+# fix auth-provider
+- name: 'gcr.io/cloud-builders/kubectl'
+  args: ['config', 'unset', 'users.gke_${_CLUSTER_PROJECT}_${_CLUSTER_ZONE}_${_CLUSTER_NAME}.auth-provider']
+  env: ['KUBECONFIG=kubeconfig.yml']
+- name: 'gcr.io/cloud-builders/kubectl'
+  args: ['config', 'set-credentials', 'gke_${_CLUSTER_PROJECT}_${_CLUSTER_ZONE}_${_CLUSTER_NAME}', '--auth-provider=gcp']
+  env: ['KUBECONFIG=kubeconfig.yml']
+
+# copy kubeconfig into GCS
 - name: 'gcr.io/cloud-builders/gsutil'
-  args: ['-m', 'cp', '-r', 'services', 'gs://cloud-lab/']
+  args: ['cp', 'kubeconfig.yml', 'gs://cloud-lab']
+
+# kubernetes-deploy the thing
+- name: 'gcr.io/trusted-builds/kubernetes-deploy'
+  args: ['kubernetes-deploy', 'lab', 'gke_${_CLUSTER_PROJECT}_${_CLUSTER_ZONE}_${_CLUSTER_NAME}']
+  env:
+  - 'KUBECONFIG=kubeconfig.yml'
+  - 'ENVIRONMENT=${_ENVIRONMENT}'
+  - 'REVISION=${_REVISION}'
+
+# fill in the blanks
+substitutions:
+  _CLUSTER_NAME: cloudlab
+  _CLUSTER_ZONE: us-east4-b
+  _CLUSTER_PROJECT: kubesec
+  _REVISION: lol
+  _ENVIRONMENT: production
