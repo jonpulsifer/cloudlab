@@ -9,12 +9,7 @@ variable "cluster_config" {
   default = {
     online               = false
     beta                 = true
-    node_count           = 1
-    image_type           = "COS_CONTAINERD"
-    machine_type         = "n1-standard-1"
     alpha                = false
-    preemptible          = true
-    metadata_proxy       = true
     network_policy       = true
     istio                = true
     binary_authorization = true

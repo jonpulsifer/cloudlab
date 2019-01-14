@@ -37,7 +37,7 @@ resource "google_container_node_pool" "lab" {
     ]
   }
   timeouts {
-    create = "10m"
-    delete = "10m"
+    create = "30m"
+    delete = "30m"
   }
 }
