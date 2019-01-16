@@ -1,8 +1,0 @@
-version: 2
-projects:
-- dir: gcp/projects/kubesec
-  autoplan:
-    when_modified: ["../../../terraform/modules/**/*.tf", "*.tf*"]
-- dir: gcp/projects/trusted-builds
-  autoplan:
-    when_modified: ["../../../terraform/modules/**/*.tf", "*.tf*"]
