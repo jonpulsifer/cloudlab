@@ -1,0 +1,93 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: falco
+  namespace: falco
+  labels:
+    app.kubernetes.io/name: falco
+    app.kubernetes.io/part-of: falco
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: falco
+      app.kubernetes.io/part-of: falco
+  updateStrategy:
+    rollingUpdate:
+      maxUnavailable: 2
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: falco
+        app.kubernetes.io/part-of: falco
+      annotations:
+        foo: bar
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: cloud.google.com/gke-nodepool
+                operator: In
+                values:
+                - shielded
+      automountServiceAccountToken: true
+      serviceAccountName: falco
+      hostNetwork: true
+      containers:
+      - name: falco
+        image: gcr.io/trusted-builds/falco:latest
+        imagePullPolicy: IfNotPresent
+        args: ["/usr/bin/falco", "-K", "/var/run/secrets/kubernetes.io/serviceaccount/token", "-k", "https://kubernetes.default"]
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - mountPath: /host/var/run/docker.sock
+          name: docker-socket
+        - mountPath: /host/dev
+          name: dev-fs
+        - mountPath: /host/proc
+          name: proc-fs
+          readOnly: true
+        - mountPath: /host/boot
+          name: boot-fs
+          readOnly: true
+        - mountPath: /host/lib/modules
+          name: lib-modules
+          readOnly: true
+        - mountPath: /host/usr
+          name: usr-fs
+          readOnly: true
+        - mountPath: /etc/falco
+          name: falco-config
+        - mountPath: /host/etc
+          name: etc-fs
+        env:
+        - name: SYSDIG_BPF_PROBE
+          value: ""
+      volumes:
+      - name: docker-socket
+        hostPath:
+          path: /var/run/docker.sock
+      - name: dev-fs
+        hostPath:
+          path: /dev
+      - name: etc-fs
+        hostPath:
+          path: /etc
+      - name: proc-fs
+        hostPath:
+          path: /proc
+      - name: boot-fs
+        hostPath:
+          path: /boot
+      - name: lib-modules
+        hostPath:
+          path: /lib/modules
+      - name: usr-fs
+        hostPath:
+          path: /usr
+      - name: falco-config
+        configMap:
+          name: falco-config

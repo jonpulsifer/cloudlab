@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: falco
+  namespace: falco
+  labels:
+    app.kubernetes.io/name: falco
+    app.kubernetes.io/part-of: falco
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: falco
+  namespace: falco
+  labels:
+    app.kubernetes.io/name: falco
+    app.kubernetes.io/part-of: falco
+rules:
+  - apiGroups: ["extensions",""]
+    resources: ["nodes","namespaces","pods","replicationcontrollers","services","events","configmaps"]
+    verbs: ["get","list","watch"]
+  - nonResourceURLs: ["/healthz", "/healthz/*"]
+    verbs: ["get"]
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  name: falco
+  namespace: falco
+  labels:
+    app.kubernetes.io/name: falco
+    app.kubernetes.io/part-of: falco
+subjects:
+  - kind: ServiceAccount
+    name: falco
+    namespace: falco
+roleRef:
+  kind: ClusterRole
+  name: falco
+  apiGroup: rbac.authorization.k8s.io

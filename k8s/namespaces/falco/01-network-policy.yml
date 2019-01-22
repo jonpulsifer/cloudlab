@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: falco
+  namespace: falco
+  labels:
+    app.kubernetes.io/name: falco
+    app.kubernetes.io/part-of: falco
+spec:
+  egress:
+  - {}
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          app.kubernetes.io/name: falco
+          app.kubernetes.io/part-of: falco
+    ports:
+    - port: 8765
+      protocol: TCP
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: falco
+      app.kubernetes.io/part-of: falco
+  policyTypes:
+  - Ingress
+  - Egress
