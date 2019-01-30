@@ -7,7 +7,7 @@ resource "google_cloudbuild_trigger" "linux-build-docker" {
     branch_name = "master"
   }
 
-  filename = "cloudbuild-docker.yaml"
+  filename = "cloudbuild/docker.yaml"
 }
 
 resource "google_cloudbuild_trigger" "cloudlab-services" {
