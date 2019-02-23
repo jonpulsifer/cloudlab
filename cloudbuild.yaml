@@ -15,11 +15,23 @@ steps:
   waitFor: ['get-config']
   args: ['config', 'unset', 'users.gke_${_CLUSTER_PROJECT}_${_CLUSTER_ZONE}_${_CLUSTER_NAME}.auth-provider']
   env: ['KUBECONFIG=kubeconfig.yml']
+  env:
+  - 'KUBECONFIG=kubeconfig.yml'
+  - 'CLOUDSDK_COMPUTE_ZONE=${_CLUSTER_ZONE}'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=${_CLUSTER_NAME}'
+  - 'CLOUDSDK_CORE_PROJECT=${_CLUSTER_PROJECT}'
+
 - name: 'gcr.io/cloud-builders/kubectl'
   id: fix-config
   waitFor: ['fix-config-pre']
   args: ['config', 'set-credentials', 'gke_${_CLUSTER_PROJECT}_${_CLUSTER_ZONE}_${_CLUSTER_NAME}', '--auth-provider=gcp']
   env: ['KUBECONFIG=kubeconfig.yml']
+  env:
+  - 'KUBECONFIG=kubeconfig.yml'
+  - 'CLOUDSDK_COMPUTE_ZONE=${_CLUSTER_ZONE}'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=${_CLUSTER_NAME}'
+  - 'CLOUDSDK_CORE_PROJECT=${_CLUSTER_PROJECT}'
+
 
 # copy kubeconfig into GCS
 - name: 'gcr.io/cloud-builders/gsutil'
@@ -39,6 +51,9 @@ steps:
   waitFor: ['k8s-deploy-image', 'fix-config']
   env:
   - 'KUBECONFIG=kubeconfig.yml'
+  - 'CLOUDSDK_COMPUTE_ZONE=${_CLUSTER_ZONE}'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=${_CLUSTER_NAME}'
+  - 'CLOUDSDK_CORE_PROJECT=${_CLUSTER_PROJECT}'
   - 'ENVIRONMENT=${_ENVIRONMENT}'
   - 'REVISION=${_REVISION}'
 
@@ -48,6 +63,9 @@ steps:
   waitFor: ['k8s-deploy-image', 'fix-config']
   env:
   - 'KUBECONFIG=kubeconfig.yml'
+  - 'CLOUDSDK_COMPUTE_ZONE=${_CLUSTER_ZONE}'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=${_CLUSTER_NAME}'
+  - 'CLOUDSDK_CORE_PROJECT=${_CLUSTER_PROJECT}'
   - 'ENVIRONMENT=${_ENVIRONMENT}'
   - 'REVISION=${_REVISION}'
 
