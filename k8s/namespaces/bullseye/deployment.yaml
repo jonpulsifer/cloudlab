@@ -28,10 +28,14 @@ spec:
               - key: cloud.google.com/gke-preemptible
                 operator: DoesNotExist
       terminationGracePeriodSeconds: 60
+      automountServiceAccountToken: true
       serviceAccountName: bullseye
       containers:
-      - image: gcr.io/trusted-builds/cloudlab-linux-build:latest
+      - image: gcr.io/trusted-builds/workstation:latest
         name: ssh
+        args:
+        - /usr/sbin/sshd
+        - -De
         readinessProbe:
           tcpSocket:
             port: 30022

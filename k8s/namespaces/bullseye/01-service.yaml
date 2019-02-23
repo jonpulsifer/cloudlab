@@ -10,7 +10,7 @@ spec:
   type: NodePort
   ports:
   - nodePort: 30022
-    port: 22
+    port: 30022
   selector:
     app.kubernetes.io/name: ssh
 ---

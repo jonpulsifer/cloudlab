@@ -29,20 +29,34 @@ spec:
             nodeSelectorTerms:
             - matchExpressions:
               - key: cloud.google.com/gke-nodepool
-                operator: In
+                operator: NotIn
                 values:
-                - shielded
+                - gvisor
       automountServiceAccountToken: true
       serviceAccountName: falco
       hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
       containers:
       - name: falco
         image: gcr.io/trusted-builds/falco:latest
         imagePullPolicy: IfNotPresent
-        args: ["/usr/bin/falco", "-K", "/var/run/secrets/kubernetes.io/serviceaccount/token", "-k", "https://kubernetes.default"]
+        args:
+        - /usr/bin/falco
+        - -K
+        - /var/run/secrets/kubernetes.io/serviceaccount/token
+        - -k
+        - https://kubernetes.default
+        - -pk
+        env:
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
         securityContext:
           privileged: true
         volumeMounts:
+        - mountPath: /dev/shm
+          name: dshm
         - mountPath: /host/var/run/docker.sock
           name: docker-socket
         - mountPath: /host/dev
@@ -67,6 +81,9 @@ spec:
         - name: SYSDIG_BPF_PROBE
           value: ""
       volumes:
+      - name: dshm
+        emptyDir:
+          medium: Memory
       - name: docker-socket
         hostPath:
           path: /var/run/docker.sock

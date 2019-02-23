@@ -58,7 +58,7 @@ spec:
       serviceAccountName: nginx
       containers:
         - name: nginx-ingress-controller
-          image: quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.20.0
+          image: quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.22.0
           args:
             - /nginx-ingress-controller
             - --publish-service=$(POD_NAMESPACE)/nginx
@@ -66,9 +66,9 @@ spec:
             - --configmap=$(POD_NAMESPACE)/nginx-config
             - --tcp-services-configmap=$(POD_NAMESPACE)/nginx-tcp
             - --udp-services-configmap=$(POD_NAMESPACE)/nginx-udp
-            - --http-port 8080
-            - --https-port 8443
-            - --ssl-passthrough-proxy-port 8442
+            - --http-port=8080
+            - --https-port=8443
+            - --ssl-passthrough-proxy-port=8442
             - --enable-ssl-passthrough
           securityContext:
             capabilities:

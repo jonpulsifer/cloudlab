@@ -15,11 +15,11 @@ COMMAND=$(echo $ALERT | jq '.output_fields["proc.cmdline"]' | tr -d \")
 NAMESPACE=$(echo "$CONTAINER_NAME" | cut -f4 -d_)
 POD=$(echo "$CONTAINER_NAME" | cut -f3 -d_)
 
-curl -X POST https://hooks.slack.com/services/XXX \
+curl -X POST https://hooks.slack.com/services/xxx \
 -H 'Content-type: application/json' \
 -d @- <<EOF
 {
-    "text": ":warning: :bird: New alert on <https://console.cloud.google.com/compute/instancesDetail/zones/us-east4-b/instances/`hostname`|`hostname`>",
+    "text": ":warning: :bird: New alert on <https://console.cloud.google.com/compute/instancesDetail/zones/us-east4-b/instances/$NODE_NAME|$NODE_NAME>",
     "attachments": [
         {
             "fallback": "$RULE",

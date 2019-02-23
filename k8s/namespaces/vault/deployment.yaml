@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: vault
+  namespace: vault
   labels:
     app.kubernetes.io/name: vault
     app.kubernetes.io/part-of: vault
@@ -17,26 +18,11 @@ spec:
         app.kubernetes.io/name: vault
         app.kubernetes.io/part-of: vault
     spec:
+      automountServiceAccountToken: true
       serviceAccountName: vault
       containers:
-      - name: vault-init
-        image: sethvargo/vault-init:0.1.1
-        imagePullPolicy: IfNotPresent
-        env:
-        - name: CHECK_INTERVAL
-          value: "10"
-        - name: GCS_BUCKET_NAME
-          value: cloud-lab
-        - name: KMS_KEY_ID
-          value: projects/kubesec/locations/us-east4/keyRings/vault/cryptoKeys/vault
-        - name: GOOGLE_APPLICATION_CREDENTIALS
-          value: /var/run/secrets/gcp/credentials.json
-        volumeMounts:
-        - name: gcp-service-account
-          mountPath: /var/run/secrets/gcp
-          readOnly: true
       - name: vault
-        image: vault:0.11.4
+        image: vault:1.0.3
         imagePullPolicy: IfNotPresent
         args: ['server']
         securityContext:
@@ -65,6 +51,14 @@ spec:
             api_addr     = "https://0.0.0.0:8200"
             cluster_addr = "https://0.0.0.0:8201"
             ui = true
+
+            seal "gcpckms" {
+              credentials = "/var/run/secrets/gcp/credentials.json"
+              project     = "kubesec"
+              region      = "us-east4"
+              key_ring    = "vault"
+              crypto_key  = "vault"
+            }
 
             storage "gcs" {
               bucket     = "cloud-lab"
