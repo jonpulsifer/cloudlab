@@ -24,6 +24,3 @@ resource "google_service_account_iam_policy" "builder" {
 
 */
 
-output "builder_service_account" {
-  value = "${google_service_account.builder.email}"
-}

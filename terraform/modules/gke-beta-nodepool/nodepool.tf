@@ -10,6 +10,10 @@ resource "google_container_node_pool" "lab" {
   version    = "${var.nodepool_config["kubernetes_version"]}"
 
   # depends_on = ["google_container_cluster.lab"]
+  management {
+    auto_upgrade = true
+    auto_repair  = true
+  }
 
   node_config {
     /* "UBUNTU", "COS", "COS_CONTAINERD" */
@@ -36,6 +40,7 @@ resource "google_container_node_pool" "lab" {
       "https://www.googleapis.com/auth/cloud-platform",
     ]
   }
+
   timeouts {
     create = "30m"
     delete = "30m"
