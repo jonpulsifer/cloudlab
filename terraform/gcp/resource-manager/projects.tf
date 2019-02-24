@@ -3,7 +3,7 @@ data "google_project" "kubesec" {
 }
 
 resource "google_project" "kubesec" {
-  name            = "${data.google_project.kubesec.name}"
+  name            = "kubesec - cloudlab"
   project_id      = "${data.google_project.kubesec.id}"
   folder_id       = "${google_folder.production.name}"
   billing_account = "${data.google_billing_account.cloudlab.id}"

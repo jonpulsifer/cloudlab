@@ -44,3 +44,36 @@ resource "google_organization_policy" "no_default_networks" {
     enforced = true
   }
 }
+
+resource "google_organization_policy" "no_service_accounts" {
+  org_id     = "${data.google_organization.org.id}"
+  constraint = "iam.disableServiceAccountCreation"
+
+  boolean_policy {
+    enforced = true
+  }
+}
+
+resource "google_organization_policy" "no_service_account_keys" {
+  org_id     = "${data.google_organization.org.id}"
+  constraint = "iam.disableServiceAccountKeyCreation"
+
+  boolean_policy {
+    enforced = true
+  }
+}
+
+resource "google_organization_policy" "block_services_because_reasons" {
+  org_id     = "${data.google_organization.org.id}"
+  constraint = "serviceuser.services"
+
+  list_policy {
+    deny {
+      values = [
+        "compute.googleapis.com",
+        "doubleclicksearch.googleapis.com",
+        "deploymentmanager.googleapis.com",
+      ]
+    }
+  }
+}
