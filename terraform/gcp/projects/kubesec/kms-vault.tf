@@ -7,8 +7,8 @@ resource "google_kms_crypto_key" "vault" {
   name     = "vault"
   key_ring = "${google_kms_key_ring.vault.self_link}"
 
-  // one week
-  rotation_period = "604800s"
+  // four weeks
+  rotation_period = "2419200s"
 
   lifecycle {
     prevent_destroy = true
