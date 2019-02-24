@@ -18,7 +18,7 @@ data "google_iam_policy" "builder" {
 }
 
 resource "google_service_account_iam_policy" "builder" {
-  service_account_id = "projects/trusted-builds/serviceAccounts/821879192255@cloudbuild.gserviceaccount.com"
+  service_account_id = "projects/${data.google_project.trusted-builds.id}/serviceAccounts/${data.google_project.trusted-builds.number}@cloudbuild.gserviceaccount.com"
   policy_data        = "${data.google_iam_policy.builder.policy_data}"
 }
 
