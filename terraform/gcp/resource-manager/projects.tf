@@ -8,6 +8,10 @@ resource "google_project" "kubesec" {
   folder_id       = "${google_folder.production.name}"
   billing_account = "${data.google_billing_account.cloudlab.id}"
   skip_delete     = true
+
+  labels = {
+    environment = "production"
+  }
 }
 
 data "google_project" "trusted-builds" {
@@ -20,6 +24,10 @@ resource "google_project" "trusted-builds" {
   folder_id       = "${google_folder.production.name}"
   billing_account = "${data.google_billing_account.cloudlab.id}"
   skip_delete     = true
+
+  labels = {
+    environment = "production"
+  }
 }
 
 data "google_project" "secure-the-cloud" {
@@ -31,4 +39,8 @@ resource "google_project" "secure-the-cloud" {
   project_id  = "${data.google_project.secure-the-cloud.id}"
   folder_id   = "${google_folder.dev.name}"
   skip_delete = true
+
+  labels = {
+    environment = "dev"
+  }
 }

@@ -9,8 +9,12 @@ resource "google_dns_managed_zone" "lolwtf" {
   }
 }
 
-data "google_compute_address" "ingress" {
-  name = "gke-november"
+data "google_compute_address" "nginx" {
+  name = "glbc"
+}
+
+data "google_compute_address" "istio" {
+  name = "istio-ingressgateway"
 }
 
 resource "google_dns_record_set" "k8s-lolwtf-ca" {
@@ -19,23 +23,5 @@ resource "google_dns_record_set" "k8s-lolwtf-ca" {
   type         = "A"
   ttl          = 300
 
-  rrdatas = ["${data.google_compute_address.ingress.address}"]
-}
-
-resource "google_dns_record_set" "vault" {
-  name         = "vault.${google_dns_managed_zone.lolwtf.dns_name}"
-  managed_zone = "${google_dns_managed_zone.lolwtf.name}"
-  type         = "CNAME"
-  ttl          = 300
-
-  rrdatas = ["${google_dns_managed_zone.lolwtf.dns_name}"]
-}
-
-resource "google_dns_record_set" "atlantis" {
-  name         = "atlantis.${google_dns_managed_zone.lolwtf.dns_name}"
-  managed_zone = "${google_dns_managed_zone.lolwtf.name}"
-  type         = "CNAME"
-  ttl          = 300
-
-  rrdatas = ["${google_dns_managed_zone.lolwtf.dns_name}"]
+  rrdatas = ["${data.google_compute_address.nginx.address}"]
 }

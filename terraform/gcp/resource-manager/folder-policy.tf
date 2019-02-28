@@ -26,3 +26,19 @@ resource "google_folder_organization_policy" "allow_production_services" {
     }
   }
 }
+
+resource "google_folder_organization_policy" "trusted_image_projects" {
+  folder     = "${google_folder.production.name}"
+  constraint = "compute.trustedImageProjects"
+
+  list_policy {
+    inherit_from_parent = true
+
+    allow {
+      values = [
+        "projects/gke-node-images",
+        "projects/ubuntu-os-gke-cloud",
+      ]
+    }
+  }
+}
