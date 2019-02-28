@@ -19,7 +19,7 @@ data "google_project" "trusted-builds" {
 }
 
 resource "google_project" "trusted-builds" {
-  name            = "${data.google_project.trusted-builds.name}"
+  name            = "trusted builds"
   project_id      = "${data.google_project.trusted-builds.id}"
   folder_id       = "${google_folder.production.name}"
   billing_account = "${data.google_billing_account.cloudlab.id}"
