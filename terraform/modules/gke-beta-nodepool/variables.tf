@@ -1,16 +1,53 @@
-variable "nodepool_config" {
-  type = "map"
+variable "online" {
+  default = false
+}
 
-  default = {
-    online             = false
-    name               = "labpool"
-    node_count         = 1
-    image_type         = "COS_CONTAINERD"
-    kubernetes_version = "1.11.6-gke.0"
-    cluster            = "yourcluster"
-    machine_type       = "custom-1-1"
-    service_account    = "foo@your-project.iam.gserviceaccount.com"
-    preemptible        = true
-    metadata_proxy     = true
-  }
+variable "name" {
+  default = "labpool"
+}
+
+variable "node_count" {
+  default = 1
+}
+
+variable "image_type" {
+  default = "COS_CONTAINERD"
+}
+
+variable "disk_size_gb" {
+  default = 10
+}
+
+variable "kubernetes_version" {
+  default = "1.11.6-gke.0"
+}
+
+variable "cluster" {
+  default = "yourcluster"
+}
+
+variable "machine_type" {
+  default = "custom-1-1"
+}
+
+variable "service_account" {
+  default = "foo@your-project.iam.gserviceaccount.com"
+}
+
+variable "preemptible" {
+  default = true
+}
+
+variable "metadata_proxy" {
+  default = true
+}
+
+variable "taints" {
+  type    = "list"
+  default = []
+}
+
+variable "labels" {
+  type    = "map"
+  default = {}
 }
