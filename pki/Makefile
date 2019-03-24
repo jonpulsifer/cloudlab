@@ -66,4 +66,4 @@ help: ## ty jessfraz
 
 .PHONY: clean
 clean: ## Remove build artifacts
-	if [ -d $(BUILD_DIR) ]; then rm  -r $(BUILD_DIR)/; else echo "$(BUILD_DIR) does not exist. Nothing to do."; fi
+	if [ -d $(BUILD_DIR) ]; then rm -r $(BUILD_DIR); else echo "$(BUILD_DIR) does not exist. Nothing to do."; fi
