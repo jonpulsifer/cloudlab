@@ -1,17 +1,17 @@
 apiVersion: certmanager.k8s.io/v1alpha1
 kind: ClusterIssuer
 metadata:
-  name: cloudlab
+  name: letsencrypt-dns
   namespace: cert-manager
 spec:
   acme:
     email: jonathan@pulsifer.ca
     server: https://acme-v02.api.letsencrypt.org/directory
     privateKeySecretRef:
-      name: cloudlab-issuer-secret
+      name: letsencrypt-dns-issuer
     dns01:
       providers:
-      - name: cloudlab
+      - name: letsencrypt-dns
         clouddns:
           project: kubesec
           serviceAccountSecretRef:

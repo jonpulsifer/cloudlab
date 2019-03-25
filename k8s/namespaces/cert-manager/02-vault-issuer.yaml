@@ -1,0 +1,16 @@
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: ClusterIssuer
+metadata:
+  name: vault
+  namespace: cert-manager
+spec:
+  vault:
+    path: pki/sign/pulsifer-dev
+    server: https://vault.k8s.lolwtf.ca
+    auth:
+      appRole:
+        path: approle
+        roleId: "9d79380d-621b-88b1-7771-1f419f6f0c19"
+        secretRef:
+          name: cert-manager-vault-approle
+          key: secretId
