@@ -1,0 +1,18 @@
+[Unit]
+Description=Start the vault container
+After=cloudlab.service
+PartOf=cloudlab.service
+
+[Service]
+Type=simple
+Environment=HOME=/var/cloudlab
+ExecStartPre=/usr/bin/docker-credential-gcr configure-docker
+ExecStartPre=/sbin/iptables -w -A INPUT -p tcp --dport 8200 -j ACCEPT
+ExecStartPre=/sbin/iptables -w -A INPUT -p tcp --dport 8201 -j ACCEPT
+ExecStartPre=/usr/bin/docker run --rm -v /var/vault:/tmp -w /tmp gcr.io/cloud-builders/gsutil -m cp -r gs://cloud-lab/services/vault/config.hcl .
+ExecStartPre=/usr/bin/docker run --rm -v /var/vault/tls:/tmp -w /tmp gcr.io/cloud-builders/gsutil -m cp -r gs://cloud-lab/tls/* .
+ExecStart=/usr/bin/docker run --rm --cap-add IPC_LOCK --cap-add SETFCAP --name=vault --network=cloudlab --network-alias=vault --ip=10.0.0.2 -p 8200:8200 -p 8201:8201 -v /var/vault/config.hcl:/etc/vault/config.hcl:ro -v /var/vault/tls:/etc/vault/tls:ro gcr.io/trusted-builds/vault -- vault server -config=/etc/vault/config.hcl
+ExecStop=/usr/bin/docker stop vault
+
+[Install]
+WantedBy=cloudlab.service

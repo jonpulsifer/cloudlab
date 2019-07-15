@@ -1,11 +1,4 @@
-#  Local .terraform directories
+**/credentials.json
 **/.terraform/*
-
-# .tfstate files
 *.tfstate
 *.tfstate.*
-
-# .tfvars files
-*.tfvars
-**/backend.tf
-**/credentials.json
