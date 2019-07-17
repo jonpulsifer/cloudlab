@@ -5,7 +5,7 @@ After=cloudlab.service
 
 [Service]
 EnvironmentFile=/var/cloudlab/services/datadog.env
-ExecStart=/usr/bin/docker run --rm --name=datadog --network=cloudlab --network-alias=datadog --ip=10.0.0.3 -v /var/run/docker.sock:/var/run/docker.sock:ro -v /proc/:/host/proc/:ro -v /sys/fs/cgroup/:/host/sys/fs/cgroup:ro -v /etc/passwd:/etc/passwd:ro -e DD_PROCESS_AGENT_ENABLED=true -e DD_API_KEY=${DATADOG_API_KEY} datadog/agent:latest
+ExecStart=/usr/bin/docker run --rm --name=datadog --network=cloudlab --network-alias=datadog --ip=172.31.0.2 -v /var/run/docker.sock:/var/run/docker.sock:ro -v /proc/:/host/proc/:ro -v /sys/fs/cgroup/:/host/sys/fs/cgroup:ro -v /etc/passwd:/etc/passwd:ro -e DD_PROCESS_AGENT_ENABLED=true -e DD_API_KEY=${DATADOG_API_KEY} datadog/agent:latest
 ExecStop=/usr/bin/docker stop datadog
 
 [Install]

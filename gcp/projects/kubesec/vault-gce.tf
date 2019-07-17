@@ -14,6 +14,14 @@ module "vault-igm" {
   subnet      = module.vault-vpc.subnet
   cloud_init  = templatefile("../../../cloud-init/single-service.tpl", { name = local.name })
   target_size = 1
+  enable_lb   = false
+  protocol    = "TCP"
+  port_range  = "8200"
+}
+
+resource "google_project_iam_member" "vault" {
+  role   = "roles/iam.serviceAccountTokenCreator"
+  member = "serviceAccount:${module.vault-igm.service_account}"
 }
 
 resource "google_storage_bucket_object" "vault-config" {
@@ -56,6 +64,10 @@ resource "google_compute_firewall" "gke-to-vault" {
   }
   source_service_accounts = [
     module.corp.node_service_account
+  ]
+  source_ranges = [
+    "10.0.0.0/24",   # nodes
+    "10.100.0.0/19", # services
   ]
 }
 

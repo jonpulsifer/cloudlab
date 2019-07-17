@@ -86,6 +86,7 @@ variable "network_config" {
   type        = map
 
   default = {
+    enable_natgw   = false
     private_master = false
     private_nodes  = true
     node_cidr      = "10.0.0.0/24"

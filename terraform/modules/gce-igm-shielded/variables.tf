@@ -2,6 +2,7 @@ data "google_client_config" "current" {}
 data "google_project" "current" {
   project_id = data.google_client_config.current.project
 }
+
 variable "name" {
   description = "Name for the service account and VM prefix"
   default     = "lab"
@@ -48,4 +49,25 @@ HEREDOC
 variable "target_size" {
   description = "Count of instances to create (zonal)"
   default = 1
+}
+
+variable "enable_lb" {
+  description = "Enables or disables load balancing"
+  default = false
+}
+
+variable "port_range" {
+  description = "Port range for the load balancer"
+  default = ""
+}
+
+variable "protocol" {
+  description = "IP protocol for the load balancer"
+  default = "TCP"
+}
+
+variable "target_pools" {
+  description = "List of the target pools this igm belongs to"
+  type = list
+  default = []
 }

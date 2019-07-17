@@ -27,7 +27,7 @@ runcmd:
 - HOME=/var/cloudlab docker run --rm -v /var/${name}/ejson/keys:/opt/ejson/keys:ro -v /var/${name}/services:/tmp -w /tmp gcr.io/trusted-builds/ejson2env -q ${name}.ejson > /var/${name}/services/${name}.env
 
 # create docker networks
-- docker network create -d bridge --subnet=10.0.0.0/24 --ip-range=10.0.0.0/28 cloudlab
+- docker network create -d bridge --subnet=172.31.0.0/24 --ip-range=172.31.0.0/28 cloudlab
 
 # enable services
 - systemctl daemon-reload

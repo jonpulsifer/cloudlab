@@ -3,9 +3,31 @@ resource "google_project_iam_member" "cloudbuild" {
   member = "serviceAccount:821879192255@cloudbuild.gserviceaccount.com"
 }
 
+resource "google_service_account" "cloudlab" {
+  account_id   = "cloudlab"
+  display_name = "cloudlab shenanigans"
+}
+
+resource "google_project_iam_member" "cloudlab" {
+  role   = "roles/browser"
+  member = "serviceAccount:${google_service_account.cloudlab.email}"
+}
+
+resource "google_service_account_iam_member" "cloudlab-to-vault" {
+  service_account_id = module.vault-igm.service_account_name
+  role               = "roles/iam.serviceAccountTokenCreator"
+  member             = "serviceAccount:${google_service_account.cloudlab.email}"
+}
+
+resource "google_service_account_iam_member" "cloudlab-workload-identity" {
+  service_account_id = google_service_account.cloudlab.name
+  role               = "roles/iam.workloadIdentityUser"
+  member             = "serviceAccount:${data.google_client_config.current.project}.svc.id.goog[lab/lab]"
+}
+
 resource "google_service_account" "cert-manager" {
   account_id   = "cert-manager"
-  display_name = "service account for cert-manager DNS management"
+  display_name = "cert-manager DNS management"
 }
 
 resource "google_project_iam_member" "cert-manager" {
@@ -21,7 +43,7 @@ resource "google_service_account_iam_member" "cert-manager-workload-identity" {
 
 resource "google_service_account" "external-dns" {
   account_id   = "external-dns"
-  display_name = "service account for external-dns DNS management"
+  display_name = "external-dns DNS management"
 }
 
 resource "google_project_iam_member" "external-dns" {

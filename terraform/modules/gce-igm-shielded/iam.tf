@@ -36,3 +36,7 @@ resource "google_project_iam_member" "monitoring" {
 output "service_account" {
   value = google_service_account.igm.email
 }
+
+output "service_account_name" {
+  value = google_service_account.igm.name
+}

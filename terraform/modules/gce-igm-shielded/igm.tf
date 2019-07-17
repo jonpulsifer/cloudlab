@@ -55,9 +55,9 @@ resource "google_compute_instance_template" "shielded_vm" {
   network_interface {
     subnetwork = var.subnet
 
-    access_config {
-      network_tier = "STANDARD"
-    }
+    #access_config {
+    #  network_tier = "STANDARD"
+    #}
   }
 
   metadata = {
@@ -83,5 +83,6 @@ resource "google_compute_instance_group_manager" "igm" {
   instance_template  = google_compute_instance_template.shielded_vm.self_link
   base_instance_name = var.name
   target_size        = var.target_size
+  target_pools       = var.enable_lb ? google_compute_target_pool.lb[*].self_link : []
   update_strategy    = "RESTART"
 }
