@@ -70,7 +70,6 @@ spec:
   - configMap
   - downwardAPI
   - emptyDir
-  - nfs
   - persistentVolumeClaim
   - projected
   - secret

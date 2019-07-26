@@ -1,0 +1,32 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: pbx
+  namespace: pbx
+  labels:
+    app.kubernetes.io/name: pbx
+    app.kubernetes.io/part-of: pbx
+spec:
+  egress:
+  - {}
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          app.kubernetes.io/name: nginx
+    - ipBlock:
+      # toronto6.voip.ms
+      cidr: 184.75.215.114/32
+    ports:
+    - port: 5060
+      protocol: TCP
+    - port: 5061
+      protocol: TCP
+    - port: 5060
+      protocol: UDP
+  podSelector:
+    matchLabels:
+      app: pbx
+  policyTypes:
+  - Ingress
+  - Egress

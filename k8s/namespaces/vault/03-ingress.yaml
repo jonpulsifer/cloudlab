@@ -1,24 +1,31 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: vault
+  name: iap
   namespace: vault
   annotations:
-    kubernetes.io/ingress.class: "nginx"
-    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+    kubernetes.io/ingress.allow-http: "false"
+    external-dns.alpha.kubernetes.io/ttl: "60"
   labels:
     app.kubernetes.io/name: vault
     app.kubernetes.io/part-of: vault
 spec:
   tls:
   - hosts:
-    - vault.k8s.lolwtf.ca
-    secretName: vault-tls
+    - vault.pulsifer.dev
+    secretName: vault.pulsifer.dev
   rules:
-  - host: vault.k8s.lolwtf.ca
+  - host: vault.pulsifer.dev
     http:
       paths:
-      - path: /
-        backend:
+      - backend:
+          serviceName: iap
+          servicePort: 8200
+        path: "/*"
+      - backend:
           serviceName: vault
           servicePort: 8200
+        path: "/v1/*"
+  backend:
+    serviceName: iap
+    servicePort: 8200

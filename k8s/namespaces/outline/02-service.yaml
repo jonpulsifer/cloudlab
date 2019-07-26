@@ -1,0 +1,40 @@
+apiVersion: cloud.google.com/v1beta1
+kind: BackendConfig
+metadata:
+  name: outline
+  namespace: outline
+  labels:
+    app.kubernetes.io/name: outline
+    app.kubernetes.io/part-of: outline
+spec:
+  iap:
+    enabled: false
+    oauthclientCredentials:
+      secretName: iap-oauth-client
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: gclb
+  namespace: outline
+  annotations:
+    beta.cloud.google.com/backend-config: '{"default": "outline"}'
+    cloud.google.com/app-protocols: '{"api":"HTTP2"}'
+    external-dns.alpha.kubernetes.io/hostname: "outline.pulsifer.dev"
+  labels:
+    app.kubernetes.io/name: gclb
+    app.kubernetes.io/part-of: outline
+spec:
+  externalName: outline.puslifer.dev
+  type: LoadBalancer
+  ports:
+  - port: 8081
+    targetPort: 8081
+    name: api
+  - port: 28029
+    targetPort: 28029
+    name: accesskeys
+  selector:
+    app.kubernetes.io/name: outline
+    app.kubernetes.io/part-of: outline

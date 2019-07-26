@@ -1,7 +1,7 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: k8s-pulsifer-ca
+  name: bullseye-k8s-lolwtf-ca
   namespace: bullseye
   annotations:
     kubernetes.io/ingress.class: "nginx"
@@ -11,10 +11,10 @@ metadata:
 spec:
   tls:
   - hosts:
-    - k8s.pulsifer.ca
-    secretName: k8s-pulsifer-ca-tls
+    - bullseye.k8s.lolwtf.ca
+    secretName: bullseye-k8s-lolwtf-ca-tls
   rules:
-  - host: k8s.pulsifer.ca
+  - host: bullseye.k8s.lolwtf.ca
     http:
       paths:
       - path: /

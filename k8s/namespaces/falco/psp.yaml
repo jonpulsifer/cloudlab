@@ -1,0 +1,58 @@
+apiVersion: extensions/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: falco
+  annotations:
+    seccomp.security.alpha.kubernetes.io/allowedProfileNames: '*'
+spec:
+  privileged: true
+  allowPrivilegeEscalation: true
+  allowedHostPaths:
+  - pathPrefix: /boot
+    readOnly: true
+  - pathPrefix: /dev
+    readOnly: true
+  - pathPrefix: /etc
+    readOnly: true
+  - pathPrefix: /lib/modules
+    readOnly: true
+  - pathPrefix: /proc
+    readOnly: true
+  - pathPrefix: /usr
+    readOnly: true
+  - pathPrefix: /var/run/containerd.sock
+    readOnly: true
+  - pathPrefix: /var/run/docker.sock
+    readOnly: true
+  requiredDropCapabilities:
+    - ALL
+  forbiddenSysctls:
+    - '*'
+  readOnlyRootFilesystem: false
+  volumes:
+    - 'configMap'
+    - 'secret'
+    - 'hostPath'
+  hostIPC: false
+  hostNetwork: true
+  hostPID: false
+  hostPorts:
+    - min: 0
+      max: 65535
+  runAsUser:
+    rule: 'MustRunAs'
+    ranges:
+      - min: 0
+        max: 0
+  seLinux:
+    rule: 'RunAsAny'
+  supplementalGroups:
+    rule: 'MustRunAs'
+    ranges:
+      - min: 0
+        max: 0
+  fsGroup:
+    rule: 'MustRunAs'
+    ranges:
+      - min: 0
+        max: 0

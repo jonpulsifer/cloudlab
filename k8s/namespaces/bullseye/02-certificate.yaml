@@ -1,26 +1,26 @@
 apiVersion: certmanager.k8s.io/v1alpha1
 kind: Certificate
 metadata:
-  name: k8s-pulsifer-ca
+  name: bullseye-k8s-lolwtf-ca
   namespace: bullseye
   labels:
     app.kubernetes.io/name: bullseye
     app.kubernetes.io/part-of: bullseye
 spec:
-  secretName: k8s-pulsifer-ca-tls
+  secretName: bullseye-k8s-lolwtf-ca-tls
   issuerRef:
     name: letsencrypt
     kind: ClusterIssuer
-  commonName: k8s.pulsifer.ca
+  commonName: bullseye.k8s.lolwtf.ca
   dnsNames:
-  - k8s.pulsifer.ca
+  - bullseye.k8s.lolwtf.ca
   acme:
     config:
     - http01:
         ingressClass: nginx
       domains:
-      - k8s.pulsifer.ca
+      - bullseye.k8s.lolwtf.ca
     - http01:
-        ingress: k8s-pulsifer-ca
+        ingress: bullseye-k8s-lolwtf-ca
       domains:
-      - k8s.pulsifer.ca
+      - bullseye.k8s.lolwtf.ca

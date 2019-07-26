@@ -1,0 +1,27 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: dex-pulsifer-dev
+  namespace: dex
+  labels:
+    app.kubernetes.io/name: dex
+    app.kubernetes.io/part-of: dex
+  annotations:
+    kubernetes.io/ingress.allow-http: "false"
+    external-dns.alpha.kubernetes.io/ttl: "60"
+spec:
+  tls:
+  - hosts:
+    - dex.pulsifer.dev
+    secretName: dex.pulsifer.dev
+  rules:
+  - host: dex.pulsifer.dev
+    http:
+      paths:
+      - path: /*
+        backend:
+          serviceName: dex
+          servicePort: 5556
+  backend:
+    serviceName: dex
+    servicePort: 5556

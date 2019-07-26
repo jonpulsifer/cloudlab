@@ -16,7 +16,7 @@ rules:
 - apiGroups: ['policy']
   resources: ['podsecuritypolicies']
   verbs: ['use']
-  resourceNames: ['gce.privileged']
+  resourceNames: ['bullseye']
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1

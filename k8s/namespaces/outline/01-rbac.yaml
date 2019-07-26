@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: outline-server
+  namespace: outline
+  labels:
+    app.kubernetes.io/name: outline-server
+    app.kubernetes.io/part-of: outline
+---

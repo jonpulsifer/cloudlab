@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-statsd
+  namespace: kube-public
+spec:
+  podSelector:
+    matchLabels:
+      app: datadog
+  ingress:
+   # internal cluster net restriction
+    - from:
+      - namespaceSelector: {}
+      ports:
+        - protocol: UDP
+          port: 8125
+  egress:
+    - {}
+  policyTypes:
+  - Ingress
+  - Egress

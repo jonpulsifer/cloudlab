@@ -29,9 +29,6 @@ roleRef:
   kind: Role
   name: allowed-psps
 subjects:
-- kind: Group
-  name: system:serviceaccounts
-  apiGroup: rbac.authorization.k8s.io
 - kind: ServiceAccount
   name: vault
   namespace: vault

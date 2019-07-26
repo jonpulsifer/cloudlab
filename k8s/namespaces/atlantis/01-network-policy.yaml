@@ -1,0 +1,23 @@
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: atlantis
+  namespace: atlantis
+  labels:
+    app.kubernetes.io/name: atlantis
+    app.kubernetes.io/part-of: atlantis
+spec:
+  egress:
+  - {}
+  ingress:
+  - from:
+    ports:
+    - port: 4141
+      protocol: TCP
+  podSelector:
+    matchLabels:
+      app: atlantis
+  policyTypes:
+  - Ingress
+  - Egress
+---

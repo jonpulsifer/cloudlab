@@ -1,4 +1,3 @@
----
 # Source: cert-manager/charts/cainjector/templates/serviceaccount.yaml
 apiVersion: v1
 kind: ServiceAccount
@@ -7,20 +6,9 @@ metadata:
   namespace: "cert-manager"
   labels:
     app: cainjector
-    chart: cainjector-v0.7.0
+    chart: cainjector-v0.8.1
     release: cert-manager
-
----
-# Source: cert-manager/charts/webhook/templates/serviceaccount.yaml
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: cert-manager-webhook
-  namespace: "cert-manager"
-  labels:
-    app: webhook
-    chart: webhook-v0.7.0
-    release: cert-manager
+    heritage: Tiller
 
 ---
 # Source: cert-manager/templates/serviceaccount.yaml
@@ -29,10 +17,14 @@ kind: ServiceAccount
 metadata:
   name: cert-manager
   namespace: "cert-manager"
+  annotations:
+    iam.gke.io/gcp-service-account: cert-manager@kubesec.iam.gserviceaccount.com
   labels:
     app: cert-manager
-    chart: cert-manager-v0.7.0
+    chart: cert-manager-v0.8.1
     release: cert-manager
+    heritage: Tiller
+
 ---
 # Source: cert-manager/charts/cainjector/templates/rbac.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -41,8 +33,9 @@ metadata:
   name: cert-manager-cainjector
   labels:
     app: cainjector
-    chart: cainjector-v0.7.0
+    chart: cainjector-v0.8.1
     release: cert-manager
+    heritage: Tiller
 rules:
   - apiGroups: ["certmanager.k8s.io"]
     resources: ["certificates"]
@@ -66,8 +59,9 @@ metadata:
   name: cert-manager-cainjector
   labels:
     app: cainjector
-    chart: cainjector-v0.7.0
+    chart: cainjector-v0.8.1
     release: cert-manager
+    heritage: Tiller
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -84,17 +78,18 @@ metadata:
   name: cert-manager
   labels:
     app: cert-manager
-    chart: cert-manager-v0.7.0
+    chart: cert-manager-v0.8.1
     release: cert-manager
+    heritage: Tiller
 rules:
   - apiGroups: ["certmanager.k8s.io"]
-    resources: ["certificates", "certificates/finalizers", "issuers", "clusterissuers", "orders", "orders/finalizers", "challenges"]
+    resources: ["certificates", "certificates/finalizers", "issuers", "clusterissuers", "orders", "orders/finalizers", "challenges",  "challenges/finalizers"]
     verbs: ["*"]
   - apiGroups: [""]
-    resources: ["configmaps", "secrets", "events", "services", "pods"]
+    resources: ["configmaps", "secrets", "events", "services","pods"]
     verbs: ["*"]
   - apiGroups: ["extensions"]
-    resources: ["ingresses"]
+    resources: ["ingresses", "ingresses/finalizers"]
     verbs: ["*"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -103,8 +98,9 @@ metadata:
   name: cert-manager
   labels:
     app: cert-manager
-    chart: cert-manager-v0.7.0
+    chart: cert-manager-v0.8.1
     release: cert-manager
+    heritage: Tiller
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -120,8 +116,9 @@ metadata:
   name: cert-manager-view
   labels:
     app: cert-manager
-    chart: cert-manager-v0.7.0
+    chart: cert-manager-v0.8.1
     release: cert-manager
+    heritage: Tiller
     rbac.authorization.k8s.io/aggregate-to-view: "true"
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
     rbac.authorization.k8s.io/aggregate-to-admin: "true"
@@ -136,79 +133,14 @@ metadata:
   name: cert-manager-edit
   labels:
     app: cert-manager
-    chart: cert-manager-v0.7.0
+    chart: cert-manager-v0.8.1
     release: cert-manager
+    heritage: Tiller
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
     rbac.authorization.k8s.io/aggregate-to-admin: "true"
 rules:
   - apiGroups: ["certmanager.k8s.io"]
     resources: ["certificates", "issuers"]
     verbs: ["create", "delete", "deletecollection", "patch", "update"]
----
-# Source: cert-manager/charts/webhook/templates/rbac.yaml
-### Webhook ###
----
-# apiserver gets the auth-delegator role to delegate auth decisions to
-# the core apiserver
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: cert-manager-webhook:auth-delegator
-  labels:
-    app: webhook
-    chart: webhook-v0.7.0
-    release: cert-manager
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: system:auth-delegator
-subjects:
-- apiGroup: ""
-  kind: ServiceAccount
-  name: cert-manager-webhook
-  namespace: cert-manager
 
----
-
-# apiserver gets the ability to read authentication. This allows it to
-# read the specific configmap that has the requestheader-* entries to
-# api agg
-apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
-metadata:
-  name: cert-manager-webhook:webhook-authentication-reader
-  namespace: kube-system
-  labels:
-    app: webhook
-    chart: webhook-v0.7.0
-    release: cert-manager
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: Role
-  name: extension-apiserver-authentication-reader
-subjects:
-- apiGroup: ""
-  kind: ServiceAccount
-  name: cert-manager-webhook
-  namespace: cert-manager
-
----
-
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: cert-manager-webhook:webhook-requester
-  labels:
-    app: webhook
-    chart: webhook-v0.7.0
-    release: cert-manager
-rules:
-- apiGroups:
-  - admission.certmanager.k8s.io
-  resources:
-  - certificates
-  - issuers
-  - clusterissuers
-  verbs:
-  - create
 ---

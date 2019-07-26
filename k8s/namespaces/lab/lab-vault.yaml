@@ -1,0 +1,93 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vault-lab
+  namespace: lab
+  labels:
+    app.kubernetes.io/name: vault-lab
+    app.kubernetes.io/part-of: lab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: vault-lab
+      app.kubernetes.io/part-of: lab
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: vault-lab
+        app.kubernetes.io/part-of: lab
+      annotations:
+        alpha.image-policy.k8s.io/break-glass: "true"
+        runtime-handler.cri.kubernetes.io: lol
+    spec:
+      automountServiceAccountToken: true
+      serviceAccountName: lab
+      initContainers:
+      - name: vault-agent
+        image: gcr.io/trusted-builds/vault
+        imagePullPolicy: Always
+        env:
+        - name: VAULT_ADDR
+          value: "https://vault.pulsifer.dev:8200"
+        - name: VAULT_SKIP_VERIFY
+          value: "true"
+        command: ["vault", "agent", "-config", "/vault/config/agent-k8s.hcl"]
+        volumeMounts:
+        - name: data
+          mountPath: /home/vault
+        - name: agent-config
+          mountPath: /vault/config
+      containers:
+      - name: echoserver
+        image: k8s.gcr.io/echoserver:1.8
+        imagePullPolicy: IfNotPresent
+       # command: ["tail", "-f", "/dev/null"]
+        env:
+        - name: foo
+          value: bar
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - name: data
+          mountPath: /home/vault
+      - name: consul-template
+        image: gcr.io/trusted-builds/consul-template
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - name: data
+          mountPath: /home/vault
+        env:
+        - name: VAULT_ADDR
+          value: "https://vault.pulsifer.dev:8200"
+        - name: VAULT_SKIP_VERIFY
+          value: "true"
+        - name: CT_LOCAL_CONFIG
+          value: |
+            vault {
+              vault_agent_token_file = "/home/vault/.vault-token"
+              retry {
+                backoff = "1s"
+              }
+            }
+            template {
+              contents = <<EOH
+                ---
+                {{- with secret "secret/cloudapp" }}
+                username: {{ .Data.API_TOKEN }}
+                password: {{ .Data.SUPER_SECRET }}
+                {{ end }}
+              EOH
+              destination = "/home/vault/omgsecrets"
+            }
+      volumes:
+      - name: agent-config
+        configMap:
+          name: k8s-agent
+      - name: data
+        emptyDir: {}

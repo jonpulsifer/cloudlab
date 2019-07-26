@@ -1,12 +1,51 @@
+apiVersion: cloud.google.com/v1beta1
+kind: BackendConfig
+metadata:
+  name: iap
+  namespace: vault
+  labels:
+    app.kubernetes.io/name: iap
+    app.kubernetes.io/part-of: vault
+spec:
+  iap:
+    enabled: true
+    oauthclientCredentials:
+      secretName: iap-oauth-client
+---
 
 apiVersion: v1
 kind: Service
 metadata:
+  name: iap
+  namespace: vault
+  annotations:
+    beta.cloud.google.com/backend-config: '{"default": "iap"}'
+    cloud.google.com/app-protocols: '{"api":"HTTP2"}'
+  labels:
+    app.kubernetes.io/name: iap
+    app.kubernetes.io/part-of: vault
+spec:
+  type: NodePort
+  ports:
+  - port: 8200
+    targetPort: 8200
+    name: api
+  selector:
+    app.kubernetes.io/name: vault
+    app.kubernetes.io/part-of: vault
+
+---
+apiVersion: v1
+kind: Service
+metadata:
   name: vault
+  annotations:
+    cloud.google.com/app-protocols: '{"api":"HTTPS","cluster":"HTTPS"}'
   labels:
     app.kubernetes.io/name: vault
     app.kubernetes.io/part-of: vault
 spec:
+  type: NodePort
   ports:
     - name: api
       port: 8200

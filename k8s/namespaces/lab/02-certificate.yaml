@@ -1,0 +1,18 @@
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Certificate
+metadata:
+  name: lab-pulsifer-dev
+  namespace: lab
+  labels:
+    app.kubernetes.io/name: lab
+    app.kubernetes.io/part-of: lab
+spec:
+  secretName: lab.pulsifer.dev
+  issuerRef:
+    name: vault-pki-secondary
+    kind: ClusterIssuer
+  commonName: lab.pulsifer.dev
+  dnsNames:
+  - lab.pulsifer.dev
+  - lab.lab
+  - lab.lab.svc.cluster.local

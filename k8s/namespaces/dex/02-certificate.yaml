@@ -1,0 +1,20 @@
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Certificate
+metadata:
+  name: dex-pulsifer-dev
+  namespace: dex
+  dexels:
+    app.kubernetes.io/name: dex
+    app.kubernetes.io/part-of: dex
+spec:
+  secretName: dex.pulsifer.dev
+  issuerRef:
+    name: vault-pki-secondary
+    kind: ClusterIssuer
+  commonName: dex.pulsifer.dev
+  dnsNames:
+  - dex.pulsifer.dev
+  - dex
+  - dex.dex
+  - dex.dex.svc
+  - dex.dex.svc.cluster.local

@@ -18,7 +18,7 @@ spec:
       protocol: TCP
   podSelector:
     matchLabels:
-      app: ssh
+      app.kubernetes.io/part-of: bullseye
   policyTypes:
   - Ingress
   - Egress

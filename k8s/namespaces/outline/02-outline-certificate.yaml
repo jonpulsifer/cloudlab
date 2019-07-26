@@ -1,0 +1,22 @@
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Certificate
+metadata:
+  name: corp.pulsifer.dev
+  namespace: outline
+  labels:
+    app.kubernetes.io/name: corp
+    app.kubernetes.io/part-of: outline
+spec:
+  duration: 24h
+  renewBefore: 12h
+  secretName: corp.pulsifer.dev
+  dnsNames:
+  - corp.pulsifer.dev
+  - outline.pulsifer.dev
+  - corp.outline
+  - outline.outline
+  - outline.outline.svc.cluster
+  - outline.outline.svc.cluster.local
+  issuerRef:
+    name: vault-pki-secondary
+    kind: ClusterIssuer

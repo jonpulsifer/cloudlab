@@ -7,7 +7,7 @@ metadata:
     app.kubernetes.io/name: vault
     app.kubernetes.io/part-of: vault
 ---
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: vault-tokenreview-binding
@@ -17,6 +17,11 @@ roleRef:
   kind: ClusterRole
   name: system:auth-delegator
 subjects:
-- kind: Group
-  name: system:serviceaccounts
-  apiGroup: rbac.authorization.k8s.io
+- kind: User
+  name: vault-igm@kubesec.iam.gserviceaccount.com
+- kind: ServiceAccount
+  name: vault
+  namespace: vault
+- kind: ServiceAccount
+  name: lab
+  namespace: lab

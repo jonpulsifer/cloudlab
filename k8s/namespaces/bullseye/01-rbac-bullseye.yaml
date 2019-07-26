@@ -8,28 +8,3 @@ metadata:
     app.kubernetes.io/part-of: bullseye
 automountServiceAccountToken: false
 ---
-apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
-metadata:
-  name: bullseye
-  namespace: bullseye
-rules:
-  - apiGroups: ['policy']
-    resources: ['podsecuritypolicies']
-    verbs:     ['use']
-    resourceNames:
-    - bullseye
----
-apiVersion: rbac.authorization.k8s.io/v1beta1
-kind: RoleBinding
-metadata:
-  name: bullseye
-  namespace: bullseye
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: Role
-  name: bullseye
-subjects:
-  - kind: ServiceAccount
-    name: bullseye
-    namespace: bullseye

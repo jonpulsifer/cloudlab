@@ -1,0 +1,67 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: atlantis
+  labels:
+    app.kubernetes.io/name: atlantis
+    app.kubernetes.io/part-of: atlantis
+  namespace: atlantis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: atlantis
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: atlantis
+      annotations:
+        prometheus.io/port: '4141'
+    spec:
+      terminationGracePeriodSeconds: 60
+      serviceAccountName: atlantis
+      containers:
+      - image: runatlantis/atlantis:v0.4.13
+        args: ["server", "--allow-repo-config"]
+        name: atlantis
+        env:
+        - name: ATLANTIS_LOG_LEVEL
+          value: "debug"
+        - name: ATLANTIS_PORT
+          value: "4141"
+        - name: ATLANTIS_ATLANTIS_URL
+          value: "https://atlantis.k8s.lolwtf.ca"
+        - name: ATLANTIS_GH_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: github
+              key: token
+        - name: ATLANTIS_GH_USER
+          valueFrom:
+            secretKeyRef:
+              name: github
+              key: user
+        - name: ATLANTIS_GH_WEBHOOK_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: github
+              key: webhook-secret
+        - name: ATLANTIS_REPO_WHITELIST
+          value: "github.com/j0npulsifer/*,github.com/jonpulsifer/*"
+        - name: GOOGLE_PROJECT
+          value: "kubesec"
+        readinessProbe:
+          tcpSocket:
+            port: 4141
+          initialDelaySeconds: 5
+          periodSeconds: 30
+        livenessProbe:
+          tcpSocket:
+            port: 4141
+          initialDelaySeconds: 5
+          periodSeconds: 30
+        ports:
+        - containerPort: 4141
+          protocol: TCP

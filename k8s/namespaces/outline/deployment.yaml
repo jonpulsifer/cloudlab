@@ -1,0 +1,89 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: outline
+  namespace: outline
+  labels:
+    app.kubernetes.io/name: outline
+    app.kubernetes.io/part-of: outline
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: outline
+      app.kubernetes.io/part-of: outline
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: outline
+        app.kubernetes.io/part-of: outline
+    spec:
+      automountServiceAccountToken: true
+      serviceAccountName: outline-server
+      hostNetwork: false
+      containers:
+      - name: outline
+        image: gcr.io/trusted-builds/outline-server:private-net-patch
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8081
+          name: api
+          protocol: TCP
+        - containerPort: 28029
+          name: accesskeys
+        env:
+        - name: POD_IP_ADDR
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        - name: NODE_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
+        - name: LOG_LEVEL
+          value: info
+        - name: SB_PUBLIC_IP
+          value: "lol"
+        - name: SB_API_PORT
+          value: "8081"
+        - name: SB_API_PREFIX
+          value: supersecretvpn
+        - name: SB_CERTIFICATE_FILE
+          value: /etc/outline/tls/tls.crt
+        - name: SB_PRIVATE_KEY_FILE
+          value: /etc/outline/tls/tls.key
+        - name: SB_METRICS_URL
+          value: ""
+        - name: SB_DEFAULT_SERVER_NAME
+          value: "corp.pulsifer.dev"
+        - name: SB_STATE_DIR
+          value: "/var/run/outline"
+        volumeMounts:
+          # - name: outline-config
+          # mountPath: /etc/outline/config
+          # config.json and stats.json
+        - name: outline-tls
+          mountPath: /etc/outline/tls
+        - name: persistent-storage
+          mountPath: /var/run/outline
+      volumes:
+      - name: outline-tls
+        secret:
+          secretName: outline-tls
+      - name: persistent-storage
+        persistentVolumeClaim:
+          claimName: outline
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: outline
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: standard
+  resources:
+    requests:
+      storage: 1Gi

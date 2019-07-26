@@ -7,14 +7,14 @@ metadata:
     app.kubernetes.io/name: falco
     app.kubernetes.io/part-of: falco
 spec:
-  egress:
-  - {}
   ingress:
   - from:
     - namespaceSelector:
         matchLabels:
           app.kubernetes.io/name: falco
           app.kubernetes.io/part-of: falco
+    - ipBlock:
+        cidr: 192.168.0.0/28
     ports:
     - port: 8765
       protocol: TCP
@@ -24,4 +24,3 @@ spec:
       app.kubernetes.io/part-of: falco
   policyTypes:
   - Ingress
-  - Egress

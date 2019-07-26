@@ -15,5 +15,5 @@ spec:
         clouddns:
           project: kubesec
           serviceAccountSecretRef:
-            name: gcp-service-account
+            name: gcp-sa
             key: credentials.json

@@ -18,7 +18,7 @@ spec:
       labels:
         app.kubernetes.io/name: ssh
       annotations:
-        prometheus.io/port: '2222'
+        prometheus.io/port: '30022'
     spec:
       affinity:
         nodeAffinity:

@@ -1,0 +1,21 @@
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Certificate
+metadata:
+  name: atlantis
+  namespace: atlantis
+  labels:
+    app.kubernetes.io/name: atlantis
+    app.kubernetes.io/part-of: atlantis
+spec:
+  secretName: atlantis-tls
+  dnsNames:
+  - atlantis.k8s.lolwtf.ca
+  acme:
+    config:
+    - dns01:
+        provider: cloudlab
+      domains:
+      - atlantis.k8s.lolwtf.ca
+  issuerRef:
+    name: cloudlab
+    kind: ClusterIssuer

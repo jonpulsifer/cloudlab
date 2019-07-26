@@ -1,0 +1,23 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: atlantis
+  namespace: atlantis
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+  labels:
+    app.kubernetes.io/name: atlantis
+    app.kubernetes.io/part-of: atlantis
+spec:
+  tls:
+  - hosts:
+    - atlantis.k8s.lolwtf.ca
+    secretName: atlantis-tls
+  rules:
+  - host: atlantis.k8s.lolwtf.ca
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: atlantis
+          servicePort: 4141

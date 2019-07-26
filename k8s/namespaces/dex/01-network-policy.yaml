@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: dex
+  namespace: dex
+  labels:
+    app.kubernetes.io/name: dex
+    app.kubernetes.io/part-of: dex
+
+spec:
+  egress:
+  - {}
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          app.kubernetes.io/name: dex
+    ports:
+    - port: 5556
+      protocol: TCP
+  podSelector:
+    matchLabels:
+      app: dex
+  policyTypes:
+  - Ingress
+  - Egress
