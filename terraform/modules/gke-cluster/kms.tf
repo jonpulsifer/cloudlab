@@ -9,10 +9,6 @@ resource "google_kms_crypto_key" "gke" {
 
   // 30 days
   rotation_period = "2592000s"
-
-  lifecycle {
-    prevent_destroy = true
-  }
 }
 
 resource "google_kms_key_ring_iam_member" "gke" {

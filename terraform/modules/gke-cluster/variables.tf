@@ -66,13 +66,13 @@ variable "binary_authorization" {
 variable "monitoring_service" {
   description = "Monitoring Service for the cluster, one of monitoring.googleapis.com/kubernetes, or none"
   type        = string
-  default     = "none"
+  default     = "monitoring.googleapis.com/kubernetes"
 }
 
 variable "logging_service" {
   description = "Logging Service for the cluster, one of logging.googleapis.com, logging.googleapis.com/kubernetes, or none"
   type        = string
-  default     = "none"
+  default     = "logging.googleapis.com/kubernetes"
 }
 
 variable "kubernetes_version" {
@@ -87,12 +87,13 @@ variable "network_config" {
 
   default = {
     enable_natgw   = false
-    private_master = false
+    enable_ssh     = false
+    private_master = true
     private_nodes  = true
     node_cidr      = "10.0.0.0/24"
     service_cidr   = "10.1.0.0/24"
     pod_cidr       = "10.2.0.0/24"
-    master_cidr    = "10.20.30.0/24"
+    master_cidr    = "10.20.30.0/28"
   }
 }
 

@@ -1,5 +1,5 @@
 resource "google_binary_authorization_policy" "default" {
-  provider = "google-beta"
+  provider = google-beta
 
   admission_whitelist_patterns {
     name_pattern = "gcr.io/kubesec/*"

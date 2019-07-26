@@ -2,16 +2,15 @@
 data "google_container_engine_versions" "cloudlab" {}
 
 module "corp" {
-  source             = "../../../terraform/modules/gke-cluster"
-  name               = "corp"
+  source = "../../../terraform/modules/gke-cluster"
+  name   = "corp"
   kubernetes_version = data.google_container_engine_versions.cloudlab.latest_master_version
-  logging_service    = "logging.googleapis.com/kubernetes"
-  monitoring_service = "monitoring.googleapis.com/kubernetes"
 
   network_config = {
+    enable_ssh     = true
     enable_natgw   = true
-    private_nodes  = true
     private_master = false
+    private_nodes  = true
     node_cidr      = "10.0.0.0/24"
     service_cidr   = "10.10.0.0/16"
     pod_cidr       = "10.100.0.0/19"
