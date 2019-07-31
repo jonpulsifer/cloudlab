@@ -7,6 +7,10 @@ data "google_iam_policy" "explicit" {
       "user:jonathan@pulsifer.ca",
     ]
   }
+  binding {
+    role    = "roles/sourcerepo.serviceAgent"
+    members = ["serviceAccount:service-254228897527@sourcerepo-service-accounts.iam.gserviceaccount.com", ]
+  }
 }
 
 resource "google_project_iam_policy" "explicit" {

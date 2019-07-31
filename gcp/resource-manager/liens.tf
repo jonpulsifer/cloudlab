@@ -12,6 +12,13 @@ resource "google_resource_manager_lien" "kubesec" {
   reason       = "Production Environment"
 }
 
+resource "google_resource_manager_lien" "jonpulsifer" {
+  parent       = "projects/${google_project.jonpulsifer.id}"
+  restrictions = ["resourcemanager.projects.delete"]
+  origin       = "i-like-this-project-name"
+  reason       = "it me"
+}
+
 resource "google_resource_manager_lien" "trusted-builds" {
   parent       = "projects/${google_project.trusted-builds.id}"
   restrictions = ["resourcemanager.projects.delete"]

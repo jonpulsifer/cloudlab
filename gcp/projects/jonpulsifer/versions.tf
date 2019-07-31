@@ -10,7 +10,7 @@ provider "google" {
   project = local.project
   region  = local.region
   zone    = local.zone
-  version = "~> 2.10"
+  version = "~> 2.11"
 }
 
 terraform {

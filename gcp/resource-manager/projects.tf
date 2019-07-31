@@ -72,3 +72,16 @@ resource "google_project" "jonpulsifer" {
     environment = "production"
   }
 }
+
+resource "google_project" "homelab-ng" {
+  name                = "homelab-ng"
+  project_id          = "homelab-ng"
+  folder_id           = google_folder.production.name
+  billing_account     = data.google_billing_account.cloudlab.id
+  skip_delete         = true
+  auto_create_network = false
+
+  labels = {
+    environment = "home"
+  }
+}
