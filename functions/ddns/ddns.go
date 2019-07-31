@@ -46,6 +46,7 @@ func UpdateDDNS(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, http.StatusText(http.StatusUnauthorized), http.StatusUnauthorized)
 		log.Errorf("Invalid API token received: %s", ddnsRequest.ApiToken)
 	}
+
 	client, err := getCloudDnsService()
 	if err != nil {
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
