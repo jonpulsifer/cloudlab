@@ -36,21 +36,41 @@ func UpdateDDNS(w http.ResponseWriter, r *http.Request) {
 	var apiToken = os.Getenv("API_TOKEN")
 	var project = os.Getenv("GCP_PROJECT")
 	var request Request
+	var defaultDomain string = os.Getenv("DEFAULT_DOMAIN")
 
 	if project == "" {
 		project = "homelab-ng"
 	}
 
 	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
+
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		log.Errorf("Could not decode request JSON: %v", err.Error())
 		return
+	}
+	if defaultDomain == "" {
+		defaultDomain = "home.pulsifer.ca"
 	}
 
 	if request.APIToken != apiToken {
 		http.Error(w, http.StatusText(http.StatusUnauthorized), http.StatusUnauthorized)
 		log.Errorf("Invalid API token received: %s", request.APIToken)
 		return
+	}
+	if len(strings.Split(request.DNSName, ".")) < 3 {
+		fqdn := strings.Join(append(strings.Split(request.DNSName, "."), defaultDomain), ".")
+
+		log.WithFields(log.Fields{
+			"project": project,
+			"dnsame":  request.DNSName,
+			"ip":      request.IPAddress,
+			"fqdn":    fqdn,
+		}).Infof("Hostname detected, appending default domain. FQDN: %s", fqdn)
+
+		request.DNSName = fqdn
+	}
+	if !strings.HasSuffix(request.DNSName, ".") {
+		request.DNSName = request.DNSName + "."
 	}
 
 	client, err := getCloudDNSService()
@@ -62,7 +82,11 @@ func UpdateDDNS(w http.ResponseWriter, r *http.Request) {
 	managedZone, err := getManagedZoneFromDNSName(client, project, request.DNSName)
 	if err != nil {
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
-		log.Fatalf("Could not get Managed Zone: %v", err.Error())
+		log.WithFields(log.Fields{
+			"project": project,
+			"dnsame":  request.DNSName,
+			"ip":      request.IPAddress,
+		}).Fatalf("Could not get Managed Zone: %v", err.Error())
 	}
 
 	change, err := getDNSChange(client, project, managedZone, &request)

@@ -4,7 +4,6 @@ resource "google_project_services" "apis" {
     "bigquery-json.googleapis.com",
     "binaryauthorization.googleapis.com",
     "clouddebugger.googleapis.com",
-    "cloudfunctions.googleapis.com",
     "cloudkms.googleapis.com",
     "cloudresourcemanager.googleapis.com",
     "cloudprofiler.googleapis.com",

@@ -3,11 +3,10 @@ package ddns
 import (
 	"bytes"
 	"encoding/json"
+	dns "google.golang.org/api/dns/v1"
 	"net/http/httptest"
 	"reflect"
 	"testing"
-
-	dns "google.golang.org/api/dns/v1"
 )
 
 func Test_UpdateDDNS(t *testing.T) {
@@ -17,8 +16,8 @@ func Test_UpdateDDNS(t *testing.T) {
 	}{
 		{request: Request{IPAddress: "127.0.0.1", DNSName: "test1.home.pulsifer.ca.", APIToken: ""}, want: Response{Status: "pending", Additions: 1, Deletions: 1}},
 		{request: Request{IPAddress: "127.0.0.2", DNSName: "home.pulsifer.ca.", APIToken: ""}, want: Response{Status: "pending", Additions: 1, Deletions: 1}},
-		{request: Request{IPAddress: "127.0.0.3", DNSName: "test3.home.pulsifer.ca."}, want: Response{Status: "pending", Additions: 1, Deletions: 1}},
-		{request: Request{IPAddress: "127.0.0.4", DNSName: "test5.home.pulsifer.ca."}, want: Response{Status: "pending", Additions: 1, Deletions: 1}},
+		{request: Request{IPAddress: "127.0.0.3", DNSName: "test3.home.pulsifer.ca"}, want: Response{Status: "pending", Additions: 1, Deletions: 1}},
+		{request: Request{IPAddress: "127.0.0.4", DNSName: "test4"}, want: Response{Status: "pending", Additions: 1, Deletions: 1}},
 	}
 
 	for _, test := range tests {
