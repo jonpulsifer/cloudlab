@@ -81,6 +81,15 @@ resource "google_project_organization_policy" "allow_external_ips" {
   }
 }
 
+resource "google_project_organization_policy" "allow_guest_attributes" {
+  constraint = "constraints/compute.disableGuestAttributesAccess"
+  project    = data.google_client_config.current.project
+
+  boolean_policy {
+    enforced = false
+  }
+}
+
 resource "google_project_organization_policy" "allow_non_shielded_vm" {
   project    = data.google_client_config.current.project
   constraint = "constraints/compute.requireShieldedVm"

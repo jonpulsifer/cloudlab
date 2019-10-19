@@ -2,6 +2,10 @@ resource "google_storage_bucket" "cloud-lab" {
   name               = "cloud-lab"
   location           = "US"
   bucket_policy_only = "true"
+  website {
+    main_page_suffix = "index.html"
+    not_found_page   = "404.html"
+  }
 }
 
 data "google_iam_policy" "gcs-cloud-lab" {
@@ -10,7 +14,6 @@ data "google_iam_policy" "gcs-cloud-lab" {
     members = [
       "group:cloud@pulsifer.ca",
       "serviceAccount:821879192255@cloudbuild.gserviceaccount.com",
-      "serviceAccount:${module.vault-igm.service_account}",
     ]
   }
 }

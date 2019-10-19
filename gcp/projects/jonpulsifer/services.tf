@@ -1,5 +1,4 @@
-resource "google_project_services" "explicit" {
-  services = [
-    "sourcerepo.googleapis.com",
-  ]
+resource "google_project_service" "project" {
+  service                    = "sourcerepo.googleapis.com"
+  disable_dependent_services = true
 }

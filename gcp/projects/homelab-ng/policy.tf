@@ -33,6 +33,15 @@ resource "google_project_organization_policy" "allow_service_accounts" {
   }
 }
 
+# datadog needs keys
+resource "google_project_organization_policy" "allow_service_account_keys" {
+  constraint = "iam.disableServiceAccountKeyCreation"
+  project    = data.google_client_config.current.project
+  boolean_policy {
+    enforced = false
+  }
+}
+
 # we can't deploy functions in canada yet :(
 resource "google_project_organization_policy" "allowed_locations" {
   constraint = "constraints/gcp.resourceLocations"

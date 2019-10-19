@@ -23,6 +23,18 @@ resource "google_compute_project_metadata_item" "oslogin_2fa_kubesec" {
   value   = "TRUE"
 }
 
+resource "google_compute_project_metadata_item" "guest_attributes_kubesec" {
+  project = google_project.kubesec.id
+  key     = "enable-guest-attributes"
+  value   = "TRUE"
+}
+
+resource "google_compute_project_metadata_item" "os_inventory_kubesec" {
+  project = google_project.kubesec.id
+  key     = "enable-os-inventory"
+  value   = "TRUE"
+}
+
 resource "google_project" "trusted-builds" {
   name                = "trusted builds"
   project_id          = "trusted-builds"
@@ -45,6 +57,19 @@ resource "google_compute_project_metadata_item" "oslogin_trusted-builds" {
 resource "google_compute_project_metadata_item" "oslogin_2fa_trusted-builds" {
   project = google_project.trusted-builds.id
   key     = "enable-oslogin-2fa"
+  value   = "TRUE"
+}
+
+resource "google_compute_project_metadata_item" "guest_attributes_trusted-builds" {
+  project = google_project.trusted-builds.id
+  key     = "enable-guest-attributes"
+  value   = "TRUE"
+}
+
+
+resource "google_compute_project_metadata_item" "os_inventory_trusted-builds" {
+  project = google_project.trusted-builds.id
+  key     = "enable-os-inventory"
   value   = "TRUE"
 }
 

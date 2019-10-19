@@ -19,6 +19,41 @@ data "google_iam_policy" "explicit" {
     role    = "roles/dns.admin"
     members = [join(":", ["serviceAccount", google_service_account.ddns.email])]
   }
+
+  binding {
+    role    = "roles/monitoring.metricWriter"
+    members = [join(":", ["serviceAccount", google_service_account.ddns.email])]
+  }
+
+  binding {
+    role    = "roles/logging.logWriter"
+    members = [join(":", ["serviceAccount", google_service_account.ddns.email])]
+  }
+
+  binding {
+    role    = "roles/cloudtrace.agent"
+    members = [join(":", ["serviceAccount", google_service_account.ddns.email])]
+  }
+
+  binding {
+    role    = "roles/errorreporting.writer"
+    members = [join(":", ["serviceAccount", google_service_account.ddns.email])]
+  }
+
+  binding {
+    role    = "roles/compute.viewer"
+    members = [join(":", ["serviceAccount", google_service_account.datadog.email])]
+  }
+
+  binding {
+    role    = "roles/monitoring.viewer"
+    members = [join(":", ["serviceAccount", google_service_account.datadog.email])]
+  }
+
+  binding {
+    role    = "roles/cloudasset.viewer"
+    members = [join(":", ["serviceAccount", google_service_account.datadog.email])]
+  }
 }
 
 resource "google_project_iam_policy" "explicit" {
@@ -28,4 +63,8 @@ resource "google_project_iam_policy" "explicit" {
 
 resource "google_service_account" "ddns" {
   account_id = "ddns-function"
+}
+
+resource "google_service_account" "datadog" {
+  account_id = "datadog"
 }
