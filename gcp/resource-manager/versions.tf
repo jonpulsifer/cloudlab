@@ -12,11 +12,11 @@ provider "google" {
 }
 
 provider "google-beta" {
-  credentials = file("credentials.json")
-  project     = local.project
-  region      = local.region
-  zone        = local.zone
-  version     = "~> 2.11"
+  #  credentials = file("credentials.json")
+  project = local.project
+  region  = local.region
+  zone    = local.zone
+  version = "~> 2.17"
 }
 
 terraform {

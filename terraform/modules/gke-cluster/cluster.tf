@@ -19,9 +19,19 @@ resource "google_container_cluster" "lab" {
   # human readable description of this cluster
   description = "${var.name} GKE cluster"
 
-  # use the latest GKE release for the master and worker nodes
+  # where the cluster will run
+  location = var.location
+
+  # google groups for rbac
+  authenticator_groups_config {
+    security_group = (var.rbac_group_domain != "" ? join("@", ["gke-security-groups", var.rbac_group_domain]) : var.rbac_group_domain)
+  }
+
+  # use the latest GKE release for the master and worker nodes and set the release channel
   min_master_version = var.kubernetes_version
-  # node_version       = var.kubernetes_version
+  release_channel {
+    channel = var.release_channel
+  }
 
   resource_labels = var.labels
 
@@ -60,6 +70,9 @@ resource "google_container_cluster" "lab" {
       display_name = "internetz"
     }
   }
+
+  # use shielded (uefi) nodes
+  enable_shielded_nodes = var.shielded_nodes
 
   # encrypt etcd
   database_encryption {

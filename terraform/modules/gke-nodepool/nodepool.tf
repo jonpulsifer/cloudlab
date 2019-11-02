@@ -6,18 +6,15 @@ resource "google_container_node_pool" "lab" {
   name       = var.name
   cluster    = var.cluster
   node_count = var.node_count
-  version    = var.kubernetes_version
 
-  # depends_on = ["google_container_cluster.lab"]
   management {
-    auto_upgrade = var.auto_upgrade
-    auto_repair  = var.auto_repair
+    auto_upgrade = true
+    auto_repair  = true
   }
 
   max_pods_per_node = 32
 
   node_config {
-    /* "UBUNTU", "COS", "COS_CONTAINERD" */
     image_type   = var.image_type
     machine_type = var.machine_type
     disk_size_gb = var.disk_size_gb
@@ -27,6 +24,11 @@ resource "google_container_node_pool" "lab" {
 
     workload_metadata_config {
       node_metadata = var.node_metadata
+    }
+
+    shielded_instance_config {
+      enable_secure_boot          = var.shielded
+      enable_integrity_monitoring = var.shielded
     }
 
     /* node identity */

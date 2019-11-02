@@ -34,14 +34,6 @@ variable "preemptible" {
   default = true
 }
 
-variable "auto_upgrade" {
-  default = true
-}
-
-variable "auto_repair" {
-  default = true
-}
-
 variable "node_metadata" {
   description = "Adjusts the node metadata service, one of: GKE_METADATA_SERVER, SECURE, or EXPOSE"
   type        = string
@@ -56,4 +48,9 @@ variable "taints" {
 variable "labels" {
   type    = "map"
   default = {}
+}
+variable "shielded" {
+  description = "Forces the nodes to use shielded (uefi) images and enables secure boot"
+  type        = bool
+  default     = true
 }

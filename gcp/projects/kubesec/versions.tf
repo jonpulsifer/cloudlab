@@ -13,7 +13,7 @@ provider "google" {
   project = local.project
   region  = local.usa
   zone    = join("-", [local.usa, "b"])
-  version = "~> 2.17"
+  version = "~> 2.18.1"
 }
 
 provider "google-beta" {
@@ -21,7 +21,7 @@ provider "google-beta" {
   project     = local.project
   region      = local.usa
   zone        = join("-", [local.usa, "b"])
-  version     = "~> 2.17"
+  version     = "~> 2.18.1"
 }
 
 provider "google" {
@@ -29,7 +29,7 @@ provider "google" {
   project = local.project
   region  = local.canada
   zone    = join("-", [local.canada, "a"])
-  version = "~> 2.17"
+  version = "~> 2.18.1"
 }
 
 provider "google-beta" {
@@ -37,7 +37,7 @@ provider "google-beta" {
   project = local.project
   region  = local.canada
   zone    = join("-", [local.canada, "a"])
-  version = "~> 2.17"
+  version = "~> 2.18.1"
 }
 
 terraform {

@@ -9,6 +9,12 @@ variable "name" {
   default     = "lab"
 }
 
+variable "location" {
+  description = "Location of the cluster (region or zone)"
+  type        = string
+  default     = ""
+}
+
 variable "network_policy" {
   description = "Enable Network Policy"
   type        = bool
@@ -25,6 +31,24 @@ variable "kms_key_ring" {
   description = "Name of the KMS key ring used to encrypt etcd"
   type        = string
   default     = null
+}
+
+variable "release_channel" {
+  description = "Release cadence of the GKE cluster"
+  type        = string
+  default     = "RAPID"
+}
+
+variable "shielded_nodes" {
+  description = "Forces node pools to use shielded (uefi) images"
+  type        = bool
+  default     = true
+}
+
+variable "rbac_group_domain" {
+  description = "Google Groups for RBAC requires a G Suite domain"
+  type        = string
+  default     = "pulsifer.ca"
 }
 
 variable "pod_security_policy" {
