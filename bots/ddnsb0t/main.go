@@ -18,13 +18,14 @@ import (
 )
 
 const (
-	fnUrl string = "https://us-east4-homelab-ng.cloudfunctions.net/ddns"
+	fnURL string = "https://us-east4-homelab-ng.cloudfunctions.net/ddns"
 )
 
 var (
 	apiToken string
 	dnsName  string
 	external bool
+	once     bool
 	interval time.Duration
 	request  ddns.Request
 	response ddns.Response
@@ -41,6 +42,7 @@ func main() {
 	p.FlagSet.StringVar(&apiToken, "token", "", "API token for the cloud function")
 	p.FlagSet.DurationVar(&interval, "interval", 5*time.Minute, "how long between each update (eg. 30s, 5m, 1h)")
 	p.FlagSet.BoolVar(&external, "external", false, "use your external IP address")
+	p.FlagSet.BoolVar(&once, "once", false, "run the thing once")
 	p.FlagSet.BoolVar(&verbose, "verbose", false, "enable debug logging")
 
 	p.Before = func(ctx context.Context) error {
@@ -80,6 +82,14 @@ func main() {
 			}
 		}()
 
+		if once {
+			err := update()
+			if err != nil {
+				return err
+			}
+			os.Exit(0)
+		}
+
 		for range ticker.C {
 			err := update()
 			if err != nil {
@@ -90,6 +100,7 @@ func main() {
 		return nil
 
 	}
+
 	p.Run()
 }
 
@@ -120,7 +131,7 @@ func update() error {
 		return err
 	}
 
-	req, err := http.NewRequest("POST", fnUrl, bytes.NewBuffer(requestJSON))
+	req, err := http.NewRequest("POST", fnURL, bytes.NewBuffer(requestJSON))
 	req.Header.Set("Content-Type", "application/json")
 
 	client := &http.Client{}

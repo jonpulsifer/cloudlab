@@ -25,8 +25,8 @@ github.com/googleapis/gax-go/v2 v2.0.4/go.mod h1:0Wqv26UfaUD9n4G6kQubkQ+KchISgw+
 github.com/hashicorp/golang-lru v0.5.0/go.mod h1:/m3WP610KZHVQ1SGc6re/UDhFvYD7pJ4Ao+sR/qLZy8=
 github.com/hashicorp/golang-lru v0.5.1 h1:0hERBMJE1eitiLkihrMvRVBYAkpHzc/J3QdDN+dAcgU=
 github.com/hashicorp/golang-lru v0.5.1/go.mod h1:/m3WP610KZHVQ1SGc6re/UDhFvYD7pJ4Ao+sR/qLZy8=
-github.com/jonpulsifer/cloudlab/functions/ddns v0.0.0-20190731175330-418e18a84903 h1:F3/RwpP50FbvpBdi+Qb9Xi7AQyzTE2nbW6ePkGXpou8=
-github.com/jonpulsifer/cloudlab/functions/ddns v0.0.0-20190731175330-418e18a84903/go.mod h1:iwaZZa+lKHD4FPsuBcF9ggTf9JhIB8K3EOAMPOzVFBk=
+github.com/jonpulsifer/cloudlab/functions/ddns v0.0.0-20191102051646-98f9cb7a3129 h1:my7iXFtnhDBgAMib85a1JxJPhZhGlOV1I/Jh2eghEc4=
+github.com/jonpulsifer/cloudlab/functions/ddns v0.0.0-20191102051646-98f9cb7a3129/go.mod h1:iwaZZa+lKHD4FPsuBcF9ggTf9JhIB8K3EOAMPOzVFBk=
 github.com/jstemmer/go-junit-report v0.0.0-20190106144839-af01ea7f8024/go.mod h1:6v2b51hI/fHJwM22ozAgKL4VKDeJcHhJFhtBdhmNjmU=
 github.com/konsorten/go-windows-terminal-sequences v1.0.1 h1:mweAR1A6xJ3oS2pRaGiHgQ4OO8tzTaLawm8vnODuwDk=
 github.com/konsorten/go-windows-terminal-sequences v1.0.1/go.mod h1:T0+1ngSBFLxvqU3pZ+m/2kptfBszLMUkC4ZK/EgS/cQ=
