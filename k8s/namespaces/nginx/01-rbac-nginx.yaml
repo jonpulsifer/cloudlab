@@ -7,7 +7,7 @@ metadata:
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/part-of: ingress-nginx
 ---
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: nginx
@@ -41,7 +41,8 @@ rules:
       - list
       - watch
   - apiGroups:
-      - "extensions"
+    - "networking.k8s.io"
+    - "extensions"
     resources:
       - ingresses
     verbs:
@@ -56,13 +57,14 @@ rules:
       - create
       - patch
   - apiGroups:
-      - "extensions"
+    - "networking.k8s.io"
+    - "extensions"
     resources:
       - ingresses/status
     verbs:
       - update
 ---
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: nginx
@@ -106,7 +108,7 @@ rules:
     verbs:
       - get
 ---
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: nginx
@@ -123,7 +125,7 @@ subjects:
     name: nginx
     namespace: nginx
 ---
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: nginx

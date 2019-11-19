@@ -5,5 +5,4 @@ metadata:
 provisioner: kubernetes.io/gce-pd
 parameters:
   type: pd-ssd
-  zone: us-east4-b
-reclaimPolicy: Retain
+reclaimPolicy: Delete

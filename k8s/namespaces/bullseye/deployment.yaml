@@ -41,11 +41,6 @@ spec:
             port: 30022
           initialDelaySeconds: 5
           periodSeconds: 30
-        livenessProbe:
-          tcpSocket:
-            port: 30022
-          initialDelaySeconds: 5
-          periodSeconds: 30
         ports:
         - containerPort: 30022
           protocol: TCP

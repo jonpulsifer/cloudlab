@@ -9,7 +9,7 @@ metadata:
     apparmor.security.beta.kubernetes.io/defaultProfileName:  'runtime/default'
 spec:
   privileged: false
-  allowPrivilegeEscalation: false
+  allowPrivilegeEscalation: true
   allowedCapabilities:
   # nginx
   - NET_BIND_SERVICE

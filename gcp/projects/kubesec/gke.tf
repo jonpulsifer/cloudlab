@@ -6,6 +6,9 @@ module "gke" {
   name               = "lab"
   kubernetes_version = data.google_container_engine_versions.cloudlab.latest_master_version
 
+  monitoring_service         = "none"
+  logging_service            = "none"
+  google_cloud_load_balancer = true
   network_config = {
     enable_ssh     = true
     enable_natgw   = false
@@ -56,6 +59,12 @@ module "gke-prepaid" {
   preemptible        = false
   node_metadata      = "GKE_METADATA_SERVER"
 
+  metadata = {
+    disable-legacy-endpoints = "true"
+    enable-guest-attributes  = "true"
+    enable-os-inventory      = "true"
+  }
+
   labels = {
     environment = "production"
     os          = "ubuntu"
@@ -69,7 +78,7 @@ module "gke-nodes" {
   name               = "g1"
   cluster            = module.gke.name
   node_count         = 2
-  image_type         = "UBUNTU"
+  image_type         = "COS"
   kubernetes_version = data.google_container_engine_versions.cloudlab.latest_master_version
   service_account    = module.gke.node_service_account
   machine_type       = "g1-small"

@@ -1,4 +1,4 @@
-apiVersion: certmanager.k8s.io/v1alpha1
+apiVersion: cert-manager.io/v1alpha2
 kind: ClusterIssuer
 metadata:
   name: letsencrypt-dns
@@ -9,11 +9,22 @@ spec:
     server: https://acme-v02.api.letsencrypt.org/directory
     privateKeySecretRef:
       name: letsencrypt-dns-issuer
-    dns01:
-      providers:
-      - name: letsencrypt-dns
+    solvers:
+    - selector: {}
+      dns01:
         clouddns:
           project: kubesec
+          serviceAccountSecretRef:
+            name: gcp-sa
+            key: credentials.json
+    - selector:
+        dnsNames:
+        - wishin.app
+        - www.wishin.app
+        - '*.wishin.app'
+      dns01:
+        clouddns:
+          project: wishlist-4362e
           serviceAccountSecretRef:
             name: gcp-sa
             key: credentials.json
