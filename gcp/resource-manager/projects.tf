@@ -110,3 +110,16 @@ resource "google_project" "homelab-ng" {
     environment = "home"
   }
 }
+
+resource "google_project" "wishlist" {
+  name                = "wishlist"
+  project_id          = "wishlist-4362e"
+  folder_id           = google_folder.production.name
+  billing_account     = data.google_billing_account.cloudlab.id
+  skip_delete         = true
+  auto_create_network = false
+
+  labels = {
+    environment = "production"
+  }
+}

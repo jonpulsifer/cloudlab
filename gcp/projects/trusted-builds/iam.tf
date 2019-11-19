@@ -80,8 +80,7 @@ data "google_iam_policy" "explicit" {
 
   binding {
     members = [
-      "serviceAccount:gke-nodes-corp@kubesec.iam.gserviceaccount.com",
-      "serviceAccount:vault-igm@kubesec.iam.gserviceaccount.com",
+      "serviceAccount:gke-nodes-lab@kubesec.iam.gserviceaccount.com",
     ]
     role = "roles/storage.objectViewer"
   }
