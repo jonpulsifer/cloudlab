@@ -2,7 +2,7 @@
 data "google_container_engine_versions" "cloudlab" {}
 
 module "gke" {
-  source             = "../../../terraform/modules/gke-cluster"
+  source             = "github.com/jonpulsifer/terraform-modules//gke-cluster"
   name               = "lab"
   kubernetes_version = data.google_container_engine_versions.cloudlab.latest_master_version
 
@@ -46,7 +46,7 @@ resource "google_compute_firewall" "ssh-to-gke-nodes" {
 }
 
 module "gke-prepaid" {
-  source = "../../../terraform/modules/gke-nodepool"
+  source = "github.com/jonpulsifer/terraform-modules//gke-nodepool"
 
   name               = "n1"
   cluster            = module.gke.name
@@ -73,7 +73,7 @@ module "gke-prepaid" {
 }
 
 module "gke-nodes" {
-  source = "../../../terraform/modules/gke-nodepool"
+  source = "github.com/jonpulsifer/terraform-modules//gke-nodepool"
 
   name               = "g1"
   cluster            = module.gke.name
