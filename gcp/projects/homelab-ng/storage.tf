@@ -18,5 +18,5 @@ data "google_iam_policy" "gcs-homelab-ng" {
 
 resource "google_storage_bucket_iam_policy" "gcs-homelab-ng" {
   bucket      = google_storage_bucket.homelab-ng.name
-  policy_data = "${data.google_iam_policy.gcs-homelab-ng.policy_data}"
+  policy_data = data.google_iam_policy.gcs-homelab-ng.policy_data
 }

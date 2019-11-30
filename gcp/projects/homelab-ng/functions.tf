@@ -14,6 +14,6 @@ resource "google_cloudfunctions_function" "ddns" {
   }
 
   lifecycle {
-    ignore_changes = ["environment_variables", "labels"]
+    ignore_changes = [environment_variables, labels]
   }
 }

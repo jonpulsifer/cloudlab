@@ -18,5 +18,5 @@ data "google_iam_policy" "gcs-jonpulsifer" {
 
 resource "google_storage_bucket_iam_policy" "gcs-jonpulsifer" {
   bucket      = google_storage_bucket.jonpulsifer.name
-  policy_data = "${data.google_iam_policy.gcs-jonpulsifer.policy_data}"
+  policy_data = data.google_iam_policy.gcs-jonpulsifer.policy_data
 }

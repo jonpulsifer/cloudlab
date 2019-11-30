@@ -5,7 +5,7 @@ resource "google_project_iam_policy" "explicit" {
 
 data "google_iam_policy" "explicit" {
   binding {
-    members = ["serviceAccount:attestor@${data.google_project.trusted-builds.id}.iam.gserviceaccount.com"]
+    members = ["serviceAccount:attestor@${data.google_project.trusted-builds.project_id}.iam.gserviceaccount.com"]
     role    = "roles/binaryauthorization.attestorsAdmin"
   }
 
@@ -43,7 +43,7 @@ data "google_iam_policy" "explicit" {
   }
 
   binding {
-    members = ["serviceAccount:attestor@${data.google_project.trusted-builds.id}.iam.gserviceaccount.com"]
+    members = ["serviceAccount:attestor@${data.google_project.trusted-builds.project_id}.iam.gserviceaccount.com"]
     role    = "roles/containeranalysis.admin"
   }
 
@@ -62,7 +62,7 @@ data "google_iam_policy" "explicit" {
       "serviceAccount:${data.google_project.trusted-builds.number}-compute@developer.gserviceaccount.com",
       "serviceAccount:${data.google_project.trusted-builds.number}@cloudservices.gserviceaccount.com",
       "serviceAccount:service-${data.google_project.trusted-builds.number}@containerregistry.iam.gserviceaccount.com",
-      "serviceAccount:${data.google_project.trusted-builds.id}@appspot.gserviceaccount.com",
+      "serviceAccount:${data.google_project.trusted-builds.project_id}@appspot.gserviceaccount.com",
     ]
 
     role = "roles/editor"

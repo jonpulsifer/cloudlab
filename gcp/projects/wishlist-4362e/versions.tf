@@ -11,15 +11,15 @@ data "google_project" "wishlist" {
 provider "google" {
   project = local.project
   region  = local.canada
-  zone    = join("-", [local.canada, "a"])
-  version = "~> 2.20.1"
+  zone    = join("-", [local.canada, "b"])
+  version = "~> 3.0.0-beta.1"
 }
 
 provider "google-beta" {
   project = local.project
   region  = local.canada
-  zone    = join("-", [local.canada, "a"])
-  version = "~> 2.20.1"
+  zone    = join("-", [local.canada, "b"])
+  version = "~> 3.0.0-beta.1"
 }
 
 terraform {

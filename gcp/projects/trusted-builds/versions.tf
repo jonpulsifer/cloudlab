@@ -13,7 +13,7 @@ provider "google" {
   project = local.project
   region  = local.region
   zone    = local.zone
-  version = "~> 2.20"
+  version = "~> 3.0.0-beta.1"
 }
 
 provider "google-beta" {
@@ -21,7 +21,7 @@ provider "google-beta" {
   project = local.project
   region  = local.region
   zone    = local.zone
-  version = "~> 2.20"
+  version = "~> 3.0.0-beta.1"
 }
 
 terraform {

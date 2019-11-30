@@ -4,7 +4,7 @@ locals {
 }
 
 module "network" {
-  source  = "../../../terraform/modules/gce-vpc"
+  source  = "github.com/jonpulsifer/terraform-modules//gce-vpc"
   name    = "builds"
   vm_cidr = local.vm_cidr
 }

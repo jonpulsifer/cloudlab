@@ -20,5 +20,5 @@ data "google_iam_policy" "gcs-cloud-lab" {
 
 resource "google_storage_bucket_iam_policy" "gcs-cloud-lab" {
   bucket      = google_storage_bucket.cloud-lab.name
-  policy_data = "${data.google_iam_policy.gcs-cloud-lab.policy_data}"
+  policy_data = data.google_iam_policy.gcs-cloud-lab.policy_data
 }

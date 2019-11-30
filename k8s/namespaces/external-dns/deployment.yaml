@@ -26,6 +26,8 @@ spec:
         args:
         - --source=ingress
         - --source=service
+        - --domain-filter=k8s.pulsifer.dev
+        - --domain-filter=pulsifer.dev
         - --provider=google
         - --registry=txt
         - --txt-owner-id=k8s
