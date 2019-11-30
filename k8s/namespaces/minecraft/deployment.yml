@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: minecraft
+  namespace: minecraft
+  labels:
+    app.kubernetes.io/name: minecraft
+    app.kubernetes.io/part-of: minecraft
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: minecraft
+      app.kubernetes.io/part-of: minecraft
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: minecraft
+        app.kubernetes.io/part-of: minecraft
+    spec:
+      automountServiceAccountToken: false
+      containers:
+      - name: minecraft
+        image: gcr.io/trusted-builds/minecraft
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            memory: 2Gi
+            cpu: 200m
+        ports:
+        - containerPort: 25565
+          protocol: TCP
+        volumeMounts:
+        - name: data
+          mountPath: /var/minecraft
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: minecraft-data

@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: minecraft
+  labels:
+    app.kubernetes.io/name: minecraft
+    app.kubernetes.io/part-of: minecraft
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: allowed-psps
+  namespace: minecraft
+rules:
+- apiGroups: ['policy']
+  resources: ['podsecuritypolicies']
+  verbs: ['use']
+  resourceNames: ['minecraft']
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: allowed-psps
+  namespace: minecraft
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: allowed-psps
+subjects:
+- kind: Group
+  name: system:serviceaccounts
+  apiGroup: rbac.authorization.k8s.io
+- kind: ServiceAccount
+  name: minecraft
+  namespace: minecraft
+
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: deny-all
+  namespace: minecraft
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  - Egress

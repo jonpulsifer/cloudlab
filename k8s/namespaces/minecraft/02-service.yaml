@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: minecraft
+  namespace: minecraft
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: minecraft.k8s.pulsifer.dev.
+  labels:
+    app.kubernetes.io/name: minecraft
+    app.kubernetes.io/part-of: minecraft
+spec:
+  type: ClusterIP
+  ports:
+    - port: 25565
+      protocol: TCP
+      name: minecraft
+  selector:
+    app.kubernetes.io/name: minecraft
+    app.kubernetes.io/part-of: minecraft

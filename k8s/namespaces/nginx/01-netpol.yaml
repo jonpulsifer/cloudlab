@@ -11,6 +11,8 @@ spec:
         protocol: TCP
       - port: 443
         protocol: TCP
+      - port: 25565
+        protocol: TCP
   podSelector:
     matchLabels:
       k8s-app: nginx

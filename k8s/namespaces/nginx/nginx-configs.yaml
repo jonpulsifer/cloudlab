@@ -49,6 +49,7 @@ data:
   # 5060: "asterisk/asterisk:5060"
   # 10022: "bullseye/ssh:22"
   # 8443: "fleet/fleet:443"
+  25565: "minecraft/minecraft:25565"
 ---
 kind: ConfigMap
 apiVersion: v1

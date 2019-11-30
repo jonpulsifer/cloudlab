@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: minecraft
+  namespace: minecraft
+  labels:
+    app.kubernetes.io/name: minecraft
+    app.kubernetes.io/part-of: minecraft
+spec:
+  egress:
+  - {}
+  ingress:
+  - ports:
+    - port: 25565
+      protocol: TCP
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: minecraft
+      app.kubernetes.io/part-of: minecraft
+  policyTypes:
+  - Ingress
+  - Egress

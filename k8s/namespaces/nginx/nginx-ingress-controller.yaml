@@ -19,6 +19,9 @@ spec:
     - name: https
       port: 443
       targetPort: https
+    - name: minecraft
+      port: 25565
+      targetPort: minecraft
 ---
 kind: Deployment
 apiVersion: apps/v1
@@ -86,6 +89,8 @@ spec:
               containerPort: 8443
             - name: prometheus
               containerPort: 10254
+            - name: minecraft
+              containerPort: 25565
           livenessProbe:
             failureThreshold: 3
             httpGet:
