@@ -101,8 +101,7 @@
       default = "i3";
       i3 = {
         enable = true;
-        #extraPackages = with pkgs; [
-        #];
+        # extraPackages = with pkgs; [];
       };
     };
   };
