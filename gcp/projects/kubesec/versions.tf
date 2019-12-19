@@ -7,12 +7,13 @@ locals {
 provider "google" {
   project = local.project
   region  = local.region
-  zone    = join("-", [local.region, "b"])
+  zone    = local.zone
 }
 
 provider "google-beta" {
   project = local.project
   region  = local.region
+  zone    = local.zone
 }
 
 terraform {
