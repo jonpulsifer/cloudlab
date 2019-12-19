@@ -1,26 +1,13 @@
-kind: Service
-apiVersion: v1
-metadata:
-  labels:
-    name: datadog
-  name: datadog
-  namespace: kube-public
-spec:
-  ports:
-  - port: 8125
-    protocol: TCP
-    targetPort: 8125
-  selector:
-    app: datadog
-  sessionAffinity: None
-  type: ClusterIP
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: datadog
-  namespace: kube-public
+  namespace: datadog
 spec:
+  selector:
+    matchLabels:
+      app: datadog
   template:
     metadata:
       labels:
@@ -36,17 +23,14 @@ spec:
           - {containerPort: 8125, name: dogstatsdport, protocol: UDP}
           - {containerPort: 8126, name: traceport, protocol: TCP}
         env:
-          - {name: DD_API_KEY, valueFrom: { secretKeyRef: { name: datadog, key: api_key }}}
+          - {name: DD_API_KEY, valueFrom: { secretKeyRef: { name: datadog, key: api }}}
           - {name: KUBERNETES, value: "true"}
           - {name: DD_HEALTH_PORT, value: "5555"}
+          - {name: DD_CLUSTER_AGENT_AUTH_TOKEN, valueFrom: { secretKeyRef: { name: datadog, key: token}}}
           - name: DD_KUBERNETES_KUBELET_HOST
             valueFrom:
               fieldRef:
                 fieldPath: status.hostIP
-        resources:
-          limits:
-            memory: "256Mi"
-            cpu: "200m"
         volumeMounts:
           - {name: dockersocket, mountPath: /var/run/docker.sock}
           - {name: procdir, mountPath: /host/proc, readOnly: true}
