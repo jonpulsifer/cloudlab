@@ -26,7 +26,7 @@ resource "google_project_iam_member" "cert-manager" {
 resource "google_service_account_iam_member" "cert-manager-workload-identity" {
   service_account_id = google_service_account.cert-manager.name
   role               = "roles/iam.workloadIdentityUser"
-  member             = "serviceAccount:${data.google_client_config.current.project}.svc.id.goog[cert-manager/cert-manager]"
+  member             = "serviceAccount:${local.project}.svc.id.goog[cert-manager/cert-manager]"
 }
 
 resource "google_service_account" "external-dns" {
@@ -42,5 +42,5 @@ resource "google_project_iam_member" "external-dns" {
 resource "google_service_account_iam_member" "external-dns-workload-identity" {
   service_account_id = google_service_account.external-dns.name
   role               = "roles/iam.workloadIdentityUser"
-  member             = "serviceAccount:${data.google_client_config.current.project}.svc.id.goog[external-dns/external-dns]"
+  member             = "serviceAccount:${local.project}.svc.id.goog[external-dns/external-dns]"
 }
