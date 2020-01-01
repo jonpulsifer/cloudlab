@@ -1,6 +1,6 @@
 resource "google_project_organization_policy" "allow_production_services" {
+  project    = local.project
   constraint = "serviceuser.services"
-  project    = data.google_client_config.current.project
 
   list_policy {
     allow {
@@ -10,8 +10,8 @@ resource "google_project_organization_policy" "allow_production_services" {
 }
 
 resource "google_project_organization_policy" "allow_service_accounts" {
+  project    = local.project
   constraint = "iam.disableServiceAccountCreation"
-  project    = data.google_client_config.current.project
   boolean_policy {
     enforced = false
   }
