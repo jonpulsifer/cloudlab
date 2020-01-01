@@ -35,7 +35,16 @@ spec:
         volumeMounts:
         - name: data
           mountPath: /var/minecraft
+        - name: server-config
+          mountPath: /var/minecraft/server.properties
+          subPath: server.properties
+        - name: server-config
+          mountPath: /var/minecraft/whitelist.json
+          subPath: whitelist.json
       volumes:
       - name: data
         persistentVolumeClaim:
           claimName: minecraft-data
+      - name: server-config
+        configMap:
+          name: config

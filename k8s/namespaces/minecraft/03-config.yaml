@@ -1,0 +1,83 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config
+  namespace: minecraft
+data:
+  server.properties: |
+    broadcast-rcon-to-ops=true
+    view-distance=10
+    max-build-height=256
+    server-ip=
+    rcon.port=25575
+    level-seed=
+    allow-nether=true
+    gamemode=survival
+    enable-command-block=true
+    server-port=25565
+    enable-rcon=true
+    enable-query=false
+    op-permission-level=4
+    prevent-proxy-connections=false
+    generator-settings=
+    resource-pack=
+    player-idle-timeout=0
+    level-name=newworld
+    rcon.password=lolminecraft
+    motd=Bean Paradise
+    query.port=25565
+    force-gamemode=false
+    hardcore=false
+    white-list=false
+    broadcast-console-to-ops=true
+    pvp=false
+    texture-pack=
+    spawn-npcs=true
+    spawn-animals=true
+    generate-structures=true
+    snooper-enabled=true
+    difficulty=easy
+    function-permission-level=2
+    network-compression-threshold=256
+    level-type=default
+    max-tick-time=60000
+    spawn-monsters=true
+    enforce-whitelist=false
+    max-players=10
+    use-native-transport=true
+    spawn-protection=16
+    resource-pack-sha1=
+    online-mode=true
+    allow-flight=true
+    max-world-size=29999984
+  whitelist.json: |+
+    [
+        {
+          "uuid": "d4a46daf-8908-4511-953d-7f47a6596e6e",
+          "name": "jonpulsifer"
+        },
+        {
+          "uuid": "74931708-f1f3-4564-850c-7713e9fed67a",
+          "name": "imog3n3"
+        },
+        {
+          "uuid": "a1f606b0-640d-4c94-9277-2780a1efa462",
+          "name": "thebitterend"
+        },
+        {
+          "uuid": "9d3124c1-23b4-4942-814b-a9a643d39df3",
+          "name": "Zebark"
+        },
+        {
+          "uuid": "036baa-5e16-4d5c-9e70-76a914e6e111",
+          "name": "CrazyPotat"
+        },
+        {
+          "uuid": "c44f45f7-dc03-4d35-82cc-dbe86f264b60",
+          "name": "GiGiMom"
+        },
+        {
+          "uuid": "1b51e616-b14c-4373-8ba6-6d1a8deb8fbf",
+          "name": "xXtUnAssMuumXx"
+        }
+    ]
