@@ -5,8 +5,20 @@
     ./hardware-configuration.nix
   ];
 
+  nixpkgs.config = {
+    allowUnfree = true;
+    packageOverrides = pkgs: {
+      unstable = import <nixos-unstable> {
+        # pass the nixpkgs config to the unstable alias
+        # to ensure `allowUnfree = true;` is propagated:
+        config = config.nixpkgs.config;
+      };
+    };
+  };
+  nixpkgs.overlays = [ (import ./overlays.nix) ];
+
   boot = {
-    kernelPackages = pkgs.linuxPackages_latest;
+    kernelPackages = pkgs.unstable.linuxPackages_5_4;
     consoleLogLevel = 0;
     loader = {
       # Use the systemd-boot EFI boot loader.
@@ -19,11 +31,18 @@
   networking = {
     hostName = "nuc";
     nameservers = [ "8.8.8.8" "8.8.4.4" "1.1.1.1" "1.0.0.1" ];
+    search = [ "home.pulsifer.ca" "lan" ];
 
-    wireless.enable = false; # Enables wireless support via wpa_supplicant.
-
+    # networkd does not support useDHCP globally
+    useNetworkd = true;
     useDHCP = false;
+
+    # per interface config
+    # lan
     interfaces.eno1.useDHCP = true;
+
+    # wireless
+    wireless.enable = false;
     interfaces.wlp0s20f3.useDHCP = false;
   };
 
@@ -34,20 +53,9 @@
 
   time.timeZone = "Canada/Eastern";
 
-  nixpkgs.config = {
-    allowUnfree = true;
-    packageOverrides = pkgs: {
-      unstable = import <nixos-unstable> {
-        # pass the nixpkgs config to the unstable alias
-        # to ensure `allowUnfree = true;` is propagated:
-        config = config.nixpkgs.config;
-      };
-    };
-  };
-
   environment.systemPackages = with pkgs; [ bash-completion nixfmt ];
 
-  # Enable the OpenSSH daemon.
+  services.cron.enable = true;
   services.sshguard.enable = true;
   services.openssh = {
     enable = true;
@@ -67,6 +75,16 @@
     hostname = "nuc.home.pulsifer.ca";
     enableLiveProcessCollection = true;
   };
+
+  services.minecraft-server = {
+    enable = true;
+    eula = true;
+    openFirewall = true;
+    declarative = false;
+    jvmOpts = "-Xms8G -Xmx8G -XX:+UseG1GC -XX:+UnlockExperimentalVMOptions -XX:MaxGCPauseMillis=50 -XX:G1NewSizePercent=50 -XX:G1MaxNewSizePercent=80 -XX:G1MixedGCLiveThresholdPercent=35";
+  };
+
+  virtualisation.docker.enable = true;
 
   services.xserver = {
     enable = true;
@@ -99,10 +117,7 @@
 
     windowManager = {
       default = "i3";
-      i3 = {
-        enable = true;
-        # extraPackages = with pkgs; [];
-      };
+      i3.enable = true;
     };
   };
 
@@ -124,7 +139,7 @@
   users.users.jawn = {
     uid = 1337;
     isNormalUser = true;
-    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel" "docker" ]; # Enable ‘sudo’ for the user.
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJewr6lJtffl+uZpnWXTIE5Sd3VeytQRGXKMBv1s5R/v"
     ];
