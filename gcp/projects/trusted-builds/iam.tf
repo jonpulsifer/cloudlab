@@ -1,80 +1,52 @@
 resource "google_project_iam_policy" "explicit" {
-  project     = data.google_client_config.current.project
+  project     = data.google_project.trusted-builds.project_id
   policy_data = data.google_iam_policy.explicit.policy_data
 }
 
 data "google_iam_policy" "explicit" {
   binding {
-    members = ["serviceAccount:attestor@${data.google_project.trusted-builds.project_id}.iam.gserviceaccount.com"]
-    role    = "roles/binaryauthorization.attestorsAdmin"
-  }
-
-  binding {
-    members = [
-      "serviceAccount:service-${data.google_project.trusted-builds.number}@gcp-sa-binaryauthorization.iam.gserviceaccount.com",
-    ]
-
-    role = "roles/binaryauthorization.serviceAgent"
-  }
-
-  binding {
-    members = ["serviceAccount:${data.google_project.trusted-builds.number}@cloudbuild.gserviceaccount.com"]
+    members = [format("serviceAccount:%s@cloudbuild.gserviceaccount.com", data.google_project.trusted-builds.number)]
     role    = "roles/cloudbuild.builds.builder"
   }
 
   binding {
-    members = ["serviceAccount:${data.google_project.trusted-builds.number}@cloudbuild.gserviceaccount.com"]
+    members = [format("serviceAccount:%s@cloudbuild.gserviceaccount.com", data.google_project.trusted-builds.number)]
     role    = "roles/compute.instanceAdmin"
   }
 
   binding {
-    members = ["serviceAccount:service-${data.google_project.trusted-builds.number}@compute-system.iam.gserviceaccount.com"]
+    members = [format("serviceAccount:service-%s@compute-system.iam.gserviceaccount.com", data.google_project.trusted-builds.number)]
     role    = "roles/compute.serviceAgent"
   }
 
   binding {
-    members = ["serviceAccount:${data.google_project.trusted-builds.number}@cloudbuild.gserviceaccount.com"]
+    members = [format("serviceAccount:%s@cloudbuild.gserviceaccount.com", data.google_project.trusted-builds.number)]
     role    = "roles/compute.storageAdmin"
   }
 
   binding {
-    members = ["serviceAccount:service-${data.google_project.trusted-builds.number}@container-engine-robot.iam.gserviceaccount.com"]
+    members = [format("serviceAccount:service-%s@container-engine-robot.iam.gserviceaccount.com", data.google_project.trusted-builds.number)]
     role    = "roles/container.serviceAgent"
   }
 
   binding {
-    members = ["serviceAccount:attestor@${data.google_project.trusted-builds.project_id}.iam.gserviceaccount.com"]
-    role    = "roles/containeranalysis.admin"
-  }
-
-  binding {
-    members = ["serviceAccount:service-${data.google_project.trusted-builds.number}@gcp-sa-containerscanning.iam.gserviceaccount.com"]
-    role    = "roles/containerscanning.ServiceAgent"
-  }
-
-  binding {
-    members = ["serviceAccount:service-${data.google_project.trusted-builds.number}@container-analysis.iam.gserviceaccount.com"]
-    role    = "roles/containeranalysis.ServiceAgent"
-  }
-
-  binding {
     members = [
-      "serviceAccount:${data.google_project.trusted-builds.number}-compute@developer.gserviceaccount.com",
-      "serviceAccount:${data.google_project.trusted-builds.number}@cloudservices.gserviceaccount.com",
-      "serviceAccount:service-${data.google_project.trusted-builds.number}@containerregistry.iam.gserviceaccount.com",
-      "serviceAccount:${data.google_project.trusted-builds.project_id}@appspot.gserviceaccount.com",
+      format("serviceAccount:%s-compute@developer.gserviceaccount.com", data.google_project.trusted-builds.number),
+      format("serviceAccount:%s@cloudservices.gserviceaccount.com", data.google_project.trusted-builds.number),
+      format("serviceAccount:service-%s@containerregistry.iam.gserviceaccount.com", data.google_project.trusted-builds.number),
+      format("serviceAccount:%s@appspot.gserviceaccount.com", data.google_project.trusted-builds.project_id)
     ]
 
     role = "roles/editor"
   }
 
   binding {
-    members = ["serviceAccount:service-${data.google_project.trusted-builds.number}@cloud-filer.iam.gserviceaccount.com"]
+    members = [format("serviceAccount:service-%s@cloud-filer.iam.gserviceaccount.com", data.google_project.trusted-builds.number)]
     role    = "roles/file.serviceAgent"
   }
 
   binding {
-    members = ["serviceAccount:service-${data.google_project.trusted-builds.number}@sourcerepo-service-accounts.iam.gserviceaccount.com"]
+    members = [format("serviceAccount:service-%s@sourcerepo-service-accounts.iam.gserviceaccount.com", data.google_project.trusted-builds.number)]
     role    = "roles/sourcerepo.serviceAgent"
   }
 
