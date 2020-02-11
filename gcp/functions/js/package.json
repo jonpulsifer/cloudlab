@@ -1,0 +1,26 @@
+{
+  "name": "functions",
+  "private": true,
+  "version": "0.0.1",
+  "description": "cloud functions in typescript",
+  "repository": "jonpulsifer/cloudlab",
+  "main": "functions/src/index.js",
+  "scripts": {
+    "build": "npx tsc",
+    "start": "npx tsc-watch --onSuccess 'npx @google-cloud/functions-framework --target=lol'",
+    "watch": "npx tsc-watch",
+    "deploy": "npx tsc && gcloud functions deploy lol --runtime nodejs10 --trigger-http"
+  },
+  "keywords": [
+    "typescript",
+    "functions",
+    "serverless"
+  ],
+  "author": "Jonathan Pulsifer",
+  "license": "MIT",
+  "devDependencies": {
+    "@google-cloud/functions-framework": "^1.4.0",
+    "tsc-watch": "^4.1.0",
+    "typescript": "^3.7.5"
+  }
+}

@@ -45,10 +45,11 @@ resource "google_compute_firewall" "ssh-to-gke-nodes" {
   source_ranges = ["0.0.0.0/0"]
 }
 
-module "gke-prepaid" {
-  source = "github.com/jonpulsifer/terraform-modules//gke-nodepool"
+module "std" {
+  source = "../../../../terraform-modules/gke-nodepool"
+  # source = "github.com/jonpulsifer/terraform-modules//gke-nodepool"
 
-  name               = "n1"
+  name               = "std"
   cluster            = module.gke.name
   node_count         = 1
   image_type         = "UBUNTU"
@@ -57,33 +58,6 @@ module "gke-prepaid" {
   machine_type       = "n1-standard-1"
   disk_size_gb       = 24
   preemptible        = false
-  node_metadata      = "GKE_METADATA_SERVER"
-
-  metadata = {
-    disable-legacy-endpoints = "true"
-    enable-guest-attributes  = "true"
-    enable-os-inventory      = "true"
-  }
-
-  labels = {
-    environment = "production"
-    os          = "ubuntu"
-    runtime     = "docker"
-  }
-}
-
-module "gke-nodes" {
-  source = "github.com/jonpulsifer/terraform-modules//gke-nodepool"
-
-  name               = "g1"
-  cluster            = module.gke.name
-  node_count         = 2
-  image_type         = "COS"
-  kubernetes_version = data.google_container_engine_versions.cloudlab.latest_master_version
-  service_account    = module.gke.node_service_account
-  machine_type       = "g1-small"
-  disk_size_gb       = 24
-  preemptible        = true
   node_metadata      = "GKE_METADATA_SERVER"
 
   labels = {
