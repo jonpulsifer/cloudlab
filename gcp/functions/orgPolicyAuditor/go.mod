@@ -1,4 +1,4 @@
-module github.com/jonpulsifer/cloudlab/gcp/functions/go/iam-revoker
+module github.com/jonpulsifer/cloudlab/gcp/functions/orgPolicyAuditor
 
 go 1.13
 

@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"os"
 	"strings"
 
 	log "github.com/sirupsen/logrus"
@@ -15,12 +16,12 @@ type Resource struct {
 }
 
 func init() {
-	log.SetLevel(log.DebugLevel)
-	// log.SetFormatter(&log.JSONFormatter{})
+	log.SetLevel(log.InfoLevel)
+	log.SetFormatter(&log.JSONFormatter{})
 }
 
-// Loglog gets a pubsub message
-func Loglog(ctx context.Context, m Message) error {
+// PubSubber gets a pubsub message and posts a discord message
+func PubSubber(ctx context.Context, m Message) error {
 	l, err := parseLogEntry(m)
 	if err != nil {
 		log.Errorf("Could not get audit log from pubsub message: %v", err)
@@ -28,6 +29,11 @@ func Loglog(ctx context.Context, m Message) error {
 	}
 	if l == nil {
 		return errors.New("Missing audit log")
+	}
+
+	verbose := os.Getenv("DEBUG")
+	if verbose != "" {
+		log.SetLevel(log.DebugLevel)
 	}
 
 	log.WithFields(log.Fields{
@@ -53,7 +59,7 @@ func Loglog(ctx context.Context, m Message) error {
 func parseLogEntry(m Message) (*AuditLog, error) {
 	var l *LogEntry
 	if err := json.Unmarshal(m.Data, &l); err != nil {
-		log.Fatalf("LogEntry parse error: ", err)
+		log.Fatalf("LogEntry parse error: %v", err)
 		return nil, err
 	}
 	if l.Resource.Type == "organization" {
@@ -67,7 +73,7 @@ func parseLogEntry(m Message) (*AuditLog, error) {
 				"User":    l.Payload.AuthenticationInfo.PrincipalEmail,
 				"Service": l.Payload.ServiceName,
 				"Method":  l.Payload.MethodName,
-				"Granted": l.Payload.ServiceData.PolicyDelta.BindingDeltas,
+				"Deltas":  l.Payload.ServiceData.PolicyDelta.BindingDeltas,
 			}).Debugf("Processing write activity")
 			return &l.Payload, nil
 		}

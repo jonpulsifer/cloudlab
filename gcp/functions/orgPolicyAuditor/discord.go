@@ -184,14 +184,24 @@ func playSound(s *discordgo.Session, guildID, channelID string) (err error) {
 
 func createAlertFromLog(l *AuditLog, s *discordgo.Session) *discordgo.MessageEmbed {
 	var fields []*discordgo.MessageEmbedField
+
+	fields = append(fields, &discordgo.MessageEmbedField{
+		Name:   "API Details",
+		Value:  fmt.Sprintf("**Service**: `%s`\n**Resource**: `%s`", l.ServiceName, l.ResourceName),
+		Inline: true,
+	})
+
+	fields = append(fields, &discordgo.MessageEmbedField{
+		Name:   "User",
+		Value:  fmt.Sprintf("**Email**: `%s`", l.AuthenticationInfo.PrincipalEmail),
+		Inline: true,
+	})
+
 	for d := range l.ServiceData.PolicyDelta.BindingDeltas {
 		field := &discordgo.MessageEmbedField{
-			Name: l.ServiceData.PolicyDelta.BindingDeltas[d].Action,
-			Value: fmt.Sprintf("Member: %s\nRole: %s",
-				l.ServiceData.PolicyDelta.BindingDeltas[d].Member,
-				l.ServiceData.PolicyDelta.BindingDeltas[d].Role,
-			),
-			Inline: true,
+			Name:   fmt.Sprintf("%s Binding", strings.Title(strings.ToLower(l.ServiceData.PolicyDelta.BindingDeltas[d].Action))),
+			Value:  fmt.Sprintf("**Member**: `%s`\n**Role**: `%s`", l.ServiceData.PolicyDelta.BindingDeltas[d].Member, l.ServiceData.PolicyDelta.BindingDeltas[d].Role),
+			Inline: false,
 		}
 		fields = append(fields, field)
 	}
@@ -203,10 +213,14 @@ func createAlertFromLog(l *AuditLog, s *discordgo.Session) *discordgo.MessageEmb
 			URL:     "https://github.com/jonpulsifer/cloudlab/tree/master/gcp/functions/go/iam-revoker",
 			IconURL: "https://cdn.discordapp.com/avatars/679083916476284931/5eb8279f6ab340b685442c2ada5ac0cb.png?size=128",
 		},
-		Description: "This alert is triggered with Audit Log activity on the Organization resource. _Any_ adjustment to the IAM policy will trigger this alert.",
+		Description: "This alert is triggered by any write operation on the [Organization](https://cloud.google.com/resource-manager/docs/creating-managing-organization) resource. Any organization IAM policy change will trigger this function.",
 		Fields:      fields,
 		Thumbnail: &discordgo.MessageEmbedThumbnail{
 			URL: "https://kstatic.googleusercontent.com/files/0b4c3e9c05e13e24ec9d5503d67ddac46fb8acce20e580e39a159379265879205d203dfcc71b857ac402241213d60914ef529f59b36785fbdd6ff9c7f1338470",
+		},
+		Footer: &discordgo.MessageEmbedFooter{
+			Text:    "Powered by Google Cloud Functions",
+			IconURL: "https://codelabs.developers.google.com/codelabs/cloud-starting-cloudfunctions/img/51b03178ac54a85f.png",
 		},
 		Timestamp: time.Now().Format(time.RFC3339),
 	}
