@@ -27,12 +27,6 @@ func OpenDiscordSession() *discordgo.Session {
 		log.Fatalln("RIP, no token found. Set DISCORD_TOKEN")
 	}
 
-	// Load the sound file.
-	err := loadSound()
-	if err != nil {
-		log.Fatalf("Error loading sound: %v", err)
-	}
-
 	// Create a new Discord session using the provided bot token.
 	dg, err := discordgo.New("Bot " + token)
 	if err != nil {
@@ -48,14 +42,6 @@ func OpenDiscordSession() *discordgo.Session {
 		log.Fatalf("Error opening Discord session: %v", err)
 	}
 
-	// TODO: send a message
-
-	// Wait here until CTRL-C or other term signal is received.
-	// fmt.Println("Bot is now running.  Press CTRL-C to exit.")
-	// sc := make(chan os.Signal, 1)
-	// signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, os.Kill)
-	// <-sc
-
 	// Cleanly close down the Discord session.
 	// dg.Close()
 	return dg
@@ -68,6 +54,12 @@ func ready(s *discordgo.Session, event *discordgo.Ready) {
 // This function will be called (due to AddHandler above) every time a new
 // message is created on any channel that the autenticated bot has access to.
 func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
+
+	// Load the sound file.
+	err := loadSound()
+	if err != nil {
+		log.Fatalf("Error loading sound: %v", err)
+	}
 
 	// Ignore all messages created by the bot itself
 	// This isn't required in this specific example but it's a good practice.
@@ -108,7 +100,6 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 // loadSound attempts to load an encoded sound file from disk.
 func loadSound() error {
-
 	file, err := os.Open("alert.dca")
 	if err != nil {
 		fmt.Println("Error opening dca file :", err)
@@ -116,7 +107,6 @@ func loadSound() error {
 	}
 
 	var opuslen int16
-
 	for {
 		// Read opus frame length from dca file.
 		err = binary.Read(file, binary.LittleEndian, &opuslen)
@@ -210,7 +200,7 @@ func createAlertFromLog(l *AuditLog, s *discordgo.Session) *discordgo.MessageEmb
 		Color: 0xcc0000, // Dark(er) Red
 		Author: &discordgo.MessageEmbedAuthor{
 			Name:    fmt.Sprintf("%s", s.State.User.Username),
-			URL:     "https://github.com/jonpulsifer/cloudlab/tree/master/gcp/functions/go/iam-revoker",
+			URL:     "https://github.com/jonpulsifer/cloudlab/tree/master/gcp/functions/orgPolicyAuditor",
 			IconURL: "https://cdn.discordapp.com/avatars/679083916476284931/5eb8279f6ab340b685442c2ada5ac0cb.png?size=128",
 		},
 		Description: "This alert is triggered by any write operation on the [Organization](https://cloud.google.com/resource-manager/docs/creating-managing-organization) resource. Any organization IAM policy change will trigger this function.",

@@ -22,7 +22,7 @@ Ensure `DATA_WRITE` logs are enabled for `iam.googleapis.com` on the organizatio
 
 ```yaml
 - auditLogConfigs:
-  - logType: DATA_WRITE                                                                
+  - logType: DATA_WRITE
   service: iam.googleapis.com
 ```
 
@@ -48,5 +48,4 @@ gcloud functions deploy orgPolicyAuditor \
     --service-account=your-sa@your-project.iam.gserviceaccount.com \
     --memory=128Mi \
     --set-env-vars DISCORD_TOKEN="lol"
-}
 ```
