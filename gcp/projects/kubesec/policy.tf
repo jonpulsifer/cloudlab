@@ -32,10 +32,7 @@ resource "google_project_organization_policy" "list-policies-values" {
   project = local.project
   for_each = {
     "compute.trustedImageProjects" : [
-      "projects/cos-cloud",
-      "projects/gke-node-images",
-      "projects/ubuntu-os-cloud",
-      "projects/ubuntu-os-gke-cloud"
+      "projects/gce-uefi-images",
     ],
     "gcp.resourceLocations" : [
       "us-east4-b",
@@ -44,7 +41,7 @@ resource "google_project_organization_policy" "list-policies-values" {
   }
   constraint = format("constraints/%s", each.key)
   list_policy {
-    inherit_from_parent = false
+    inherit_from_parent = true
     allow {
       values = each.value
     }
