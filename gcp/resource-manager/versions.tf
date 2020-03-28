@@ -22,8 +22,7 @@ provider "google-beta" {
 terraform {
   required_version = ">= 0.12"
   backend "gcs" {
-    bucket         = "kubesec"
-    prefix         = "state/resource-manager"
-    encryption_key = ""
+    bucket = "kubesec"
+    prefix = "state/resource-manager"
   }
 }

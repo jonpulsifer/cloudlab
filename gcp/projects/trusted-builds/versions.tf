@@ -18,8 +18,7 @@ provider "google" {
 terraform {
   required_version = ">= 0.12"
   backend "gcs" {
-    bucket         = "kubesec"
-    prefix         = "trusted-builds"
-    encryption_key = ""
+    bucket = "kubesec"
+    prefix = "trusted-builds"
   }
 }

@@ -24,8 +24,7 @@ provider "google-beta" {
 terraform {
   required_version = ">= 0.12"
   backend "gcs" {
-    bucket         = "kubesec"
-    prefix         = "state/wishlist"
-    encryption_key = ""
+    bucket = "kubesec"
+    prefix = "state/wishlist"
   }
 }
