@@ -11,14 +11,14 @@ provider "google" {
   project = local.project
   region  = local.region
   zone    = join("-", [local.region, "b"])
-  version = "~> 3.0.0"
+  version = "~> 3.14"
 }
 
 provider "google-beta" {
   project = local.project
   region  = local.region
   zone    = join("-", [local.region, "b"])
-  version = "~> 3.0.0"
+  version = "~> 3.14"
 }
 
 terraform {
