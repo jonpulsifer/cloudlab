@@ -52,8 +52,8 @@ data "google_iam_policy" "explicit" {
 
   binding {
     members = [
-      "serviceAccount:gke-nodes-lab@kubesec.iam.gserviceaccount.com",
+      "serviceAccount:service-821879192255@gcf-admin-robot.iam.gserviceaccount.com",
     ]
-    role = "roles/storage.objectViewer"
+    role = "roles/cloudfunctions.serviceAgent"
   }
 }
