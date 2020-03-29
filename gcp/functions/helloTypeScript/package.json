@@ -20,7 +20,7 @@
   "license": "MIT",
   "devDependencies": {
     "@google-cloud/functions-framework": "^1.4.0",
-    "tsc-watch": "^4.1.0",
+    "tsc-watch": "^4.2.3",
     "typescript": "^3.7.5"
   }
 }
