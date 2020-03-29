@@ -3,7 +3,7 @@ automerge: true
 projects:
 - dir: gcp/projects/homelab-ng
 - dir: gcp/projects/jonpulsifer
-- dir: gcp/projects/kubesec
+- dir: ./gcp/projects/kubesec
 - dir: gcp/projects/sea-wall
 - dir: gcp/projects/trusted-builds
 - dir: gcp/projects/wishlist-4362e

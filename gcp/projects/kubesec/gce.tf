@@ -1,9 +1,9 @@
 module "network" {
-  source = "../../../../terraform-modules/gce-vpc"
+  source = "github.com/jonpulsifer/terraform-modules//gce-vpc"
   name   = "lab"
 }
 module "lab" {
-  source             = "../../../../terraform-modules/gce-igm-shielded"
+  source             = "github.com/jonpulsifer/terraform-modules//gce-igm-shielded"
   name               = "lab"
   subnet             = module.network.self_links.subnet
   encrypt_disk       = false

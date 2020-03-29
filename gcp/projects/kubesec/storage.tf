@@ -14,6 +14,7 @@ data "google_iam_policy" "gcs-cloud-lab" {
     members = [
       "group:cloud@pulsifer.ca",
       "serviceAccount:821879192255@cloudbuild.gserviceaccount.com",
+      "user:alice@pulsifer.ca",
     ]
   }
 }
