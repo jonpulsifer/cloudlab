@@ -10,14 +10,13 @@ provider "google" {
   project = local.project
   region  = local.region
   zone    = local.zone
-  version = "~> 3.0.0-beta.1"
+  version = "~> 3.14"
 }
 
 terraform {
   required_version = ">= 0.12"
   backend "gcs" {
-    bucket         = "kubesec"
-    prefix         = "state/homelab-ng"
-    encryption_key = ""
+    bucket = "kubesec"
+    prefix = "state/homelab-ng"
   }
 }

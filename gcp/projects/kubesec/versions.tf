@@ -18,8 +18,7 @@ provider "google-beta" {
 
 terraform {
   backend "gcs" {
-    bucket         = "kubesec"
-    prefix         = "state/lab"
-    encryption_key = ""
+    bucket = "kubesec"
+    prefix = "state/lab"
   }
 }

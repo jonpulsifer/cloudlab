@@ -5,8 +5,7 @@ provider "vault" {
 
 terraform {
   backend "gcs" {
-    bucket         = "kubesec"
-    prefix         = "state/vault"
-    encryption_key = ""
+    bucket = "kubesec"
+    prefix = "state/vault"
   }
 }

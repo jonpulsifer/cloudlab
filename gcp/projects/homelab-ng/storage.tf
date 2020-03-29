@@ -12,6 +12,7 @@ data "google_iam_policy" "gcs-homelab-ng" {
     role = "roles/storage.admin"
     members = [
       "group:cloud@pulsifer.ca",
+      "serviceAccount:seawall-ae-1234567@appspot.gserviceaccount.com",
     ]
   }
 }
