@@ -1,10 +1,10 @@
 module "network" {
-  source = "../../../../terraform-modules/gce-vpc"
+  source = "github.com/jonpulsifer/terraform-modules//gce-vpc"
   name   = "atlantis"
 }
 
 module "atlantis" {
-  source             = "../../../../terraform-modules/gce-igm-shielded"
+  source             = "github.com/jonpulsifer/terraform-modules//gce-igm-shielded"
   name               = "atlantis"
   subnet             = module.network.self_links.subnet
   encrypt_disk       = false

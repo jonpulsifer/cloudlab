@@ -32,7 +32,7 @@ locals {
 }
 
 module "network" {
-  source                  = "../../../../terraform-modules/gce-vpc"
+  source                  = "github.com/jonpulsifer/terraform-modules//gce-vpc"
   name                    = "default"
   auto_create_subnetworks = true # gui cheat codes
   subnet_name             = "default"
@@ -41,7 +41,7 @@ module "network" {
 }
 
 module "atlantis" {
-  source         = "../../../../terraform-modules/appengine-flex"
+  source         = "github.com/jonpulsifer/terraform-modules//appengine-flex"
   name           = "default"
   project        = local.project
   location       = local.region
