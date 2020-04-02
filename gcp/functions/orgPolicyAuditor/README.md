@@ -16,16 +16,6 @@ The general flow looks like this:
 Audit logs -> PubSub -> Function -> Discord
 ```
 
-### Audit log configuration
-
-Ensure `DATA_WRITE` logs are enabled for `iam.googleapis.com` on the organization by using the [Cloud Console](https://console.cloud.google.com/iam-admin/audit) or `gcloud`
-
-```yaml
-- auditLogConfigs:
-  - logType: DATA_WRITE
-  service: iam.googleapis.com
-```
-
 ### Log sink configuration
 
 Create a [logging sink](https://cloud.google.com/logging/docs/export) that publishes to a PubSub Topic with the following filter:
