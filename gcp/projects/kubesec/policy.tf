@@ -3,6 +3,7 @@ resource "google_project_organization_policy" "bool-policies" {
     "iam.disableServiceAccountCreation" : false,
     "iam.disableServiceAccountKeyCreation" : false,
     "compute.disableGuestAttributesAccess" : false,
+    "compute.requireShieldedVm" : false,
   }
   project    = local.project
   constraint = format("constraints/%s", each.key)
@@ -35,8 +36,7 @@ resource "google_project_organization_policy" "list-policies-values" {
       "projects/gce-uefi-images",
     ],
     "gcp.resourceLocations" : [
-      "us-east4-b",
-      "us-east4"
+      "in:us-east4-locations",
     ],
   }
   constraint = format("constraints/%s", each.key)
