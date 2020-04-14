@@ -4,7 +4,7 @@ resource "google_folder" "production" {
 }
 
 resource "google_folder" "dev" {
-  display_name = "Dev - Not Billable"
+  display_name = "Development"
   parent       = data.google_organization.org.name
 }
 

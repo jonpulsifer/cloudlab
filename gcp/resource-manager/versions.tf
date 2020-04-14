@@ -2,21 +2,25 @@ locals {
   project = "kubesec"
   region  = "northamerica-northeast1"
   zone    = join("-", [local.region, "a"])
+  metadata_projects = [
+    "homelab-ng",
+    "kubesec",
+    "trusted-builds",
+  ]
 }
 
 provider "google" {
   project = local.project
   region  = local.region
   zone    = local.zone
-  version = "~> 3.14"
+  version = "~> 3.17"
 }
 
 provider "google-beta" {
-  #  credentials = file("credentials.json")
   project = local.project
   region  = local.region
   zone    = local.zone
-  version = "~> 3.14"
+  version = "~> 3.17"
 }
 
 terraform {
