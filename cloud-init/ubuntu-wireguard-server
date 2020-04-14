@@ -33,6 +33,14 @@ packages:
  - datadog-agent
  - dirmngr
  - google-osconfig-agent
+ - iptables
+ - wireguard
+
+write_files:
+ - path: /etc/modules-load.d/wireguard.conf
+   content: wireguard
+ - path: /etc/sysctl.d/ip-forwarding.conf
+   content: net.ipv4.ip_forward=1
 
 runcmd:
 - mkdir -m 700 -p /var/cloudlab
@@ -50,19 +58,6 @@ runcmd:
 - chmod 600 /etc/wireguard/wg0.conf
 - systemctl daemon-reload
 - systemctl enable wg-quick@wg0
-
-# ejson2env
-- wget -qO /usr/bin/ejson2env https://github.com/Shopify/ejson2env/releases/download/v2.0.0/linux-amd64
-- chmod +x /usr/bin/ejson2env
-- mkdir -m 700 -p /opt/ejson
-- gsutil -m cp -r gs://cloud-lab/ejson /var/cloudlab
-- ln -sf /var/cloudlab/ejson/keys /opt/ejson/keys
-
-# ${name}
-- mkdir -m 700 /var/${name}
-- ejson2env -q /var/cloudlab/services/${name}.ejson > /var/${name}/services/${name}.env
-- systemctl enable cloudlab.service
-- systemctl enable ${name}.service
 
 power_state:
  delay: "now"
