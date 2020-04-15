@@ -20,7 +20,7 @@ data "google_iam_policy" "gcs-cloud-lab" {
 
   binding {
     role    = "roles/storage.objectViewer"
-    members = [format("serviceAccount:%s", module.wireguard.service_account.email)]
+    members = [format("serviceAccount:%s", module.jenkins.service_account.email)]
   }
 }
 
