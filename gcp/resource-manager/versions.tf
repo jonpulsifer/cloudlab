@@ -2,11 +2,6 @@ locals {
   project = "kubesec"
   region  = "northamerica-northeast1"
   zone    = join("-", [local.region, "a"])
-  metadata_projects = [
-    "homelab-ng",
-    "kubesec",
-    "trusted-builds",
-  ]
 }
 
 provider "google" {
