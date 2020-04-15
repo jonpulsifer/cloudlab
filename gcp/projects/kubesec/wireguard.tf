@@ -6,8 +6,7 @@ module "wireguard_network" {
 }
 
 module "wireguard" {
-  #source             = "github.com/jonpulsifer/terraform-modules//gce-igm-shielded"
-  source             = "../../../../terraform-modules/gce-igm-shielded"
+  source             = "github.com/jonpulsifer/terraform-modules//gce-igm-shielded"
   name               = "wireguard"
   subnet             = module.wireguard_network.subnet.self_link
   encrypt_disk       = false
