@@ -17,6 +17,11 @@ data "google_iam_policy" "gcs-cloud-lab" {
       "user:alice@pulsifer.ca",
     ]
   }
+
+  binding {
+    role    = "roles/storage.objectViewer"
+    members = [format("serviceAccount:%s", module.wireguard.service_account.email)]
+  }
 }
 
 resource "google_storage_bucket_iam_policy" "gcs-cloud-lab" {

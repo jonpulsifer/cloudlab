@@ -34,6 +34,7 @@ resource "google_project_organization_policy" "list-policies-values" {
   for_each = {
     "compute.trustedImageProjects" : [
       "projects/gce-uefi-images",
+      "projects/ubuntu-os-cloud",
     ],
     "gcp.resourceLocations" : [
       "in:us-east4-locations",
