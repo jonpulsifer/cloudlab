@@ -14,13 +14,15 @@ data "google_iam_policy" "gcs-cloud-lab" {
     members = [
       "group:cloud@pulsifer.ca",
       "serviceAccount:821879192255@cloudbuild.gserviceaccount.com",
-      "user:alice@pulsifer.ca",
     ]
   }
 
   binding {
-    role    = "roles/storage.objectViewer"
-    members = [format("serviceAccount:%s", module.jenkins.service_account.email)]
+    role = "roles/storage.objectViewer"
+    members = [
+      "user:alice@pulsifer.ca",
+      #format("serviceAccount:%s", module.jenkins.service_account.email)
+    ]
   }
 }
 
