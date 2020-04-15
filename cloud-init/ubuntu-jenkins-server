@@ -58,4 +58,4 @@ power_state:
  mode: reboot
  message: Cloud Init Complete
  timeout: 1
- condition: 0
+ condition: True
