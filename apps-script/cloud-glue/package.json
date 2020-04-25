@@ -1,0 +1,23 @@
+{
+  "name": "cloud-glue",
+  "dependencies": {
+    "@google/clasp": "^2.3.0"
+  },
+  "version": "1.0.0",
+  "description": "apps script cloud glue",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/jonpulsifer/cloudlab"
+  },
+  "keywords": [
+    "apps",
+    "script"
+  ],
+  "author": "Jonathan Pulsifer",
+  "license": "MIT"
+}
