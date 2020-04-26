@@ -1,7 +1,8 @@
 resource "google_project_organization_policy" "list-policies-allow" {
   project = local.project
   for_each = toset([
-    "serviceuser.services"
+    "serviceuser.services",
+    "iam.allowedPolicyMemberDomains", # so anyone can make an HTTP request to the function
   ])
   constraint = format("constraints/%s", each.value)
 
@@ -24,5 +25,20 @@ resource "google_project_organization_policy" "bool-policies" {
   constraint = format("constraints/%s", each.key)
   boolean_policy {
     enforced = each.value
+  }
+}
+
+# we can't deploy functions in canada yet :(
+resource "google_project_organization_policy" "allowed_locations" {
+  constraint = "constraints/gcp.resourceLocations"
+  project    = local.project
+
+  list_policy {
+    inherit_from_parent = true
+    allow {
+      values = [
+        "in:us-east4-locations",
+      ]
+    }
   }
 }

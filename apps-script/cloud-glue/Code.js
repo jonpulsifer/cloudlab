@@ -1,10 +1,6 @@
-/**
-* @OnlyCurrentDoc  Limits the script to only accessing the current spreadsheet.
-*/
-
 var DIALOG_TITLE = 'Example Dialog';
 var SIDEBAR_TITLE = 'Example Sidebar';
-var VERSION = '0.1.22'
+var VERSION = '0.1.29'
 
 /**
 * Adds a custom menu with items to show the sidebar and dialog.
@@ -17,6 +13,7 @@ function onOpen(e) {
   .addItem('💰 Show a sidebar', 'showSidebar')
   .addItem('📥 Show a dialog box', 'showDialog')
   .addItem('📤 Send a pubsub message', 'makeAPubSub')
+  .addItem('🤖 Send a cloud function request', 'getFunky')
   .addSeparator()
   .addSubMenu(ui.createMenu('System')
               .addItem('Version: '.concat(VERSION), 'showSidebar')
@@ -104,14 +101,27 @@ function makeAPubSub(){
   var message = {};
   var topic = "gas";
   var project = "cloud-glue";
-  message.data = Utilities.base64Encode("hi")
+  message.data = Utilities.base64Encode("hi");
   message.attributes = {
-    email: Session.getActiveUser(),
+    email: Session.getActiveUser().getEmail(),
     spreadsheet: SpreadsheetApp.getActiveSpreadsheet().getId(),
     sheet: SpreadsheetApp.getActiveSheet().getName()
   };
-  
+
   var response = pubsub(project, topic, message);
+  Logger.log(response.log);
+  Logger.log(response.result);
+  SpreadsheetApp.getUi().alert(response.log)
+}
+
+function getFunky(){
+  var message = {};
+  message.email = Session.getActiveUser().getEmail();
+  message.spreadsheet = SpreadsheetApp.getActiveSpreadsheet().getId();
+  message.sheet = SpreadsheetApp.getActiveSheet().getName();
+  message.score = Math.floor(Math.random() * 100);
+
+  var response = cloudfunction(message);
   Logger.log(response.log);
   Logger.log(response.result);
   SpreadsheetApp.getUi().alert(response.log)

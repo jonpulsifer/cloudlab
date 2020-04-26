@@ -1,8 +1,14 @@
-resource "google_project_service" "marketplace" {
-  service                    = "appsmarket-component.googleapis.com"
-  disable_dependent_services = true
-}
-resource "google_project_service" "pubsub" {
-  service                    = "pubsub.googleapis.com"
-  disable_dependent_services = true
+resource "google_project_service" "service" {
+  for_each = toset([
+    "appsmarket-component.googleapis.com",
+    "cloudfunctions.googleapis.com",
+    "logging.googleapis.com",
+    "pubsub.googleapis.com",
+    "storage-api.googleapis.com",
+    "storage-component.googleapis.com"
+  ])
+
+  service = each.key
+
+  disable_on_destroy = false
 }

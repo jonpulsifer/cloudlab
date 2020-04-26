@@ -2,7 +2,7 @@
 
 function deploy(){
   gcloud functions deploy cloud-glue \
-    --trigger=http \
+    --trigger-http \
     --region=us-east4 \
     --runtime=go113 \
     --entry-point AppScriptHandler \
