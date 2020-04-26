@@ -63,3 +63,15 @@ module "wishlist" {
     environment = "production"
   }
 }
+
+module "cloud-glue" {
+  source          = "github.com/jonpulsifer/terraform-modules//gcp-project"
+  project_id      = "cloud-glue"
+  name            = "cloud-glue"
+  folder_id       = google_folder.production.name
+  compute         = false
+  billing_account = data.google_billing_account.cloudlab.id
+  labels = {
+    environment = "production"
+  }
+}
