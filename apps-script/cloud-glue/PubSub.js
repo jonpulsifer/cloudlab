@@ -1,4 +1,6 @@
-function pubsub(project, topic, message) {
+function pubsub(message) {
+  var project = "cloud-glue";
+  var topic = "gas";
   var url = 'https://pubsub.googleapis.com/v1/projects/[PROJECT]/topics/[TOPIC]:publish'
   .replace("[TOPIC]", topic)
   .replace("[PROJECT]", project);

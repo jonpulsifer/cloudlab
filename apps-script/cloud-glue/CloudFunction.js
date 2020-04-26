@@ -7,7 +7,7 @@ function cloudfunction(message) {
     muteHttpExceptions: true,
     payload: JSON.stringify(message),
     headers: {
-      Authorization: 'Bearer ' + ScriptApp.getOAuthToken()
+      Authorization: 'Bearer '.concat(ScriptApp.getOAuthToken())
     }
   });
 
