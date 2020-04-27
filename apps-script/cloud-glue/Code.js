@@ -1,6 +1,7 @@
 var DIALOG_TITLE = 'Example Dialog';
 var SIDEBAR_TITLE = 'Example Sidebar';
-var VERSION = '0.1.30'
+var CONFIGURATION_TITLE = '🧰 Cloud Glue Configuration'
+var VERSION = '0.1.39'
 
 /**
 * Adds a custom menu with items to show the sidebar and dialog.
@@ -12,12 +13,11 @@ function onOpen(e) {
   ui.createAddonMenu()
   .addItem('💰 Show a sidebar', 'showSidebar')
   .addItem('📥 Show a dialog box', 'showDialog')
-  .addItem('📤 Send a pubsub message', 'makeAPubSub')
-  .addItem('🤖 Send a cloud function request', 'getFunky')
-  .addItem('Version: '.concat(VERSION), 'showSidebar')
   .addSeparator()
   .addSubMenu(ui.createMenu('System')
-              .addItem('Version: '.concat(VERSION), 'showSidebar')
+                              .addItem('📤 Send a pubsub message', 'makeAPubSub')
+                              .addItem('🤖 Send a cloud function request', 'getFunky')
+                              .addItem('Version: '.concat(VERSION), 'showConfiguration')
              )
   .addToUi();
   Logger.log(e);
@@ -101,7 +101,8 @@ function modifySheets(action) {
 
 function makeAPubSub() {
   var message = {};
-  message.data = Utilities.base64Encode(string(100));
+  var dataObj = { score: 100 };
+  message.data = Utilities.base64Encode(JSON.stringify(dataObj));
   message.attributes = {
     email: Session.getActiveUser().getEmail(),
     spreadsheet: SpreadsheetApp.getActiveSpreadsheet().getId(),
@@ -124,4 +125,12 @@ function getFunky() {
   var response = cloudfunction(message);
   Logger.log(response.log);
   SpreadsheetApp.getUi().alert(response.log);
+}
+
+function showConfiguration() {
+  var ui = HtmlService.createTemplateFromFile('Configuration')
+  .evaluate()
+  .setTitle(CONFIGURATION_TITLE)
+  .setSandboxMode(HtmlService.SandboxMode.IFRAME);
+  SpreadsheetApp.getUi().showSidebar(ui);
 }
