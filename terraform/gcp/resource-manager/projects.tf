@@ -69,7 +69,7 @@ module "cloud-glue" {
   project_id      = "cloud-glue"
   name            = "cloud-glue"
   folder_id       = google_folder.production.name
-  compute         = false
+  compute         = true
   billing_account = data.google_billing_account.cloudlab.id
   labels = {
     environment = "production"
