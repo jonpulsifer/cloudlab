@@ -92,7 +92,8 @@ resource "google_organization_policy" "trusted_image_projects" {
       values = [
         "projects/trusted-builds",
         "projects/secure-the-cloud",
-        "projects/gce-uefi-images",
+        "projects/cos-cloud",
+        "projects/ubuntu-os-cloud",
       ]
     }
   }

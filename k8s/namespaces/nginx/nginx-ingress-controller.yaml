@@ -7,8 +7,7 @@ metadata:
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/part-of: ingress-nginx
 spec:
-  externalTrafficPolicy: Local
-  type: LoadBalancer
+  type: NodePort
   selector:
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/part-of: ingress-nginx
@@ -19,9 +18,6 @@ spec:
     - name: https
       port: 443
       targetPort: https
-    - name: minecraft
-      port: 25565
-      targetPort: minecraft
 ---
 kind: Deployment
 apiVersion: apps/v1
@@ -50,19 +46,19 @@ spec:
     spec:
       terminationGracePeriodSeconds: 60
       serviceAccountName: nginx
+      hostNetwork: true
       containers:
-        - name: nginx-ingress-controller
-          image: quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.26.1
+        - name: controller
+          image: quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.32.0
           args:
             - /nginx-ingress-controller
-            - --publish-service=$(POD_NAMESPACE)/nginx
-            - --annotations-prefix=nginx.ingress.kubernetes.io
+            - --election-id=ingress-controller-leader
             - --configmap=$(POD_NAMESPACE)/nginx-config
             - --tcp-services-configmap=$(POD_NAMESPACE)/nginx-tcp
             - --udp-services-configmap=$(POD_NAMESPACE)/nginx-udp
-            - --http-port=8080
-            - --https-port=8443
-            - --ssl-passthrough-proxy-port=8442
+              #- --http-port=8080
+              #- --https-port=8443
+              #- --ssl-passthrough-proxy-port=8442
             - --enable-ssl-passthrough
           securityContext:
             allowPrivilegeEscalation: true
@@ -71,8 +67,7 @@ spec:
                 - ALL
               add:
                 - NET_BIND_SERVICE
-            # www-data -> 33
-            runAsUser: 33
+            runAsUser: 101
           env:
             - name: POD_NAME
               valueFrom:
@@ -84,13 +79,13 @@ spec:
                   fieldPath: metadata.namespace
           ports:
             - name: http
-              containerPort: 8080
+              containerPort: 80
+              hostPort: 80
             - name: https
-              containerPort: 8443
+              containerPort: 443
+              hostPort: 443
             - name: prometheus
               containerPort: 10254
-            - name: minecraft
-              containerPort: 25565
           livenessProbe:
             failureThreshold: 3
             httpGet:

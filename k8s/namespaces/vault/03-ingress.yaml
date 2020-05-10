@@ -1,7 +1,7 @@
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: iap
+  name: vault
   namespace: vault
   annotations:
     kubernetes.io/ingress.allow-http: "false"
@@ -12,14 +12,14 @@ metadata:
 spec:
   tls:
   - hosts:
-    - vault.pulsifer.dev
-    secretName: vault.pulsifer.dev
+    - vault.home.pulsifer.ca
+    secretName: vault.home.pulsifer.ca
   rules:
-  - host: vault.pulsifer.dev
+  - host: vault.home.pulsifer.ca
     http:
       paths:
       - backend:
-          serviceName: iap
+          serviceName: vault
           servicePort: 8200
         path: "/*"
       - backend:
@@ -27,5 +27,5 @@ spec:
           servicePort: 8200
         path: "/v1/*"
   backend:
-    serviceName: iap
+    serviceName: vault
     servicePort: 8200

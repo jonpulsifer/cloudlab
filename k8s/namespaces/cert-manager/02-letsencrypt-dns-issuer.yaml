@@ -13,18 +13,7 @@ spec:
     - selector: {}
       dns01:
         clouddns:
-          project: kubesec
+          project: homelab-ng
           serviceAccountSecretRef:
-            name: gcp-sa
-            key: credentials.json
-    - selector:
-        dnsNames:
-        - wishin.app
-        - www.wishin.app
-        - '*.wishin.app'
-      dns01:
-        clouddns:
-          project: wishlist-4362e
-          serviceAccountSecretRef:
-            name: gcp-sa
+            name: gcp-service-account
             key: credentials.json

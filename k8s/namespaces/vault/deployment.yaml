@@ -22,7 +22,7 @@ spec:
       serviceAccountName: vault
       containers:
       - name: vault
-        image: vault:1.1.3
+        image: vault:1.4.1
         imagePullPolicy: IfNotPresent
         args: ['server']
         securityContext:
@@ -53,14 +53,14 @@ spec:
             ui = true
 
             seal "gcpckms" {
-              project     = "kubesec"
-              region      = "us-east4"
+              project     = "homelab-ng"
+              region      = "northamerica-northeast1"
               key_ring    = "vault"
               crypto_key  = "vault"
             }
 
             storage "gcs" {
-              bucket     = "cloud-lab"
+              bucket     = "homelab-ng"
               ha_enabled = "false"
             }
 
@@ -86,7 +86,7 @@ spec:
       volumes:
       - name: vault-tls
         secret:
-          secretName: vault.pulsifer.dev
+          secretName: vault.home.pulsifer.ca
       - name: gcp-service-account
         secret:
           secretName: gcp-service-account

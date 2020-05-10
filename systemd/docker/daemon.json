@@ -4,6 +4,7 @@
          "log-opts": {
                "gcp-log-cmd": "true"
          },
+        "mtu": 1460,
         "storage-driver": "overlay2",
         "runtimes": {
                 "runsc": {

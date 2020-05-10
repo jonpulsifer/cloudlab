@@ -26,10 +26,21 @@ spec:
         args:
         - --source=ingress
         - --source=service
-        - --domain-filter=k8s.pulsifer.dev
-        - --domain-filter=pulsifer.dev
+        - --domain-filter=home.pulsifer.ca
         - --provider=google
+        - --google-project=homelab-ng
         - --registry=txt
         - --txt-owner-id=k8s
         securityContext:
           runAsUser: 65534
+        env:
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: /var/run/secrets/gcp/credentials.json
+        volumeMounts:
+        - name: gcp-service-account
+          mountPath: /var/run/secrets/gcp
+          readOnly: true
+      volumes:
+      - name: gcp-service-account
+        secret:
+          secretName: gcp-service-account
