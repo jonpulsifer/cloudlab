@@ -1,64 +1,25 @@
-data "google_iam_policy" "explicit" {
-  binding {
-    role    = "roles/cloudfunctions.serviceAgent"
-    members = ["serviceAccount:service-629296473058@gcf-admin-robot.iam.gserviceaccount.com"]
-  }
-
-
-  binding {
-    role    = "roles/editor"
-    members = ["serviceAccount:629296473058@cloudservices.gserviceaccount.com"]
-  }
-
-  binding {
-    role    = "roles/owner"
-    members = ["user:jonathan@pulsifer.ca"]
-  }
-
-  binding {
-    role    = "roles/dns.admin"
-    members = [join(":", ["serviceAccount", google_service_account.ddns.email])]
-  }
-
-  binding {
-    role    = "roles/monitoring.metricWriter"
-    members = [join(":", ["serviceAccount", google_service_account.ddns.email])]
-  }
-
-  binding {
-    role    = "roles/logging.logWriter"
-    members = [join(":", ["serviceAccount", google_service_account.ddns.email])]
-  }
-
-  binding {
-    role    = "roles/cloudtrace.agent"
-    members = [join(":", ["serviceAccount", google_service_account.ddns.email])]
-  }
-
-  binding {
-    role    = "roles/errorreporting.writer"
-    members = [join(":", ["serviceAccount", google_service_account.ddns.email])]
-  }
-
-  binding {
-    role    = "roles/compute.viewer"
-    members = [join(":", ["serviceAccount", google_service_account.datadog.email])]
-  }
-
-  binding {
-    role    = "roles/monitoring.viewer"
-    members = [join(":", ["serviceAccount", google_service_account.datadog.email])]
-  }
-
-  binding {
-    role    = "roles/cloudasset.viewer"
-    members = [join(":", ["serviceAccount", google_service_account.datadog.email])]
-  }
+resource "google_project_iam_member" "certbot" {
+  project = "homelab-ng"
+  role    = "roles/dns.admin"
+  member  = join(":", ["serviceAccount", google_service_account.certbot.email])
 }
 
-resource "google_project_iam_policy" "explicit" {
-  project     = data.google_client_config.current.project
-  policy_data = data.google_iam_policy.explicit.policy_data
+resource "google_project_iam_member" "cert_manager" {
+  project = "homelab-ng"
+  role    = "roles/dns.admin"
+  member  = join(":", ["serviceAccount", google_service_account.cert_manager.email])
+}
+
+resource "google_project_iam_member" "external_dns" {
+  project = "homelab-ng"
+  role    = "roles/dns.admin"
+  member  = join(":", ["serviceAccount", google_service_account.external_dns.email])
+}
+
+resource "google_project_iam_member" "ddnsbot" {
+  project = "homelab-ng"
+  role    = "roles/dns.admin"
+  member  = join(":", ["serviceAccount", google_service_account.ddns.email])
 }
 
 resource "google_service_account" "ddns" {
@@ -68,3 +29,20 @@ resource "google_service_account" "ddns" {
 resource "google_service_account" "datadog" {
   account_id = "datadog"
 }
+
+resource "google_service_account" "certbot" {
+  account_id = "certbot"
+}
+
+resource "google_service_account" "external_dns" {
+  account_id = "external-dns"
+}
+
+resource "google_service_account" "vault" {
+  account_id = "vault-nuc"
+}
+
+resource "google_service_account" "cert_manager" {
+  account_id = "cert-manager"
+}
+

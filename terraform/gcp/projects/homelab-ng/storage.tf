@@ -2,7 +2,7 @@ resource "google_storage_bucket" "homelab-ng" {
   name               = "homelab-ng"
   location           = data.google_client_config.current.region
   bucket_policy_only = "true"
-  requester_pays     = true
+  requester_pays     = false
   force_destroy      = false
   storage_class      = "REGIONAL"
 }
@@ -12,7 +12,7 @@ data "google_iam_policy" "gcs-homelab-ng" {
     role = "roles/storage.admin"
     members = [
       "group:cloud@pulsifer.ca",
-      "serviceAccount:seawall-ae-1234567@appspot.gserviceaccount.com",
+      format("serviceAccount:%s", google_service_account.vault.email),
     ]
   }
 }
