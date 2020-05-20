@@ -21,6 +21,6 @@
   "devDependencies": {
     "@google-cloud/functions-framework": "^1.5.1",
     "tsc-watch": "^4.2.6",
-    "typescript": "^3.9.2"
+    "typescript": "^3.9.3"
   }
 }
