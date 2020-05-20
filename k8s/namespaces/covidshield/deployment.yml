@@ -24,9 +24,6 @@ spec:
         app.kubernetes.io/part-of: covidshield
     spec:
       automountServiceAccountToken: false
-      securityContext:
-        runAsUser: 0
-        fsGroup: 0
       containers:
       - name: key-submission
         image: jonpulsifer/key-submission:latest
@@ -65,9 +62,6 @@ spec:
         app.kubernetes.io/part-of: covidshield
     spec:
       automountServiceAccountToken: false
-      securityContext:
-        runAsUser: 0
-        fsGroup: 0
       containers:
       - name: key-submission
         image: jonpulsifer/key-retrieval:latest
