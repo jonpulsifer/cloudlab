@@ -6,21 +6,24 @@ metadata:
   labels:
     app.kubernetes.io/name: mysql
     app.kubernetes.io/part-of: mysql
-
 spec:
   egress:
-  - {}
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          app.kubernetes.io/name: covidshield
   ingress:
   - from:
     - namespaceSelector:
         matchLabels:
-          app.kubernetes.io/name: wishlist
+          app.kubernetes.io/name: covidshield
     ports:
     - port: 3306
       protocol: TCP
   podSelector:
     matchLabels:
-      app: mysql
+      app.kubernetes.io/name: mysql
+      app.kubernetes.io/part-of: mysql
   policyTypes:
   - Ingress
   - Egress

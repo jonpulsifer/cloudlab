@@ -11,10 +11,12 @@ spec:
         protocol: TCP
       - port: 443
         protocol: TCP
-      - port: 25565
-        protocol: TCP
+  egress:
+    - to:
   podSelector:
     matchLabels:
-      k8s-app: nginx
+      app.kubernetes.io/name: ingress-nginx
+      app.kubernetes.io/part-of: ingress-nginx
   policyTypes:
   - Ingress
+  - Egress

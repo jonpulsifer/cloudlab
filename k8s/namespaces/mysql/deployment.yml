@@ -23,13 +23,6 @@ spec:
         app.kubernetes.io/name: mysql
         app.kubernetes.io/part-of: mysql
     spec:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: cloud.google.com/gke-preemptible
-                operator: DoesNotExist
       automountServiceAccountToken: false
       securityContext:
         runAsUser: 0
@@ -44,11 +37,14 @@ spec:
         - --character-set-server=utf8mb4
         - --collation-server=utf8mb4_unicode_ci
         env:
-        - name: MYSQL_ROOT_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: db
-              key: MYSQL_ROOT_PASSWORD
+        - name: MYSQL_RANDOM_ROOT_PASSWORD
+          value: "yes"
+        - name: MYSQL_DATABASE
+          value: covidshield
+        - name: MYSQL_USER
+          value: covidshield
+        - name: MYSQL_PASSWORD
+          value: covidshield
         ports:
         - containerPort: 3306
         volumeMounts:
@@ -56,5 +52,4 @@ spec:
           mountPath: /var/lib/mysql/
       volumes:
       - name: data
-        persistentVolumeClaim:
-          claimName: mysql-data
+        emptyDir: {}
