@@ -12,7 +12,8 @@
   "scripts": {
     "start": "webpack-dev-server",
     "prebuild": "rimraf ./dist",
-    "build": "webpack"
+    "build": "webpack",
+    "push": "clasp push --force"
   },
   "dependencies": {
     "@shopify/polaris": "^4.25.0",

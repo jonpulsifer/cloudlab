@@ -1,4 +1,5 @@
 const { join } = require('path');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
@@ -17,7 +18,8 @@ module.exports = {
   ],
   externals: {
     "react": "React",
-    "react-dom": "ReactDOM"
+    "react-dom": "ReactDOM",
+    "react-udm": "ReactUDM"
   },
   module: {
     rules: [
