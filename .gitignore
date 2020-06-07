@@ -7,3 +7,6 @@ functions/**/*.js
 functions/**/*.js.map
 functions/**/node_modules/
 *.old
+node_modules/**
+**/node_modules
+

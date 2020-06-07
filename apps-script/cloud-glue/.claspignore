@@ -1,4 +1,7 @@
 node_modules/**
+public/**
+src/**
 package.json
 yarn.lock
+webpack.config.js
 *.nix
