@@ -12,8 +12,13 @@ module.exports = {
       hash: false,
       filename: 'sidebar.html',
       template: join(__dirname, 'src', 'index.html'),
-    })
+    }),
+
   ],
+  externals: {
+    "react": "React",
+    "react-dom": "ReactDOM"
+  },
   module: {
     rules: [
       {
@@ -25,9 +30,7 @@ module.exports = {
             loader: 'babel-loader',
             options: {
               babelrc: false,
-              presets: [['@babel/preset-env', {
-                "targets": "> 5%",
-              }], '@babel/react'],
+              presets: ['@babel/preset-env', '@babel/react'],
             },
           },
         ],
