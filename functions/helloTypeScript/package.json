@@ -19,7 +19,7 @@
   "author": "Jonathan Pulsifer",
   "license": "MIT",
   "devDependencies": {
-    "@google-cloud/functions-framework": "^1.5.1",
+    "@google-cloud/functions-framework": "^1.6.0",
     "tsc-watch": "^4.2.8",
     "typescript": "^3.9.5"
   }
