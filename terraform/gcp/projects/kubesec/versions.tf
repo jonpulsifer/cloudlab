@@ -21,4 +21,15 @@ terraform {
     bucket = "kubesec"
     prefix = "state/lab"
   }
+
+  required_providers {
+    google = {
+      source  = "registry.terraform.io/-/google"
+      version = "~> 3.25"
+    }
+    google-beta = {
+      source  = "registry.terraform.io/-/google-beta"
+      version = "~> 3.25"
+    } 
+  }
 }
