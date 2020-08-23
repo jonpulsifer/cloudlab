@@ -1,9 +1,3 @@
-resource "google_project_iam_member" "certbot" {
-  project = "homelab-ng"
-  role    = "roles/dns.admin"
-  member  = join(":", ["serviceAccount", google_service_account.certbot.email])
-}
-
 resource "google_project_iam_member" "cert_manager" {
   project = "homelab-ng"
   role    = "roles/dns.admin"
@@ -24,14 +18,6 @@ resource "google_project_iam_member" "ddnsbot" {
 
 resource "google_service_account" "ddns" {
   account_id = "ddns-function"
-}
-
-resource "google_service_account" "datadog" {
-  account_id = "datadog"
-}
-
-resource "google_service_account" "certbot" {
-  account_id = "certbot"
 }
 
 resource "google_service_account" "external_dns" {

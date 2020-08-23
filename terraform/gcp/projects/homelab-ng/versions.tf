@@ -14,7 +14,13 @@ provider "google" {
 }
 
 terraform {
-  required_version = ">= 0.12"
+  required_version = ">= 0.13"
+  required_providers {
+    google = {
+      source  = "registry.terraform.io/-/google"
+      version = "~> 3.14"
+    }
+  }
   backend "gcs" {
     bucket = "kubesec"
     prefix = "state/homelab-ng"
