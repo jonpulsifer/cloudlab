@@ -24,7 +24,7 @@ module "trusted-builds" {
   project_id      = "trusted-builds"
   name            = "trusted-builds - cloudlab"
   folder_id       = google_folder.production.name
-  compute         = true
+  compute         = false
   billing_account = data.google_billing_account.cloudlab.id
   labels = {
     environment = "production"
@@ -49,16 +49,6 @@ module "secure-the-cloud" {
   name            = "secure teh cloud"
   folder_id       = google_folder.dev.name
   billing_account = data.google_billing_account.cloudlab.id
-  labels = {
-    environment = "production"
-  }
-}
-
-module "wishlist" {
-  source     = "github.com/jonpulsifer/terraform-modules//gcp-project"
-  project_id = "wishlist-4362e"
-  name       = "family christmas wishlist"
-  folder_id  = google_folder.dev.name
   labels = {
     environment = "production"
   }

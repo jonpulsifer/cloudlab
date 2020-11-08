@@ -101,7 +101,7 @@ resource "google_organization_policy" "trusted_image_projects" {
 
 resource "google_organization_policy" "bucket_policy_no_acls" {
   org_id     = data.google_organization.org.org_id
-  constraint = "storage.bucketPolicyOnly"
+  constraint = "storage.uniformBucketLevelAccess"
 
   boolean_policy {
     enforced = true
