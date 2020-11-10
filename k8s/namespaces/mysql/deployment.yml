@@ -40,11 +40,11 @@ spec:
         - name: MYSQL_RANDOM_ROOT_PASSWORD
           value: "yes"
         - name: MYSQL_DATABASE
-          value: covidshield
+          value: wishlist
         - name: MYSQL_USER
-          value: covidshield
+          value: wishlist
         - name: MYSQL_PASSWORD
-          value: covidshield
+          value: wishlist
         ports:
         - containerPort: 3306
         volumeMounts:

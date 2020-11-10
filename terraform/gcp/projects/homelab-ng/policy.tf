@@ -51,7 +51,8 @@ resource "google_project_organization_policy" "allowed_locations" {
     inherit_from_parent = true
     allow {
       values = [
-        "us-east4",
+        "in:us-east4-locations",
+        "us",
       ]
     }
   }
