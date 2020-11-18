@@ -1,0 +1,26 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/functions/helloTypeScript"
+  schedule:
+    interval: daily
+    time: "10:00"
+  open-pull-requests-limit: 99
+- package-ecosystem: gomod
+  directory: "/functions/cloud-glue/pubsub"
+  schedule:
+    interval: daily
+    time: "10:00"
+  open-pull-requests-limit: 99
+- package-ecosystem: gomod
+  directory: "/functions/cloud-glue/http"
+  schedule:
+    interval: daily
+    time: "10:00"
+  open-pull-requests-limit: 99
+- package-ecosystem: gomod
+  directory: "/functions/orgPolicyAuditor"
+  schedule:
+    interval: daily
+    time: "10:00"
+  open-pull-requests-limit: 99
