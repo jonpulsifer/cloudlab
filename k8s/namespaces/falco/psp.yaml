@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: policy/v1beta1
 kind: PodSecurityPolicy
 metadata:
   name: falco
@@ -24,8 +24,6 @@ spec:
     readOnly: true
   - pathPrefix: /var/run/docker.sock
     readOnly: true
-  requiredDropCapabilities:
-    - ALL
   forbiddenSysctls:
     - '*'
   readOnlyRootFilesystem: false
@@ -33,9 +31,10 @@ spec:
     - 'configMap'
     - 'secret'
     - 'hostPath'
+    - 'emptyDir'
   hostIPC: false
   hostNetwork: true
-  hostPID: false
+  hostPID: true
   hostPorts:
     - min: 0
       max: 65535

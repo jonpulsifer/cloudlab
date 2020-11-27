@@ -19,15 +19,16 @@ spec:
     spec:
       automountServiceAccountToken: true
       serviceAccountName: falco
+      dnsPolicy: ClusterFirstWithHostNet
       hostNetwork: true
       containers:
       - name: falco
-        image: gcr.io/trusted-builds/falco:latest
+        image: falcosecurity/falco:latest
         imagePullPolicy: Always
         args:
         - /usr/bin/falco
         - --cri
-        - /host/run/containerd/containerd.sock
+        - /run/containerd/containerd.sock
         - -K
         - /var/run/secrets/kubernetes.io/serviceaccount/token
         - -k
@@ -64,13 +65,13 @@ spec:
         - mountPath: /host/usr
           name: usr-fs
           readOnly: true
-        - mountPath: /etc/falco
-          name: falco-config
+        - mountPath: /dev/shm
+          name: dshm
         - mountPath: /host/etc
           name: etc-fs
           readOnly: true
         env:
-        - name: SYSDIG_BPF_PROBE
+        - name: FALCO_BPF_PROBE
           value: ""
       volumes:
       - name: containerd-socket
@@ -97,6 +98,6 @@ spec:
       - name: usr-fs
         hostPath:
           path: /usr
-      - name: falco-config
-        configMap:
-          name: falco-config
+      - name: dshm
+        emptyDir:
+          medium: Memory
