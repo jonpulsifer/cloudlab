@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: falcosidekick
+  namespace: falcosidekick
+  labels:
+    app.kubernetes.io/name: falcosidekick
+    app.kubernetes.io/part-of: falco
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: falcosidekick
+      app.kubernetes.io/part-of: falco
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: falcosidekick
+        app.kubernetes.io/part-of: falco
+    spec:
+      securityContext:
+        runAsUser: 1234
+        fsGroup: 1234
+      serviceAccountName: falcosecurity
+      containers:
+      - name: falcosidekick
+        image: falcosecurity/falcosidekick:latest
+        imagePullPolicy: IfNotPresent
+        args: [ "/falcosidekick"]
+        env:
+        - name: DISCORD_WEBHOOKURL
+          valueFrom:
+            secretKeyRef:
+              name: falcosidekick
+              key: discord-webhookurl
+        - name: DISCORD_ICON
+          value: ""
+        - name: DISCORD_MINIMUMPRIORITY
+          value: ""
+        ports:
+        - containerPort: 2801
+          name: http
+          protocol: TCP
+        livenessProbe:
+          httpGet:
+            path: /ping
+            port: http
+          initialDelaySeconds: 10
+          periodSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /ping
+            port: http
+          initialDelaySeconds: 10
+          periodSeconds: 5

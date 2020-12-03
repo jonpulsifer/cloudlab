@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: falcosidekick
+  namespace: falcosidekick
+  labels:
+    app.kubernetes.io/name: falcosidekick
+    app.kubernetes.io/part-of: falco
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: falcosidekick
+  namespace: falcosidekick
+  labels:
+    app.kubernetes.io/name: falcosidekick
+    app.kubernetes.io/part-of: falco
+rules:
+- apiGroups: [""]
+  resources: ["endpoints"]
+  resourceNames: ["falcosidekick"]
+  verbs: ["get"]
+- apiGroups: ["policy"]
+  resources: ["podsecuritypolicies"]
+  verbs: ["use"]
+  resourceNames: ["falcosidekick"]
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: falcosidekick
+  namespace: falcosidekick
+  labels:
+    app.kubernetes.io/name: falcosidekick
+    app.kubernetes.io/part-of: falco
+subjects:
+- kind: ServiceAccount
+  name: falcosidekick
+  namespace: falcosidekick
+roleRef:
+  kind: ClusterRole
+  name: falcosidekick
+  apiGroup: rbac.authorization.k8s.io

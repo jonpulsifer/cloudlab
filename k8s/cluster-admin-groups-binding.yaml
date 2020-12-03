@@ -1,14 +1,7 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  annotations:
-    kubectl.kubernetes.io/last-applied-configuration: |
-      {"apiVersion":"rbac.authorization.k8s.io/v1","kind":"ClusterRoleBinding","metadata":{"annotations":{},"name":"cluster-admins"},"roleRef":{"apiGroup":"rbac.authorization.k8s.io","kind":"ClusterRole","name":"cluster-admin"},"subjects":[{"apiGroup":"rbac.authorization.k8s.io","kind":"Group","name":"cloud@pulsifer.ca"}]}
-  creationTimestamp: "2019-11-02T17:48:44Z"
   name: cluster-admins
-  resourceVersion: "124263"
-  selfLink: /apis/rbac.authorization.k8s.io/v1/clusterrolebindings/cluster-admins
-  uid: 4a721d71-d658-41fd-94ac-5262f32baf39
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole

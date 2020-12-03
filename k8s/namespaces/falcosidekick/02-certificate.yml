@@ -1,0 +1,16 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: falcosidekick
+  namespace: falcosidekick
+  labels:
+    app.kubernetes.io/name: falcosidekick
+    app.kubernetes.io/part-of: falco
+spec:
+  secretName: falcosidekick-tls
+  issuerRef:
+    name: letsencrypt-dns
+    kind: ClusterIssuer
+  commonName: falcosidekick.home.pulsifer.ca
+  dnsNames:
+  - falcosidekick.home.pulsifer.ca

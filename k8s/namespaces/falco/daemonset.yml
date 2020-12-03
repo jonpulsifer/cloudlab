@@ -39,7 +39,7 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: spec.nodeName
-        - name: SYSDIG_BPF_PROBE
+        - name: FALCO_BPF_PROBE
           value: ""
         securityContext:
           privileged: true
@@ -70,9 +70,6 @@ spec:
         - mountPath: /host/etc
           name: etc-fs
           readOnly: true
-        env:
-        - name: FALCO_BPF_PROBE
-          value: ""
       volumes:
       - name: containerd-socket
         hostPath:
