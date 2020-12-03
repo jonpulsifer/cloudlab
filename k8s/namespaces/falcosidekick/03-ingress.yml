@@ -11,8 +11,7 @@ metadata:
 spec:
   tls:
   - hosts:
-    - falco
-    - www.wishin.app
+    - falcosidekick.home.pulsifer.ca
     secretName: falcosidekick-tls
   rules:
   - host: "falcosidekick.home.pulsifer.ca"
@@ -20,8 +19,14 @@ spec:
       paths:
       - path: /
         backend:
-          serviceName: falcosidekick
-          servicePort: 2801
-  backend:
-    serviceName: falcosidekick
-    servicePort: 2801
+          service:
+            name: falcosidekick
+            port:
+              number: 2801
+              protocol: TCP
+  defaultBackend:
+    service:
+      name: falcosidekick
+      port:
+        number: 2801
+        protocol: TCP

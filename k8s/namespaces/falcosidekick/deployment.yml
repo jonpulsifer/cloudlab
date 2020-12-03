@@ -26,7 +26,7 @@ spec:
       securityContext:
         runAsUser: 1234
         fsGroup: 1234
-      serviceAccountName: falcosecurity
+      serviceAccountName: falcosidekick
       containers:
       - name: falcosidekick
         image: falcosecurity/falcosidekick:latest
