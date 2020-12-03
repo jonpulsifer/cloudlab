@@ -19,7 +19,7 @@ spec:
       protocol: TCP
   podSelector:
     matchLabels:
-      app.kubernetes.io/name: falco
+      app.kubernetes.io/name: falcosidekick
       app.kubernetes.io/part-of: falco
   policyTypes:
   - Ingress

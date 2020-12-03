@@ -1,4 +1,11 @@
 apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: falco-config
+  namespace: falco
+  labels:
+    app.kubernetes.io/name: falco
+    app.kubernetes.io/part-of: falco
 data:
   falco.yaml: |
     rules_file:
@@ -86,25 +93,7 @@ data:
 
     http_output:
       enabled: true
-      url: http://falcosidekick.home.pulsifer.ca
+      url: http://falcosidekick.falcosidekick:2801
 
     grpc_output:
       enabled: false
-kind: ConfigMap
-metadata:
-  creationTimestamp: "2020-12-03T03:26:02Z"
-  managedFields:
-  - apiVersion: v1
-    fieldsType: FieldsV1
-    fieldsV1:
-      f:data:
-        .: {}
-        f:falco.yaml: {}
-    manager: kubectl
-    operation: Update
-    time: "2020-12-03T03:26:02Z"
-  name: falco-config
-  namespace: falco
-  resourceVersion: "4944036"
-  selfLink: /api/v1/namespaces/falco/configmaps/falco-config
-  uid: 3aa4f3c7-51f1-4eb9-8b6c-90b15b08505d
