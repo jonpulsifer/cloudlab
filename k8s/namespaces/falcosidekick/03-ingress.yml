@@ -18,15 +18,14 @@ spec:
     http:
       paths:
       - path: /
+        pathType: Prefix
         backend:
           service:
             name: falcosidekick
             port:
               number: 2801
-              protocol: TCP
   defaultBackend:
     service:
       name: falcosidekick
       port:
         number: 2801
-        protocol: TCP

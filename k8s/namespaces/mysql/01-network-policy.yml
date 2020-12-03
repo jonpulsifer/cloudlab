@@ -11,12 +11,12 @@ spec:
   - to:
     - namespaceSelector:
         matchLabels:
-          app.kubernetes.io/name: covidshield
+          app.kubernetes.io/name: wishlist
   ingress:
   - from:
     - namespaceSelector:
         matchLabels:
-          app.kubernetes.io/name: covidshield
+          app.kubernetes.io/name: wishlist
     ports:
     - port: 3306
       protocol: TCP

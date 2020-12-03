@@ -31,8 +31,9 @@ spec:
       - name: falcosidekick
         image: falcosecurity/falcosidekick:latest
         imagePullPolicy: IfNotPresent
-        args: [ "/falcosidekick"]
         env:
+        - name: DEBUG
+          value: "TRUE"
         - name: DISCORD_WEBHOOKURL
           valueFrom:
             secretKeyRef:

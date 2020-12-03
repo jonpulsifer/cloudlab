@@ -44,6 +44,10 @@ spec:
         securityContext:
           privileged: true
         volumeMounts:
+        - mountPath: /etc/falco/falco.yaml
+          name: falco-config
+          subPath: falco.yaml
+          readOnly: true
         - mountPath: /host/var/run/docker.sock
           name: docker-socket
           readOnly: true
@@ -71,6 +75,9 @@ spec:
           name: etc-fs
           readOnly: true
       volumes:
+      - name: falco-config
+        configMap:
+          name: falco-config
       - name: containerd-socket
         hostPath:
           path: /var/run/containerd.sock
