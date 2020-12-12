@@ -40,25 +40,24 @@ spec:
       labels:
         app.kubernetes.io/name: ingress-nginx
         app.kubernetes.io/part-of: ingress-nginx
-      annotations:
-        prometheus.io/port: "10254"
-        prometheus.io/scrape: "true"
     spec:
       terminationGracePeriodSeconds: 60
       serviceAccountName: nginx
       hostNetwork: true
       containers:
         - name: controller
-          image: quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.32.0
+          image: k8s.gcr.io/ingress-nginx/controller:v0.41.2@sha256:1f4f402b9c14f3ae92b11ada1dfe9893a88f0faeb0b2f4b903e2c67a0c3bf0de
           args:
             - /nginx-ingress-controller
             - --election-id=ingress-controller-leader
+            - --ingress-class=nginx
             - --configmap=$(POD_NAMESPACE)/nginx-config
             - --tcp-services-configmap=$(POD_NAMESPACE)/nginx-tcp
             - --udp-services-configmap=$(POD_NAMESPACE)/nginx-udp
-              #- --http-port=8080
-              #- --https-port=8443
-              #- --ssl-passthrough-proxy-port=8442
+            - --publish-status-address=$(POD_IP)
+            #- --http-port=8080
+            #- --https-port=8443
+            #- --ssl-passthrough-proxy-port=8442
             - --enable-ssl-passthrough
           securityContext:
             allowPrivilegeEscalation: true
@@ -77,15 +76,19 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.namespace
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: LD_PRELOAD
+              value: /usr/local/lib/libmimalloc.so
           ports:
             - name: http
               containerPort: 80
             - name: https
               containerPort: 443
-            - name: prometheus
-              containerPort: 10254
           livenessProbe:
-            failureThreshold: 3
+            failureThreshold: 5
             httpGet:
               path: /healthz
               port: 10254

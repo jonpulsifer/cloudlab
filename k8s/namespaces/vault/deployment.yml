@@ -22,7 +22,7 @@ spec:
       serviceAccountName: vault
       containers:
       - name: vault
-        image: vault:1.4.1
+        image: vault:1.6.0
         imagePullPolicy: IfNotPresent
         args: ['server']
         securityContext:
