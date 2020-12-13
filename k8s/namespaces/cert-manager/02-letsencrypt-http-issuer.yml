@@ -1,0 +1,16 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-http
+  namespace: cert-manager
+spec:
+  acme:
+    email: jonathan@pulsifer.ca
+    server: https://acme-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: letsencrypt-dns-issuer
+    solvers:
+    - selector: {}
+      http01:
+        ingress:
+          class: nginx

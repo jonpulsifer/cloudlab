@@ -46,11 +46,14 @@ resource "vault_jwt_auth_backend" "google" {
 }
 
 resource "vault_jwt_auth_backend_role" "google_default" {
-  backend               = vault_jwt_auth_backend.google.path
-  role_type             = "oidc"
-  role_name             = "google-default"
-  token_policies        = ["default"]
-  allowed_redirect_uris = ["https://vault.home.pulsifer.ca/ui/vault/auth/google/oidc/callback"]
-  user_claim            = "sub"
-  groups_claim          = "groups"
+  backend        = vault_jwt_auth_backend.google.path
+  role_type      = "oidc"
+  role_name      = "google-default"
+  token_policies = ["default"]
+  allowed_redirect_uris = [
+    "https://vault.home.pulsifer.ca/ui/vault/auth/google/oidc/callback",
+    "https://vault.pulsifer.ca/ui/vault/auth/google/oidc/callback"
+  ]
+  user_claim   = "sub"
+  groups_claim = "groups"
 }
