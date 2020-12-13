@@ -1,11 +1,16 @@
 provider "vault" {
-  version = "~> 1.8"
-  address = "https://vault.pulsifer.dev"
+  address = "https://vault.home.pulsifer.ca"
 }
 
 terraform {
   backend "gcs" {
     bucket = "kubesec"
     prefix = "state/vault"
+  }
+  required_providers {
+    vault = {
+      source  = "hashicorp/vault"
+      version = "2.16.0"
+    }
   }
 }

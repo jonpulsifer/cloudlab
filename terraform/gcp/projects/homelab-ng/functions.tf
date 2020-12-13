@@ -3,14 +3,15 @@ resource "google_cloudfunctions_function" "ddns" {
   description = "dynamic dns function thingy"
   runtime     = "go113"
 
+  max_instances       = 10
   available_memory_mb = 128
   trigger_http        = true
   timeout             = 60
-  entry_point         = "UpdateDDNS"
+  entry_point         = "DDNSCloudEventReceiver"
   labels              = {}
 
   environment_variables = {
-    API_TOKEN = ""
+    DDNS_API_TOKEN = ""
   }
 
   lifecycle {

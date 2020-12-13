@@ -60,7 +60,7 @@ spec:
             }
 
             storage "gcs" {
-              bucket     = "homelab-ng"
+              bucket     = "homelab-ng-vault"
               ha_enabled = "false"
             }
 

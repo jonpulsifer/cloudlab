@@ -4,8 +4,6 @@ locals {
   zone    = join("-", [local.region, "a"])
 }
 
-data "google_client_config" "current" {}
-
 provider "google" {
   project = local.project
   region  = local.region
@@ -17,8 +15,8 @@ terraform {
   required_version = ">= 0.13"
   required_providers {
     google = {
-      source  = "registry.terraform.io/-/google"
-      version = "~> 3.14"
+      source  = "hashicorp/google"
+      version = "~> 3.50"
     }
   }
   backend "gcs" {
