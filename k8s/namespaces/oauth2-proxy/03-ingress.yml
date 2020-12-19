@@ -1,0 +1,31 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: oauth2-proxy
+  namespace: oauth2-proxy
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+  labels:
+    app.kubernetes.io/name: oauth2-proxy
+    app.kubernetes.io/part-of: oauth2-proxy
+spec:
+  tls:
+  - hosts:
+    - oauth2-proxy.home.pulsifer.ca
+    secretName: oauth2-proxy-tls
+  rules:
+  - host: "oauth2-proxy.home.pulsifer.ca"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: oauth2-proxy
+            port:
+              number: 4180
+  defaultBackend:
+    service:
+      name: oauth2-proxy
+      port:
+        number: 4180
