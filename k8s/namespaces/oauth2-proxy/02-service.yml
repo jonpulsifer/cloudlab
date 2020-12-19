@@ -10,7 +10,7 @@ spec:
   type: NodePort
   ports:
   - port: 4180
-    targetPort: 2801
+    targetPort: 4180
   selector:
     app.kubernetes.io/name: oauth2-proxy
     app.kubernetes.io/part-of: oauth2-proxy
