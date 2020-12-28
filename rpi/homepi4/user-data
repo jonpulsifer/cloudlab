@@ -1,0 +1,40 @@
+#cloud-config
+
+# This is the user-data configuration file for cloud-init. By default this sets
+# up an initial user called "ubuntu" with password "ubuntu", which must be
+# changed at first login. However, many additional actions can be initiated on
+# first boot from this file. The cloud-init documentation has more details:
+#
+# https://cloudinit.readthedocs.io/
+
+hostname: homepi4
+
+ssh_pwauth: false
+ssh_import_id:
+- gh:jonpulsifer
+- gh:j0npulsifer
+
+users:
+- default
+- name: jawn
+  gecos: jawn
+  shell: /bin/bash
+  sudo: ALL=(ALL) NOPASSWD:ALL
+  ssh_authorized_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJewr6lJtffl+uZpnWXTIE5Sd3VeytQRGXKMBv1s5R/v
+  ssh_import_id:
+  - gh:jonpulsifer
+  - gh:j0npulsifer
+
+package_update: true
+package_upgrade: true
+
+runcmd:
+- mkdir -m 700 -p /var/homepi4
+
+power_state:
+ delay: "now"
+ mode: reboot
+ message: et voila
+ timeout: 1
+ condition: True
