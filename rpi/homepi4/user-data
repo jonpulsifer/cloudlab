@@ -10,27 +10,55 @@
 hostname: homepi4
 
 ssh_pwauth: false
-ssh_import_id:
-- gh:jonpulsifer
-- gh:j0npulsifer
 
 users:
-- default
+- name: kiosk
+  gecos: kiosk
+  shell: /bin/bash
+  ssh_authorized_keys:
+    - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJewr6lJtffl+uZpnWXTIE5Sd3VeytQRGXKMBv1s5R/v
 - name: jawn
   gecos: jawn
   shell: /bin/bash
   sudo: ALL=(ALL) NOPASSWD:ALL
   ssh_authorized_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJewr6lJtffl+uZpnWXTIE5Sd3VeytQRGXKMBv1s5R/v
-  ssh_import_id:
-  - gh:jonpulsifer
-  - gh:j0npulsifer
+    - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJewr6lJtffl+uZpnWXTIE5Sd3VeytQRGXKMBv1s5R/v
 
 package_update: true
 package_upgrade: true
+package_reboot_if_required: true
+packages:
+- xserver-xorg
+- xinit
+
+snap:
+  commands:
+    00: snap install chromium
+
+write_files:
+- path: /etc/systemd/system/kiosk.service
+  permissions: 0400
+  owner: root
+  content: |
+    [Unit]
+    Description=Chrome Kiosk
+    Requires=graphical.target
+    After=graphical.target
+
+    [Service]
+    Environment=DISPLAY=:0.0
+    Environment=XAUTHORITY=/home/kiosk/.Xauthority
+    ExecStart=xinit /snap/bin/chromium --start-fullscreen --kiosk --incognito --noerrdialogs --disable-translate --no-first-run --fast --fast-start --disable-infobars --disable-features=TranslateUI --disk-cache-dir=/dev/null "https://pulsifer.ca" -- -nocursor
+    Restart=always
+    User=kiosk
+    Group=kiosk
+
+    [Install]
+    WantedBy=graphical.target
 
 runcmd:
-- mkdir -m 700 -p /var/homepi4
+- systemctl daemon-reload
+- systemctl enable kiosk
 
 power_state:
  delay: "now"
