@@ -26,8 +26,9 @@ spec:
         args:
         - --source=ingress
         - --source=service
+        - --domain-filter=pulsifer.dev
         - --domain-filter=home.pulsifer.ca
-        # - --domain-filter=wishin.app
+        - --domain-filter=wishin.app
         - --provider=google
         - --google-project=homelab-ng
         - --registry=txt

@@ -1,0 +1,9 @@
+[Unit]
+Description=Blink the Blinkt
+After=multi-user.target
+
+[Service]
+ExecStart=/usr/bin/python3 /usr/local/bin/blinky
+
+[Install]
+WantedBy=multi-user.target
