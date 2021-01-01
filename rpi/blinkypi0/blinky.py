@@ -1,10 +1,9 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # copy to /usr/local/bin/blinky and use with blinky.service
 
+import blinkt
 import random
 import time
-
-import blinkt
 
 blinkt.set_clear_on_exit()
 blinkt.set_brightness(0.1)
