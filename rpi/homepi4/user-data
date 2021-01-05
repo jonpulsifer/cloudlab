@@ -15,10 +15,10 @@ users:
 - name: kiosk
   gecos: kiosk
   shell: /bin/bash
-  ssh_authorized_keys:
-    - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJewr6lJtffl+uZpnWXTIE5Sd3VeytQRGXKMBv1s5R/v
+  groups: [adm, audio, cdrom, dialout, dip, plugdev, tty, video]
 - name: jawn
   gecos: jawn
+  groups: [adm, audio, cdrom, dialout, dip, plugdev, tty, video]
   shell: /bin/bash
   sudo: ALL=(ALL) NOPASSWD:ALL
   ssh_authorized_keys:
@@ -30,12 +30,19 @@ package_reboot_if_required: true
 packages:
 - xserver-xorg
 - xinit
+- xserver-xorg-legacy
 
 snap:
   commands:
     00: snap install chromium
 
 write_files:
+- path: /etc/X11/Xwrapper.config 
+  permissions: 0440
+  owner: root
+  content: |
+    allowed_users=anybody
+    needs_root_rights=yes
 - path: /etc/systemd/system/kiosk.service
   permissions: 0400
   owner: root
@@ -48,7 +55,7 @@ write_files:
     [Service]
     Environment=DISPLAY=:0.0
     Environment=XAUTHORITY=/home/kiosk/.Xauthority
-    ExecStart=xinit /snap/bin/chromium --start-fullscreen --kiosk --incognito --noerrdialogs --disable-translate --no-first-run --fast --fast-start --disable-infobars --disable-features=TranslateUI --disk-cache-dir=/dev/null "https://pulsifer.ca" -- -nocursor
+    ExecStart=xinit /snap/bin/chromium --start-fullscreen --kiosk --incognito --noerrdialogs --disable-translate --no-first-run --fast --fast-start --disable-infobars --disable-features=TranslateUI --disk-cache-dir=/dev/null "https://hub.home.pulsifer.ca" -- -nocursor
     Restart=always
     User=kiosk
     Group=kiosk
