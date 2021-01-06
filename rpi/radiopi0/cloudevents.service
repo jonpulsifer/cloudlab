@@ -1,0 +1,10 @@
+[Unit]
+Description=Runs the blinkypi0 flask service that listens to cloudevents
+After=multi-user.target
+
+[Service]
+ExecStart=/usr/bin/python3 /usr/local/bin/cloudevents-receiver
+
+[Install]
+WantedBy=multi-user.target
+

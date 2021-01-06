@@ -1,0 +1,9 @@
+[Unit]
+Description=Sound the Radio
+After=multi-user.target
+
+[Service]
+ExecStart=/usr/bin/python3 /usr/local/bin/radio
+
+[Install]
+WantedBy=multi-user.target
