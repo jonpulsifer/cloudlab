@@ -10,6 +10,7 @@ data:
   hsts-preload: "true"
   hsts-max-age: "31536000"
   proxy-set-headers: "nginx/nginx-headers"
+  use-gzip: "true"
   use-proxy-protocol: "false"
   log-format-upstream: '{ "time": "$time_iso8601", "remote_addr": "$proxy_protocol_addr",
     "x-forward-for": "$proxy_add_x_forwarded_for", "request_id": "$request_id", "remote_user":

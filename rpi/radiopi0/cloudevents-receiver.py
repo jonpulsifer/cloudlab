@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # copy to /usr/local/bin/cloudevents-receiver and use with cloudevents.service
 
-import blinkt
+import phatbeat
 import colorsys
 import logging
 import random
@@ -12,8 +12,9 @@ from flask import Flask, request
 from cloudevents.http import from_http
 
 app = Flask(__name__)
-blinkt.set_clear_on_exit()
-blinkt.set_brightness(0.1)
+
+phatbeat.set_clear_on_exit()
+phatbeat.set_brightness(1)
 
 stop_actions = threading.Event()
 
@@ -21,7 +22,7 @@ stop_actions = threading.Event()
 def home():
     event = from_http(request.headers, request.get_data())
     try:
-        if event['type'] == 'dev.pulsifer.blinky.request':
+        if event['type'] == 'dev.pulsifer.radio.request':
             return process_event(event)
     except:
         return "", 400
@@ -29,11 +30,9 @@ def home():
 
 def process_event(event):
     actions = [
-        'blink',
         'brighten',
         'clear',
         'darken',
-        'debug',
         'rainbow',
     ]
     data = event.data
@@ -62,34 +61,38 @@ def thread_action(action):
     worker.start()
 
 def brighten(stop):
-    blinkt.set_brightness(1)
+    phatbeat.set_brightness(1)
+    phatbeat.show()
 
 def darken(stop):
-    blinkt.set_brightness(0.1)
+    phatbeat.set_brightness(0.1)
+    phatbeat.show()
 
 def clear(stop):
-    blinkt.clear()
+    stop_actions.set()
+    phatbeat.clear()
+    phatbeat.show()
 
 def blink(stop):
     while not stop.is_set():
-        for i in range(blinkt.NUM_PIXELS):
-            blinkt.set_pixel(i, random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
-        blinkt.show()
-        time.sleep(0.1)
-    blinkt.clear()
+        for i in range(phatbeat.CHANNEL_PIXELS):
+            phatbeat.set_pixel(i, random.randint(0, 255), random.randint(0, 255), random.randint(0, 255), channel=random.randint(0,1))
+        phatbeat.show()
+        time.sleep(0.01)
+    phatbeat.clear()
 
 def rainbow(stop):
-    spacing = 360.0 / 16.0
+    SPEED = 200
+    BRIGHTNESS = 64
+    SPREAD = 20
     while not stop.is_set():
-        hue = int(time.time() * 100) % 360
-        for x in range(blinkt.NUM_PIXELS):
-            offset = x * spacing
-            h = ((hue + offset) % 360) / 360.0
-            r, g, b = [int(c * 255) for c in colorsys.hsv_to_rgb(h, 1.0, 1.0)]
-            blinkt.set_pixel(x, r, g, b)
-        blinkt.show()
+        for x in range(phatbeat.CHANNEL_PIXELS):
+            h = (time.time() * SPEED + (x * SPREAD)) % 360 / 360.0
+            r, g, b = [int(c*BRIGHTNESS) for c in colorsys.hsv_to_rgb(h, 1.0, 1.0)]
+            phatbeat.set_pixel(x, r, g, b, channel=0)
+            phatbeat.set_pixel(x, r, g, b, channel=1)
+        phatbeat.show()
         time.sleep(0.001)
-    blinkt.clear()
 
 if __name__ == "__main__":
     app.run(port=3000, host="0.0.0.0")

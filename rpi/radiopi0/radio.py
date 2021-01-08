@@ -5,8 +5,8 @@ import colorsys
 import phatbeat
 import time
 
-SPEED = 50
-BRIGHTNESS = 64
+SPEED = 200
+BRIGHTNESS = 128
 SPREAD = 20
 
 while True:

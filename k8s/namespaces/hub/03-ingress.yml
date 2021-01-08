@@ -1,0 +1,63 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hub
+  namespace: hub
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+  labels:
+    app.kubernetes.io/name: hub
+    app.kubernetes.io/part-of: hub
+spec:
+  tls:
+  - hosts:
+    - hub.home.pulsifer.ca
+    secretName: hub-home-pulsifer-ca-tls
+  rules:
+  - host: "hub.home.pulsifer.ca"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: hub
+            port:
+              number: 8080
+  defaultBackend:
+    service:
+      name: hub
+      port:
+        number: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hub-external
+  namespace: hub
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+  labels:
+    app.kubernetes.io/name: hub-external
+    app.kubernetes.io/part-of: hub
+spec:
+  tls:
+  - hosts:
+    - hub.pulsifer.ca
+    secretName: hub-pulsifer-ca-tls
+  rules:
+  - host: "hub.pulsifer.ca"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: hub
+            port:
+              number: 8080
+  defaultBackend:
+    service:
+      name: hub
+      port:
+        number: 8080

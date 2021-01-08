@@ -1,0 +1,33 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: hub
+  namespace: hub
+  labels:
+    app.kubernetes.io/name: hub
+    app.kubernetes.io/part-of: hub
+spec:
+  secretName: hub-home-pulsifer-ca-tls
+  issuerRef:
+    name: letsencrypt-dns
+    kind: ClusterIssuer
+  commonName: hub.home.pulsifer.ca
+  dnsNames:
+  - hub.home.pulsifer.ca
+---
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: hub-external
+  namespace: hub
+  labels:
+    app.kubernetes.io/name: hub-external
+    app.kubernetes.io/part-of: hub
+spec:
+  secretName: hub-pulsifer-ca-tls
+  issuerRef:
+    name: letsencrypt-http
+    kind: ClusterIssuer
+  commonName: hub.pulsifer.ca
+  dnsNames:
+  - hub.pulsifer.ca

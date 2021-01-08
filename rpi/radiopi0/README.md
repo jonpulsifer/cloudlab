@@ -31,6 +31,6 @@ curl -X POST \
     -H "ce-source: https://github.com/jonpulsifer/cloudlab/rpi/radiopi0" \
     -H "ce-type: dev.pulsifer.radio.request" \
     -H "ce-id: lolpotato-123" \
-    -d '{"url":"https://youtu.be/tfT0i9Qcqn0"}' \
+    -d '{"action":"rainbow"}' \
     http://radiopi0:3000
 ```

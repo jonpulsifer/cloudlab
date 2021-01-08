@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hub
+  namespace: hub
+  labels:
+    app.kubernetes.io/name: hub
+    app.kubernetes.io/part-of: hub
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: hub
+      app.kubernetes.io/part-of: hub
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: hub
+        app.kubernetes.io/part-of: hub
+    spec:
+      containers:
+      - name: ffmpeg
+        image: jonpulsifer/hub
+        imagePullPolicy: Always
+        args:
+        - yarnpkg
+        - ffmpeg
+        volumeMounts:
+        - mountPath: /app/dist/video
+          name: ffmpeg-volume
+      - name: hub
+        image: jonpulsifer/hub
+        imagePullPolicy: Always
+        args:
+        - node
+        - dist/server.js
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        resources: {}
+        volumeMounts:
+        - mountPath: /app/dist/video
+          name: ffmpeg-volume
+      volumes:
+      - name: ffmpeg-volume
+        emptyDir: {}

@@ -1,0 +1,11 @@
+apiVersion: crd.projectcalico.org/v1
+kind: IPPool
+metadata:
+  name: 10-dot-100
+spec:
+  blockSize: 24
+  cidr: 10.100.0.0/16
+  ipipMode: Always
+  natOutgoing: true
+  nodeSelector: all()
+  vxlanMode: Never
