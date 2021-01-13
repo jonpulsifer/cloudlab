@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # copy to /usr/local/bin/blinky and use with blinky.service
 
-import colorsys
 import phatbeat
+import colorsys
 import time
 
 SPEED = 200

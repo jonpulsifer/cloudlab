@@ -1,5 +1,5 @@
 [Unit]
-Description=Sound the Radio
+Description=Blink the radio
 After=multi-user.target
 
 [Service]

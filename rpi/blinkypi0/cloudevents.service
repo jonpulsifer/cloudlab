@@ -1,5 +1,5 @@
 [Unit]
-Description=Runs the blinkypi0 flask service that listens to cloudevents
+Description=Runs the blinkypi0 flask service that listens for cloudevents and does things
 After=multi-user.target
 
 [Service]
