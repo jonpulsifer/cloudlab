@@ -8,20 +8,28 @@ provider "google" {
   project = local.project
   region  = local.region
   zone    = local.zone
-  version = "~> 3.46"
 }
 
 provider "google-beta" {
   project = local.project
   region  = local.region
   zone    = local.zone
-  version = "~> 3.46"
 }
 
 terraform {
-  required_version = ">= 0.12"
+  required_version = ">= 0.13"
   backend "gcs" {
     bucket = "kubesec"
     prefix = "state/resource-manager"
+  }
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "~> 3.35"
+    }
+    google-beta = {
+      source  = "hashicorp/google-beta"
+      version = "~> 3.35"
+    }
   }
 }

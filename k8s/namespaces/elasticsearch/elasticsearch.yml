@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: elasticsearch
+  namespace: elasticsearch
+  labels:
+    app.kubernetes.io/name: elasticsearch
+    app.kubernetes.io/part-of: elasticsearch
+spec:
+  serviceName: elasticsearch
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: elasticsearch
+      app.kubernetes.io/part-of: elasticsearch
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: elasticsearch
+        app.kubernetes.io/part-of: elasticsearch
+    spec:
+      serviceAccountName: elasticsearch
+      containers:
+      - name: elasticsearch
+        image: elasticsearch:7.10.1
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: http.host
+          value: "0.0.0.0"
+        - name: discovery.type
+          value: "single-node"
+        ports:
+        - containerPort: 9200
+          protocol: TCP
+        livenessProbe:
+          httpGet:
+            path: /_cluster/health
+            port: 9200
+          initialDelaySeconds: 3
+          periodSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /_cluster/health
+            port: 9200
+          initialDelaySeconds: 3
+          periodSeconds: 5
+        resources: {}
+        volumeMounts:
+        - name: elasticsearch-data
+          mountPath: /usr/share/elasticsearch/data
+  volumeClaimTemplates:
+  - metadata:
+      name: elasticsearch-data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: local
+      resources:
+        requests:
+          storage: 1Gi

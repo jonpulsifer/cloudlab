@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: thehive
+  namespace: thehive
+  labels:
+    app.kubernetes.io/name: thehive
+    app.kubernetes.io/part-of: thehive
+spec:
+  egress:
+  - {}
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          app.kubernetes.io/name: ingress-nginx
+    ports:
+    - port: 9000
+      protocol: TCP
+    - port: 9001
+      protocol: TCP
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/part-of: thehive
+  policyTypes:
+  - Ingress
+  - Egress

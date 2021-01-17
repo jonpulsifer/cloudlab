@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: thehive
+  namespace: thehive
+  labels:
+    app.kubernetes.io/name: thehive
+    app.kubernetes.io/part-of: thehive
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: thehive
+      app.kubernetes.io/part-of: thehive
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: thehive
+        app.kubernetes.io/part-of: thehive
+    spec:
+      serviceAccountName: thehive
+      containers:
+      - name: thehive
+        image: jonpulsifer/thehive:sha-a2cc1bd
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 9000
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /var/lib/thehive
+          name: thehive-data
+        - mountPath: /etc/thehive/cortex.conf
+          subPath: cortex.conf
+          name: cortex-connectors
+      volumes:
+      - name: thehive-data
+        emptyDir: {}
+      - name: cortex-connectors
+        secret:
+          secretName: thehive-cortex
+          items:
+            - key: cortex.conf
+              path: cortex.conf

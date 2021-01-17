@@ -1,0 +1,33 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: elasticsearch
+  namespace: elasticsearch
+  labels:
+    app.kubernetes.io/name: elasticsearch
+    app.kubernetes.io/part-of: elasticsearch
+spec:
+  secretName: es.home.pulsifer.ca
+  issuerRef:
+    name: letsencrypt-dns
+    kind: ClusterIssuer
+  commonName: es.home.pulsifer.ca
+  dnsNames:
+  - es.home.pulsifer.ca
+---
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: kibana
+  namespace: elasticsearch
+  labels:
+    app.kubernetes.io/name: kibana
+    app.kubernetes.io/part-of: elasticsearch
+spec:
+  secretName: kibana.home.pulsifer.ca
+  issuerRef:
+    name: letsencrypt-dns
+    kind: ClusterIssuer
+  commonName: kibana.home.pulsifer.ca
+  dnsNames:
+  - kibana.home.pulsifer.ca

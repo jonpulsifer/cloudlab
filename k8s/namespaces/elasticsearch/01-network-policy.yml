@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: elasticsearch
+  namespace: elasticsearch
+  labels:
+    app.kubernetes.io/name: elasticsearch
+    app.kubernetes.io/part-of: elasticsearch
+spec:
+  egress:
+  - {}
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          app.kubernetes.io/name: ingress-nginx
+    ports:
+    - port: 9200
+      protocol: TCP
+    - port: 5601
+      protocol: TCP
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/part-of: elasticsearch
+  policyTypes:
+  - Ingress
+  - Egress

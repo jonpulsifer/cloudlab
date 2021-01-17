@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: thehive
+  namespace: thehive
+  labels:
+    app.kubernetes.io/name: thehive
+    app.kubernetes.io/part-of: thehive
+spec:
+  type: NodePort
+  ports:
+  - port: 9000
+    targetPort: 9000
+  selector:
+    app.kubernetes.io/name: thehive
+    app.kubernetes.io/part-of: thehive
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cortex
+  namespace: thehive
+  labels:
+    app.kubernetes.io/name: cortex
+    app.kubernetes.io/part-of: thehive
+spec:
+  type: NodePort
+  ports:
+  - port: 9001
+    targetPort: 9001
+  selector:
+    app.kubernetes.io/name: cortex
+    app.kubernetes.io/part-of: thehive

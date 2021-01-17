@@ -1,0 +1,33 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: thehive
+  namespace: thehive
+  labels:
+    app.kubernetes.io/name: thehive
+    app.kubernetes.io/part-of: thehive
+spec:
+  secretName: thehive-tls
+  issuerRef:
+    name: letsencrypt-dns
+    kind: ClusterIssuer
+  commonName: thehive.home.pulsifer.ca
+  dnsNames:
+  - thehive.home.pulsifer.ca
+---
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: cortex.home.pulsifer.ca
+  namespace: thehive
+  labels:
+    app.kubernetes.io/name: cortex
+    app.kubernetes.io/part-of: thehive
+spec:
+  secretName: cortex.home.pulsifer.ca
+  issuerRef:
+    name: letsencrypt-dns
+    kind: ClusterIssuer
+  commonName: cortex.home.pulsifer.ca
+  dnsNames:
+  - cortex.home.pulsifer.ca

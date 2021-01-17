@@ -1,0 +1,63 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: thehive
+  namespace: thehive
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+  labels:
+    app.kubernetes.io/name: thehive
+    app.kubernetes.io/part-of: thehive
+spec:
+  tls:
+  - hosts:
+    - thehive.home.pulsifer.ca
+    secretName: thehive.home.pulsifer.ca
+  rules:
+  - host: "thehive.home.pulsifer.ca"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: thehive
+            port:
+              number: 9000
+  defaultBackend:
+    service:
+      name: thehive
+      port:
+        number: 9000
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: cortex
+  namespace: thehive
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+  labels:
+    app.kubernetes.io/name: cortex
+    app.kubernetes.io/part-of: thehive
+spec:
+  tls:
+  - hosts:
+    - cortex.home.pulsifer.ca
+    secretName: cortex.home.pulsifer.ca
+  rules:
+  - host: "cortex.home.pulsifer.ca"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: cortex
+            port:
+              number: 9001
+  defaultBackend:
+    service:
+      name: cortex
+      port:
+        number: 9001

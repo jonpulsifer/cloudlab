@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kibana
+  namespace: elasticsearch
+  labels:
+    app.kubernetes.io/name: kibana
+    app.kubernetes.io/part-of: elasticsearch
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: kibana
+      app.kubernetes.io/part-of: elasticsearch
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: kibana
+        app.kubernetes.io/part-of: elasticsearch
+    spec:
+      serviceAccountName: elasticsearch
+      containers:
+      - name: kibana
+        image: kibana:7.10.1
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 5601
+          protocol: TCP
+        # livenessProbe:
+        #   httpGet:
+        #     path: /ping
+        #     port: 5601
+        #   initialDelaySeconds: 3
+        #   periodSeconds: 5
+        # readinessProbe:
+        #   httpGet:
+        #     path: /ping
+        #     port: 5601
+        #   initialDelaySeconds: 3
+        #   periodSeconds: 5
+        resources: {}

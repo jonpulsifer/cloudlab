@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: cassandra
+  namespace: cassandra
+  labels:
+    app.kubernetes.io/name: cassandra
+    app.kubernetes.io/part-of: cassandra
+spec:
+  serviceName: cassandra
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: cassandra
+      app.kubernetes.io/part-of: cassandra
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: cassandra
+        app.kubernetes.io/part-of: cassandra
+    spec:
+      serviceAccountName: cassandra
+      containers:
+      - name: cassandra
+        image: cassandra:3.11.9
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: CASSANDRA_CLUSTER_NAME
+          value: "thp"
+        ports:
+        - containerPort: 9042
+          protocol: TCP
+        resources: {}
+        volumeMounts:
+        - name: cassandra-data
+          mountPath: /var/lib/cassandra
+  volumeClaimTemplates:
+  - metadata:
+      name: cassandra-data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: local
+      resources:
+        requests:
+          storage: 1Gi

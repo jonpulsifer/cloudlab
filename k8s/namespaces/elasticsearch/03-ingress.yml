@@ -1,0 +1,31 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kibana
+  namespace: elasticsearch
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+  labels:
+    app.kubernetes.io/name: kibana
+    app.kubernetes.io/part-of: elasticsearch
+spec:
+  tls:
+  - hosts:
+    - kibana.home.pulsifer.ca
+    secretName: kibana.home.pulsifer.ca
+  rules:
+  - host: "kibana.home.pulsifer.ca"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: kibana
+            port:
+              number: 5601
+  defaultBackend:
+    service:
+      name: kibana
+      port:
+        number: 5601
