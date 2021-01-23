@@ -18,18 +18,19 @@ provider "google-beta" {
 
 terraform {
   backend "gcs" {
-    bucket = "kubesec"
-    prefix = "state/lab"
+    bucket = "homelab-ng"
+    prefix = "terraform/lab"
   }
 
   required_providers {
     google = {
-      source  = "registry.terraform.io/-/google"
-      version = "~> 3.35"
+      source  = "hashicorp/google"
+      version = "~> 3.50"
     }
     google-beta = {
-      source  = "registry.terraform.io/-/google-beta"
+      source  = "hashicorp/google-beta"
       version = "~> 3.35"
-    } 
+    }
   }
+  required_version = ">= 0.14"
 }

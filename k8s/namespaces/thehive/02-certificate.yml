@@ -7,7 +7,7 @@ metadata:
     app.kubernetes.io/name: thehive
     app.kubernetes.io/part-of: thehive
 spec:
-  secretName: thehive-tls
+  secretName: thehive.home.pulsifer.ca
   issuerRef:
     name: letsencrypt-dns
     kind: ClusterIssuer

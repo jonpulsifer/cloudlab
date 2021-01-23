@@ -1,10 +1,10 @@
 resource "google_storage_bucket" "jonpulsifer" {
-  name               = "jonpulsifer"
-  location           = data.google_client_config.current.region
-  bucket_policy_only = "true"
-  requester_pays     = true
-  force_destroy      = false
-  storage_class      = "REGIONAL"
+  name                        = "jonpulsifer"
+  location                    = data.google_client_config.current.region
+  requester_pays              = true
+  force_destroy               = false
+  storage_class               = "REGIONAL"
+  uniform_bucket_level_access = "true"
 }
 
 data "google_iam_policy" "gcs-jonpulsifer" {

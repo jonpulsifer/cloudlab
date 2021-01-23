@@ -8,19 +8,18 @@ provider "google" {
   project = local.project
   region  = local.region
   zone    = local.zone
-  version = "~> 3.14"
 }
 
 terraform {
-  required_version = ">= 0.13"
+  backend "gcs" {
+    bucket = "homelab-ng"
+    prefix = "terraform/homelab-ng"
+  }
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = "~> 3.50"
+      version = "~> 3.53"
     }
   }
-  backend "gcs" {
-    bucket = "kubesec"
-    prefix = "state/homelab-ng"
-  }
+  required_version = ">= 0.14"
 }

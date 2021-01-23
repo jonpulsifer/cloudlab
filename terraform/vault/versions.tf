@@ -4,8 +4,8 @@ provider "vault" {
 
 terraform {
   backend "gcs" {
-    bucket = "kubesec"
-    prefix = "state/vault"
+    bucket = "homelab-ng"
+    prefix = "terraform/vault"
   }
   required_providers {
     vault = {

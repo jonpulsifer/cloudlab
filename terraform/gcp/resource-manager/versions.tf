@@ -1,5 +1,5 @@
 locals {
-  project = "kubesec"
+  project = "homelab-ng"
   region  = "northamerica-northeast1"
   zone    = join("-", [local.region, "a"])
 }
@@ -17,19 +17,19 @@ provider "google-beta" {
 }
 
 terraform {
-  required_version = ">= 0.13"
   backend "gcs" {
-    bucket = "kubesec"
-    prefix = "state/resource-manager"
+    bucket = "homelab-ng"
+    prefix = "terraform/resource-manager"
   }
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = "~> 3.35"
+      version = "~> 3.53"
     }
     google-beta = {
       source  = "hashicorp/google-beta"
-      version = "~> 3.35"
+      version = "~> 3.53"
     }
   }
+  required_version = ">= 0.14"
 }

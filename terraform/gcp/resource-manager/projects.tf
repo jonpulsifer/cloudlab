@@ -19,14 +19,6 @@ module "homelab-ng" {
   }
 }
 
-module "trusted-builds" {
-  source     = "github.com/jonpulsifer/terraform-modules//gcp-project"
-  project_id = "trusted-builds"
-  name       = "trusted-builds - cloudlab"
-  folder_id  = google_folder.production.name
-  compute    = true
-}
-
 module "kubesec" {
   source          = "github.com/jonpulsifer/terraform-modules//gcp-project"
   project_id      = "kubesec"

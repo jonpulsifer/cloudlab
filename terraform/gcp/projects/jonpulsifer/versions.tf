@@ -10,13 +10,18 @@ provider "google" {
   project = local.project
   region  = local.region
   zone    = local.zone
-  version = "~> 3.14"
 }
 
 terraform {
-  required_version = ">= 0.12"
   backend "gcs" {
-    bucket = "kubesec"
-    prefix = "state/jonpulsifer"
+    bucket = "homelab-ng"
+    prefix = "terraform/jonpulsifer"
   }
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "~> 3.53"
+    }
+  }
+  required_version = ">= 0.14"
 }

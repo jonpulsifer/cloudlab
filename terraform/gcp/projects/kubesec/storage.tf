@@ -1,7 +1,7 @@
 resource "google_storage_bucket" "cloud-lab" {
-  name               = "cloud-lab"
-  location           = "US"
-  bucket_policy_only = "true"
+  name                        = "cloud-lab"
+  location                    = "US"
+  uniform_bucket_level_access = "true"
   website {
     main_page_suffix = "index.html"
     not_found_page   = "404.html"

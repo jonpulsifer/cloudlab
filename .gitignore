@@ -9,4 +9,5 @@ functions/**/node_modules/
 *.old
 node_modules/**
 **/node_modules
-
+**/cortex.conf
+**/application.conf
