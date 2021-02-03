@@ -1,0 +1,49 @@
+rpis:
+  cloudpi4:
+    mac:
+      lan:  dc:a6:32:35:e8:b4
+      wifi: dc:a6:32:35:e8:b5
+  homepi4:
+    mac:
+      lan:  dc:a6:32:d9:90:07
+      wifi: dc:a6:32:d9:90:08
+  radiopi0:
+    mac: b8:27:eb:ad:f3:aa
+  blinkypi0:
+    mac: b8:27:eb:e6:e7:95
+  speechpi2:
+    mac: b8:27:eb:70:45:f6
+
+phones:
+  iPhone:
+    mac: d0:d2:b0:35:62:09
+  Pixel 3:
+    mac: 3c:28:6d:d4:d7:8e
+
+home_iot:
+  Constance's Google Home Mini:
+    color: Coral
+    mac: e4:f0:42:15:b1:03
+  Basement Google Home Mini:
+    color: Chalk
+    mac: 48:d6:d5:84:70:5a
+  Bedroom Nest Mini:
+    color: Charcoal
+    mac: 7c:2e:bd:56:db:88
+  Living Room Chromecast:
+    mac: 90:0c:c8:de:24:f5
+  Living Room Home Hub:
+    mac: 7c:d9:5c:7b:07:a4
+  Office Chromecast:
+    mac: 48:d6:d5:07:2f:c6
+  Office Nest Mini:
+    color: Charcoal
+    mac: d4:f5:47:2e:de:48
+  Thermostat:
+    mac: 18:b4:30:bd:fc:b5
+  Hue Bridge:
+    mac: 00:17:88:2c:a0:59
+  MyQ-83E:
+    mac: 64:52:99:56:d8:0c
+  Dyson DP04:
+    mac: c8:ff:77:6d:69:74
