@@ -16,4 +16,5 @@ wifis:
     optional: true
     access-points:
       "somessid":
-        password: "somepassword"
+        hidden: true
+        password: ""
