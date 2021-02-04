@@ -1,18 +1,50 @@
 rpis:
-  cloudpi4:
-    mac:
-      lan:  dc:a6:32:35:e8:b4
-      wifi: dc:a6:32:35:e8:b5
-  homepi4:
-    mac:
-      lan:  dc:a6:32:d9:90:07
-      wifi: dc:a6:32:d9:90:08
+  cloudpi4-lan:
+    mac: dc:a6:32:35:e8:b4
+    ip: 10
+  cloudpi4-wifi:
+    mac: dc:a6:32:35:e8:b5
+    ip: 11
+  homepi4-lan:
+    mac: dc:a6:32:d9:90:07
+    ip: 12
+  homepi4-wifi:
+    mac: dc:a6:32:d9:90:08
+    ip: 13
   radiopi0:
     mac: b8:27:eb:ad:f3:aa
+    ip: 14
   blinkypi0:
     mac: b8:27:eb:e6:e7:95
+    ip: 15
   speechpi2:
     mac: b8:27:eb:70:45:f6
+    ip: 16
+
+homelab_ng:
+  cube:
+    mac: 00:1f:bc:11:93:fd
+    ip: 2
+  caldigit:
+    mac: 64:4b:f0:10:0f:0c
+    ip: 3
+  nuc:
+    mac: 1c:69:7a:01:2a:ef
+    ip: 5
+
+desktops:
+  tinytower:
+    mac: 78:24:af:3c:a4:67
+  mini:
+    mac: a8:20:66:03:f5:05
+
+laptops:
+  Constance's Macbook Pro:
+    mac: f0:18:98:54:4b:32
+  Jonathan's Macbook Pro:
+    mac: 8c:85:90:2b:30:55
+  Pixelbook:
+    mac: 28:c6:3f:30:2a:c3
 
 phones:
   iPhone:
@@ -47,3 +79,7 @@ home_iot:
     mac: 64:52:99:56:d8:0c
   Dyson DP04:
     mac: c8:ff:77:6d:69:74
+  SPA504G:
+    mac: ec:e1:a9:cc:ee:fc
+  Withings Scale:
+    mac: 00:24:e4:37:b2:da

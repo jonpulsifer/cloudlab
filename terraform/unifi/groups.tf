@@ -11,7 +11,7 @@ resource "unifi_user_group" "unmetered" {
 }
 
 resource "unifi_user_group" "iot" {
-  name              = "IOT"
+  name              = "IoT"
   qos_rate_max_down = 1000
   qos_rate_max_up   = 1000
 }
