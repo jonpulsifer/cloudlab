@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: dump
+  namespace: dump
+  labels:
+    app.kubernetes.io/name: dump
+    app.kubernetes.io/part-of: dump
+spec:
+  egress:
+  - {}
+  ingress:
+  - ports:
+    - port: 8080
+      protocol: TCP
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: dump
+      app.kubernetes.io/part-of: dump
+  policyTypes:
+  - Ingress
+  - Egress

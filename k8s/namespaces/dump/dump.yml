@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: dump
+  namespace: dump
+  labels:
+    app.kubernetes.io/name: dump
+    app.kubernetes.io/part-of: dump
+spec:
+  serviceName: dump
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: dump
+      app.kubernetes.io/part-of: dump
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: dump
+        app.kubernetes.io/part-of: dump
+    spec:
+      serviceAccountName: dump
+      containers:
+      - name: dump
+        image: nginx:alpine
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        resources: {}
+        volumeMounts:
+        - name: dump-data
+          mountPath: /var/lib/dump
+        - name: nginx-config
+          mountPath: /etc/nginx/conf.d
+      volumes:
+      - name: nginx-config
+        configMap:
+          name: nginx-config
+  volumeClaimTemplates:
+  - metadata:
+      name: dump-data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: local
+      resources:
+        requests:
+          storage: 1Gi

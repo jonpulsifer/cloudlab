@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: dump
+  namespace: dump
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+  labels:
+    app.kubernetes.io/name: dump
+    app.kubernetes.io/part-of: dump
+spec:
+  rules:
+  - host: "dump.home.pulsifer.ca"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: dump
+            port:
+              number: 8080
+  defaultBackend:
+    service:
+      name: dump
+      port:
+        number: 8080
