@@ -37,3 +37,4 @@ spec:
     rule: MustRunAs
   volumes:
   - persistentVolumeClaim
+  - configMap
