@@ -34,7 +34,7 @@ resource "unifi_wlan" "evilcorp_labs" {
 }
 
 resource "unifi_user" "homelab_ng" {
-  for_each               = merge(local.clients.homelab_ng, local.clients.rpis)
+  for_each               = merge(local.clients.lab, local.clients.rpis)
   name                   = each.key
   mac                    = each.value.mac
   fixed_ip               = lookup(each.value, "ip", false) == false ? null : cidrhost(local.homelab_ng_cidr, each.value.ip)

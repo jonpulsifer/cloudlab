@@ -6,7 +6,7 @@ resource "unifi_port_forward" "ingress_nginx" {
   protocol = "tcp"
 
   fwd_port = "80,443"
-  fwd_ip   = cidrhost(local.homelab_ng_cidr, local.clients.homelab_ng.nuc.ip) 
+  fwd_ip   = cidrhost(local.homelab_ng_cidr, local.clients.lab.nuc.ip)
 }
 
 resource "unifi_port_forward" "nuc_ssh" {
@@ -17,5 +17,5 @@ resource "unifi_port_forward" "nuc_ssh" {
   protocol = "tcp"
 
   fwd_port = "22"
-  fwd_ip   = cidrhost(local.homelab_ng_cidr, local.clients.homelab_ng.nuc.ip) 
+  fwd_ip   = cidrhost(local.homelab_ng_cidr, local.clients.lab.nuc.ip)
 }

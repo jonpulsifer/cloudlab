@@ -1,3 +1,25 @@
+cameras:
+  blinkypi0-cam:
+    mac: 74:83:c2:3f:ea:11
+  Outside:
+    mac: 74:83:c2:3f:ea:21
+
+unmanaged-infra:
+  Wall Unit PoE Switch:
+    mac: 18:8b:45:3a:ea:4b
+    model: Cisco SG300-10PP-K9 V03
+
+lab:
+  cube:
+    mac: 00:1f:bc:11:93:fd
+    ip: 2
+  caldigit:
+    mac: 64:4b:f0:10:0f:0c
+    ip: 3
+  nuc:
+    mac: 1c:69:7a:01:2a:ef
+    ip: 5
+
 rpis:
   cloudpi4-lan:
     mac: dc:a6:32:35:e8:b4
@@ -21,17 +43,6 @@ rpis:
     mac: b8:27:eb:70:45:f6
     ip: 16
 
-homelab_ng:
-  cube:
-    mac: 00:1f:bc:11:93:fd
-    ip: 2
-  caldigit:
-    mac: 64:4b:f0:10:0f:0c
-    ip: 3
-  nuc:
-    mac: 1c:69:7a:01:2a:ef
-    ip: 5
-
 desktops:
   tinytower:
     mac: 78:24:af:3c:a4:67
@@ -52,8 +63,8 @@ phones:
   Pixel 3:
     mac: 3c:28:6d:d4:d7:8e
 
-home_iot:
-  Constance's Google Home Mini:
+iot:
+  Constance's Office Google Home Mini:
     color: Coral
     mac: e4:f0:42:15:b1:03
   Basement Google Home Mini:
@@ -62,24 +73,33 @@ home_iot:
   Bedroom Nest Mini:
     color: Charcoal
     mac: 7c:2e:bd:56:db:88
-  Living Room Chromecast:
-    mac: 90:0c:c8:de:24:f5
-  Living Room Home Hub:
-    mac: 7c:d9:5c:7b:07:a4
-  Office Chromecast:
-    mac: 48:d6:d5:07:2f:c6
-  Office Nest Mini:
-    color: Charcoal
-    mac: d4:f5:47:2e:de:48
-  Thermostat:
-    mac: 18:b4:30:bd:fc:b5
+  Bedroom Scale:
+    mac: 00:24:e4:37:b2:da
+  Garage Door Opener:
+    mac: 64:52:99:56:d8:0c
   Hue Bridge:
     mac: 00:17:88:2c:a0:59
-  MyQ-83E:
-    mac: 64:52:99:56:d8:0c
-  Dyson DP04:
+  Jon's Office Chromecast:
+    mac: 48:d6:d5:07:2f:c6
+    streaming: true
+  Jon's Office Fan:
     mac: c8:ff:77:6d:69:74
-  SPA504G:
+    model: Dyson DP04
+  Jon's Office Nest Mini:
+    color: Charcoal
+    mac: d4:f5:47:2e:de:48
+  Jon's Office Phone:
     mac: ec:e1:a9:cc:ee:fc
-  Withings Scale:
-    mac: 00:24:e4:37:b2:da
+    model: Cisco SPA504G
+    hostname: cathy
+  Living Room Chromecast:
+    mac: 90:0c:c8:de:24:f5
+    streaming: true
+  Living Room Home Hub:
+    mac: 7c:d9:5c:7b:07:a4
+    streaming: true
+  Living Room Thermostat:
+    mac: 18:b4:30:bd:fc:b5
+  Living Room TV:
+    mac: e4:e0:c5:03:f0:81
+    model: Samsung UNC5500

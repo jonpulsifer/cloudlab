@@ -35,7 +35,7 @@ resource "unifi_wlan" "evilcorp_iot" {
 }
 
 resource "unifi_user" "home_iot" {
-  for_each               = local.clients.home_iot
+  for_each               = local.clients.iot
   name                   = each.key
   mac                    = each.value.mac
   blocked                = lookup(each.value, "blocked", false)
@@ -43,5 +43,5 @@ resource "unifi_user" "home_iot" {
   allow_existing         = lookup(each.value, "allow_existing", true)
   skip_forget_on_destroy = lookup(each.value, "skip_forget_on_destroy", true)
   network_id             = unifi_network.iot_home_pulsifer_ca.id
-  user_group_id          = unifi_user_group.iot.id
+  user_group_id          = lookup(each.value, "streaming", false) == false ? unifi_user_group.iot.id : unifi_user_group.streaming.id
 }

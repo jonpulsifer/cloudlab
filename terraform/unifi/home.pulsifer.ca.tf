@@ -1,5 +1,6 @@
 locals {
   home_pulsifer_ca_cidr = "192.168.1.0/24"
+  home_pulsifer_ca_wlan = "Evilcorp 3.0"
 }
 
 resource "unifi_network" "home_pulsifer_ca" {
@@ -16,9 +17,9 @@ resource "unifi_network" "home_pulsifer_ca" {
 }
 
 resource "unifi_wlan" "evilcorp" {
-  name       = "Evilcorp 3.0"
+  name       = local.home_pulsifer_ca_wlan
   security   = "wpapsk"
-  passphrase = data.vault_generic_secret.wifi.data["Evilcorp 3.0"]
+  passphrase = data.vault_generic_secret.wifi.data[local.home_pulsifer_ca_wlan]
 
   ap_group_ids = [
     "5fa7dea43d5d281558ac3cc5" # data.unifi_ap_group.all_aps.id,
