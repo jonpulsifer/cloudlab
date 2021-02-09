@@ -24,12 +24,21 @@ spec:
         app.kubernetes.io/part-of: hub
     spec:
       containers:
-      - name: ffmpeg
+      - name: ffmpeg-blinkypi0
         image: jonpulsifer/hub
-        imagePullPolicy: Always
         args:
         - yarnpkg
-        - ffmpeg
+        - ffmpeg-blinkypi0
+        resources: {}
+        volumeMounts:
+        - mountPath: /app/dist/video
+          name: ffmpeg-volume
+      - name: ffmpeg-outside
+        image: jonpulsifer/hub
+        args:
+        - yarnpkg
+        - ffmpeg-outside
+        resources: {}
         volumeMounts:
         - mountPath: /app/dist/video
           name: ffmpeg-volume
