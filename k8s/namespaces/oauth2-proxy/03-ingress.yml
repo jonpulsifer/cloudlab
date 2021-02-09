@@ -11,10 +11,23 @@ metadata:
 spec:
   tls:
   - hosts:
-    - oauth2-proxy.home.pulsifer.ca
-    secretName: oauth2-proxy-tls
+    - auth.pulsifer.ca
+    secretName: auth.pulsifer.ca
+  - hosts:
+    - auth.home.pulsifer.ca
+    secretName: auth.home.pulsifer.ca
   rules:
-  - host: "oauth2-proxy.home.pulsifer.ca"
+  - host: auth.pulsifer.ca
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: oauth2-proxy
+            port:
+              number: 4180
+  - host: auth.home.pulsifer.ca
     http:
       paths:
       - path: /

@@ -23,9 +23,16 @@ spec:
         app.kubernetes.io/name: hub
         app.kubernetes.io/part-of: hub
     spec:
+      initContainers:
+      - name: mkdir
+        image: busybox
+        command: ['sh', '-c', 'mkdir /app/dist/video/blinkypi0 /app/dist/video/outside;']
+        volumeMounts:
+        - mountPath: /app/dist/video
+          name: ffmpeg-volume
       containers:
       - name: ffmpeg-blinkypi0
-        image: jonpulsifer/hub
+        image: jonpulsifer/hub:main
         args:
         - yarnpkg
         - ffmpeg-blinkypi0
@@ -34,7 +41,7 @@ spec:
         - mountPath: /app/dist/video
           name: ffmpeg-volume
       - name: ffmpeg-outside
-        image: jonpulsifer/hub
+        image: jonpulsifer/hub:main
         args:
         - yarnpkg
         - ffmpeg-outside
@@ -43,7 +50,7 @@ spec:
         - mountPath: /app/dist/video
           name: ffmpeg-volume
       - name: hub
-        image: jonpulsifer/hub
+        image: jonpulsifer/hub:main
         imagePullPolicy: Always
         args:
         - node

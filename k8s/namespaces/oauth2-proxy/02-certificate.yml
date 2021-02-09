@@ -1,16 +1,33 @@
 apiVersion: cert-manager.io/v1alpha2
 kind: Certificate
 metadata:
-  name: oauth2-proxy
+  name: auth.pulsifer.ca
   namespace: oauth2-proxy
   labels:
-    app.kubernetes.io/name: oauth2-proxy
+    app.kubernetes.io/name: auth.pulsifer.ca
     app.kubernetes.io/part-of: oauth2-proxy
 spec:
-  secretName: oauth2-proxy-tls
+  secretName: auth.pulsifer.ca
+  issuerRef:
+    name: letsencrypt-http
+    kind: ClusterIssuer
+  commonName: auth.pulsifer.ca
+  dnsNames:
+  - auth.pulsifer.ca
+---
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: auth.home.pulsifer.ca
+  namespace: oauth2-proxy
+  labels:
+    app.kubernetes.io/name: auth.home.pulsifer.ca
+    app.kubernetes.io/part-of: oauth2-proxy
+spec:
+  secretName: auth.home.pulsifer.ca
   issuerRef:
     name: letsencrypt-dns
     kind: ClusterIssuer
-  commonName: oauth2-proxy.home.pulsifer.ca
+  commonName: auth.home.pulsifer.ca
   dnsNames:
-  - oauth2-proxy.home.pulsifer.ca
+  - auth.home.pulsifer.ca
